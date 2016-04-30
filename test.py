@@ -17,7 +17,7 @@ BrickPiUpdateValues()
 time.sleep(0.3)
 BrickPi.MotorSpeed[grabber] = 0
 BrickPiUpdateValues()
-time.sleep(2)
+time.sleep(5)
 
 #this is open
 BrickPi.MotorSpeed[grabber] = -80
