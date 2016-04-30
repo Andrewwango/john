@@ -14,7 +14,7 @@ power = 200 #speed from -255 to 255
 #this is close
 BrickPi.MotorSpeed[grabber] = 80
 BrickPiUpdateValues()
-time.sleep(0.5)
+time.sleep(0.3)
 BrickPi.MotorSpeed[grabber] = 0
 BrickPiUpdateValues()
 time.sleep(2)
@@ -22,7 +22,7 @@ time.sleep(2)
 #this is open
 BrickPi.MotorSpeed[grabber] = -80
 BrickPiUpdateValues()
-time.sleep(0.5)
+time.sleep(0.3)
 BrickPi.MotorSpeed[grabber] = 0
 BrickPiUpdateValues()
 time.sleep(2)
