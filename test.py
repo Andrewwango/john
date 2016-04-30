@@ -11,21 +11,21 @@ BrickPi.MotorEnable[arm] = 1
 
 
 print "closing"
-BrickPi.MotorSpeed[grabber] = 80
+BrickPi.MotorSpeed[grabber] = 40
 ot = time.time()
 while(time.time() - ot < 0.3):
 	BrickPiUpdateValues()
 time.sleep(.1)
 
 print "opening"
-BrickPi.MotorSpeed[grabber] = -80
+BrickPi.MotorSpeed[grabber] = -40
 ot = time.time()
 while(time.time() - ot < 0.3):
 	BrickPiUpdateValues()
 time.sleep(.1)
 
 print "lifting"
-BrickPi.MotorSpeed[arm] = -80
+BrickPi.MotorSpeed[arm] = -150
 ot = time.time()
 while(time.time() - ot < 1):
 	BrickPiUpdateValues()
