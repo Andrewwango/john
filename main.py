@@ -3,7 +3,7 @@ import time
 BrickPiSetup()
 BrickPiSetupSensors()
 
-grabber = PORT_D
+grabber = PORT_B
 BrickPi.MotorEnable[grabber] = 1
 arm = PORT_A
 BrickPi.MotorEnable[arm] = 1
