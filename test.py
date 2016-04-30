@@ -12,7 +12,7 @@ BrickPi.MotorEnable[arm] = 1
 power = 200 #speed from -255 to 255
 
 #this is wards
-BrickPi.MotorSpeed[grabber] = 20
+BrickPi.MotorSpeed[grabber] = 40
 BrickPiUpdateValues()
 time.sleep(2)
 BrickPi.MotorSpeed[grabber] = 0
@@ -20,7 +20,7 @@ BrickPiUpdateValues()
 time.sleep(2)
 
 #this is wards
-BrickPi.MotorSpeed[grabber] = -20
+BrickPi.MotorSpeed[grabber] = -40
 BrickPiUpdateValues()
 time.sleep(2)
 BrickPi.MotorSpeed[grabber] = 0
