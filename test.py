@@ -9,28 +9,23 @@ arm = PORT_A
 BrickPi.MotorEnable[arm] = 1
 
 
-power = 200 #speed from -255 to 255
 
-#this is close
-print "starting to close"
-BrickPi.MotorSpeed[grabber] = 80
-BrickPiUpdateValues()
+
+
 print "closing"
-time.sleep(0.3)
-print "finished waiting, stopping"
-BrickPi.MotorSpeed[grabber] = 0
-BrickPiUpdateValues()
-print "waiting"
-time.sleep(5)
+BrickPi.MotorSpeed[PORT_D] = 30  #Set the speed of MotorB (-255 to 255)
 
-#this is open
-print "starting to open"
-BrickPi.MotorSpeed[grabber] = -80
-BrickPiUpdateValues()
+ot = time.time()
+while(time.time() - ot < 1):    #running while loop for 3 seconds
+  BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
+time.sleep(.1)
+
 print "opening"
-time.sleep(0.3)
-print "finished waiting, stopping"
-BrickPi.MotorSpeed[grabber] = 0
-BrickPiUpdateValues()
-print "waiting"
-time.sleep(5)
+BrickPi.MotorSpeed[PORT_D] = -30  #Set the speed of MotorB (-255 to 255)
+
+ot = time.time()
+while(time.time() - ot < 1):    #running while loop for 3 seconds
+    BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
+time.sleep(.1)
+
+    
