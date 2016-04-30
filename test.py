@@ -34,8 +34,8 @@ while(time.time() - ot < 0.3):
 time.sleep(.1)
 
 print "bringing down"
-BrickPi.MotorSpeed[arm] = 40
+BrickPi.MotorSpeed[arm] = 60
 ot = time.time()
-while(time.time() - ot < 0.3):
+while(time.time() - ot < 0.5):
 	BrickPiUpdateValues()
 time.sleep(.1)
