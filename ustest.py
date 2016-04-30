@@ -3,7 +3,7 @@ from BrickPi import *
 BrickPiSetup()
 BrickPiSetupSensors()
 BrickPi.SensorType[PORT_3] = TYPE_SENSOR_ULTRASONIC_CONT
-BrickPiSetupSensors()   #Send the properties of sensors to BrickPi
+#BrickPiSetupSensors()   #Send the properties of sensors to BrickPi
 
 while True:
     result = BrickPiUpdateValues()  # Ask BrickPi to update values for sensors/motors 
