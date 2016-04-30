@@ -17,16 +17,18 @@ while(time.time() - ot < 0.3):
 	BrickPiUpdateValues()
 time.sleep(.1)
 
-print "opening"
-BrickPi.MotorSpeed[grabber] = -40
-ot = time.time()
-while(time.time() - ot < 0.3):
-	BrickPiUpdateValues()
-time.sleep(.1)
+
 
 print "lifting"
 BrickPi.MotorSpeed[arm] = -150
 ot = time.time()
-while(time.time() - ot < 1):
+while(time.time() - ot < 0.7):
+	BrickPiUpdateValues()
+time.sleep(.1)
+
+print "opening"
+BrickPi.MotorSpeed[grabber] = -40
+ot = time.time()
+while(time.time() - ot < 0.3):
 	BrickPiUpdateValues()
 time.sleep(.1)
