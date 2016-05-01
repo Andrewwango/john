@@ -13,7 +13,7 @@ BrickPi.MotorEnable[GRABBER] = 1
 BrickPi.MotorEnable[ARM] = 1
 
 #constants
-USSTANDARD = 20 #us sensor reading of floor
+USSTANDARD = 25 #us sensor reading of floor
 
 while True:
 	#get us reading
@@ -23,6 +23,7 @@ while True:
 		if not result :
 			uslist += [int(BrickPi.Sensor[PORT_4])]
 		time.sleep(.05)
+	print uslist
 	usreading = max(set(uslist), key=uslist.count) #mode
 	print "usreading is " + str(usreading)
 
