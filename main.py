@@ -2,41 +2,37 @@ from BrickPi import *
 import time
 BrickPiSetup()
 BrickPiSetupSensors()
+BrickPi.SensorType[PORT_4] = TYPE_SENSOR_ULTRASONIC_CONT
+BrickPiSetupSensors()
 
-grabber = PORT_B
-BrickPi.MotorEnable[grabber] = 1
-arm = PORT_A
-BrickPi.MotorEnable[arm] = 1
+#define motors
 #pos speed = rolling away from bum
+GRABBER = PORT_B
+ARM = PORT_A
+BrickPi.MotorEnable[GRABBER] = 1
+BrickPi.MotorEnable[ARM] = 1
+
+#constants
+USSTANDARD = 20 #us sensor reading of floor
+
+while True:
+	#get us reading
+	uslist=[]
+	for i in range(7):
+		result = BrickPiUpdateValues()
+		if not result :
+			uslist += [int(BrickPi.Sensor[PORT_4])]
+		time.sleep(.05)
+	usreading = max(set(uslist), key=uslist.count) #mode
+	print "usreading is " + str(usreading)
+
+	if usreading < USSTANDARD and (USSTANDARD-usreading) > 5:
+		#object detected
+		print "object detected"
+		time.sleep(2)
+	
 
 
-print "closing"
-BrickPi.MotorSpeed[grabber] = 40
-ot = time.time()
-while(time.time() - ot < 0.3):
-	BrickPiUpdateValues()
-time.sleep(.1)
 
 
 
-print "lifting"
-BrickPi.MotorSpeed[arm] = -150
-ot = time.time()
-while(time.time() - ot < 0.7):
-	BrickPiUpdateValues()
-time.sleep(.1)
-
-
-print "opening"
-BrickPi.MotorSpeed[grabber] = -40
-ot = time.time()
-while(time.time() - ot < 0.3):
-	BrickPiUpdateValues()
-time.sleep(.1)
-
-print "bringing down"
-BrickPi.MotorSpeed[arm] = 60
-ot = time.time()
-while(time.time() - ot < 0.5):
-	BrickPiUpdateValues()
-time.sleep(.1)
