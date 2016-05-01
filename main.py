@@ -24,7 +24,10 @@ while True:
 			uslist += [int(BrickPi.Sensor[PORT_4])]
 		time.sleep(.05)
 	print uslist
-	usreading = max(set(uslist), key=uslist.count) #mode
+	try:
+		usreading = max(set(uslist), key=uslist.count) #mode
+	except:
+		continue
 	print "usreading is " + str(usreading)
 
 	if usreading < USSTANDARD and (USSTANDARD-usreading) > 5:
