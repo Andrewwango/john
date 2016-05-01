@@ -33,7 +33,7 @@ while True:
 		print "object detected"
 
 		print "bringing down"
-		BrickPi.MotorSpeed[ARM] = 60
+		BrickPi.MotorSpeed[ARM] = 100
 		ot = time.time()
 		while(time.time() - ot < 0.5):
 			BrickPiUpdateValues()
