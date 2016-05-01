@@ -20,15 +20,11 @@ while True:
 	uslist=[]
 	for i in range(7):
 		result = BrickPiUpdateValues()
-		print result
 		if not result :
 			uslist += [int(BrickPi.Sensor[PORT_4])]
 		time.sleep(.05)
 	print uslist
-	try:
-		usreading = max(set(uslist), key=uslist.count) #mode
-	except:
-		continue
+	usreading = max(set(uslist), key=uslist.count) #mode
 	print "usreading is " + str(usreading)
 
 	if usreading < USSTANDARD and (USSTANDARD-usreading) > 5:
