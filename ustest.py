@@ -1,12 +1,14 @@
 from BrickPi import *
 
 BrickPiSetup()
-BrickPiSetupSensors()
-BrickPi.SensorType[PORT_4] = TYPE_SENSOR_ULTRASONIC_CONT
-BrickPiSetupSensors()   #Send the properties of sensors to BrickPi
+GRABBER = PORT_B
+ARM = PORT_A
+BrickPi.MotorEnable[GRABBER] = 1
+BrickPi.MotorEnable[ARM] = 1
 
-while True:
-    result = BrickPiUpdateValues()  # Ask BrickPi to update values for sensors/motors 
-    if not result :
-        print BrickPi.Sensor[PORT_4]     #BrickPi.Sensor[PORT] stores the value obtained from sensor
-    time.sleep(.05)     # sleep for 10 ms
+print "opening"
+BrickPi.MotorSpeed[GRABBER] = -40
+ot = time.time()
+while(time.time() - ot < 0.3):
+	BrickPiUpdateValues()
+time.sleep(.1)
