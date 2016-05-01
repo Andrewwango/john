@@ -20,6 +20,7 @@ while True:
 	uslist=[]
 	for i in range(7):
 		result = BrickPiUpdateValues()
+		print result
 		if not result :
 			uslist += [int(BrickPi.Sensor[PORT_4])]
 		time.sleep(.05)
