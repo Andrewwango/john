@@ -60,8 +60,8 @@ while True:
 		BrickPi.MotorSpeed[LWHEEL] = 0
 		BrickPi.MotorSpeed[RWHEEL] = 0
 		#shooby forward a wee
-		movelimb(LWHEEL, WHEELPOWER, 1.3)
-		movelimb(RWHEEL, WHEELPOWER, 1.3)
+		movelimb(LWHEEL, WHEELPOWER, 0.7)
+		movelimb(RWHEEL, WHEELPOWER, 0.7)
 		BrickPi.MotorSpeed[LWHEEL] = 0
 		BrickPi.MotorSpeed[RWHEEL] = 0
 		
