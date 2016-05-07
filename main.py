@@ -91,7 +91,11 @@ while True:
 		movelimb(ARM, BRINGDOWNPOWER, 0.3)
 		time.sleep(0.5)
 
-		print "sliding down"
-		movelimb(ARM, SLIDEDOWNPOWER, 0.3)
+#		print "sliding down"
+#		movelimb(ARM, SLIDEDOWNPOWER, 0.3)
 		
+		
+		BrickPi.MotorSpeed[GRABBER] = 0
+		BrickPi.MotorSpeed[ARM] = 0		
 		time.sleep(2)
+
