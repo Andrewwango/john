@@ -75,7 +75,12 @@ while True:
 		time.sleep(0.5)
 		
 		print "lifting"
-		movelimb(ARM, -170, 0.7)
+		BrickPi.MotorSpeed[ARM] = -170
+		BrickPi.MotorSpeed[GRABBER] = 100
+		ot = time.time()
+		while(time.time() - ot < 0.7):
+			BrickPiUpdateValues()
+		time.sleep(.1)
 
 		print "opening"
 		movelimb(GRABBER, -40, 0.3)
