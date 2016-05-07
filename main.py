@@ -15,7 +15,13 @@ GRABBER = PORT_B
 ARM = PORT_C
 HEAD = PORT_1
 USSTANDARD = 20 #us sensor reading of floor
-WHEELPOWER = -200
+WHEELPOWER     = -200
+GRABBERPOWER   =  100
+LIFTPOWER      = -170
+SLIDEDOWNPOWER =  100
+OPENPOWER      = -40
+BRINGDOWNPOWER =  150
+
 
 BrickPi.MotorEnable[GRABBER] = 1
 BrickPi.MotorEnable[ARM] = 1
@@ -25,8 +31,10 @@ BrickPiSetupSensors()
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
 
-def movelimb(limb, speed, length):
+def movelimb(limb, speed, length, grabberaswell=0):
 		BrickPi.MotorSpeed[limb] = speed
+		if grabberaswell=1:
+			BrickPi.MotorSpeed[GRABBER] = GRABBERPOWER
 		ot = time.time()
 		while(time.time() - ot < length):
 			BrickPiUpdateValues()
@@ -67,34 +75,24 @@ while True:
 		
 		time.sleep(1)
 		print "sliding down"
-		movelimb(ARM, 100, 0.3)
+		movelimb(ARM, SLIDEDOWNPOWER, 0.3)
 		
 		print "closing"
-		movelimb(GRABBER, 100, 0.5)
-		
+		movelimb(GRABBER, GRABBERPOWER, 0.5)
 		time.sleep(0.5)
 		
 		print "lifting"
-		BrickPi.MotorSpeed[ARM] = -170
-		BrickPi.MotorSpeed[GRABBER] = 100
-		ot = time.time()
-		while(time.time() - ot < 1):
-			BrickPiUpdateValues()
-		time.sleep(.1)
+		movelimb(ARM, LIFTPOWER, 0.7, 1) #grabber grips as well
 
 		print "opening"
-		movelimb(GRABBER, -40, 0.3)
+		movelimb(GRABBER, OPENPOWER, 0.3)
 
 		print "bringing down"
-		movelimb(ARM, 150, 0.5)
-		
+		movelimb(ARM, BRINGDOWNPOWER, 0.5)
 		time.sleep(0.5)
 
 		print "sliding down"
-		movelimb(ARM, 80, 0.3)
-		
-#		print "sliding up"
-#		movelimb(ARM, -20, 0.3)
+		movelimb(ARM, SLIDEDOWNPOWER, 0.3)
 		
 		time.sleep(2)
 		break
