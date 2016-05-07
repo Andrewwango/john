@@ -56,10 +56,12 @@ while True:
 	if usreading < USSTANDARD:
 		#object detected
 		print "object detected"
+		print "stopping"
 		BrickPi.MotorSpeed[LWHEEL] = 0
 		BrickPi.MotorSpeed[RWHEEL] = 0
-		movelimb(LWHEEL, WHEELPOWER, 0.7)
-		movelimb(RWHEEL, WHEELPOWER, 0.7)
+		#shooby forward a wee
+		movelimb(LWHEEL, WHEELPOWER, 1)
+		movelimb(RWHEEL, WHEELPOWER, 1)
 		
 		time.sleep(1)
 		print "sliding down"
