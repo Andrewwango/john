@@ -9,17 +9,20 @@ BrickPiSetup()
 
 #define motors
 #pos speed = rolling away from bum
+LWHEEL = PORT_D
+RWHEEL = PORT_A
 GRABBER = PORT_B
 ARM = PORT_C
 HEAD = PORT_1
 USSTANDARD = 20 #us sensor reading of floor
 
+BrickPi.MotorEnable[GRABBER] = 1
+BrickPi.MotorEnable[ARM] = 1
+BrickPi.MotorEnable[LWHEEL] = 1
+BrickPi.MotorEnable[RWHEEL] = 1
 BrickPiSetupSensors()
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
-BrickPi.MotorEnable[GRABBER] = 1
-BrickPi.MotorEnable[ARM] = 1
-
 
 def movelimb(limb, speed, length):
 		BrickPi.MotorSpeed[limb] = speed
@@ -31,6 +34,10 @@ def movelimb(limb, speed, length):
 #default pos is opened grabber, half down	
 
 while True:
+	#move wheels
+	BrickPi.MotorSpeed[LWHEEL] = -70
+	BrickPi.MotorSpeed[RWHEEL] = -70
+	
 	#get us reading
 	uslist=[]
 	for i in range(7):
@@ -42,10 +49,14 @@ while True:
 	print uslist
 	usreading = max(set(uslist), key=uslist.count) #mode
 	print "usreading is " + str(usreading)
-
+	
+	
+	#check object detection
 	if usreading < USSTANDARD:
 		#object detected
 		print "object detected"
+		BrickPi.MotorSpeed[LWHEEL] = 0
+		BrickPi.MotorSpeed[RWHEEL] = 0		
 
 		print "sliding down"
 		movelimb(ARM, 60, 0.3)
