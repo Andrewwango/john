@@ -88,11 +88,10 @@ while True:
 		movelimb(GRABBER, OPENPOWER, 0.3)
 
 		print "bringing down"
-		movelimb(ARM, BRINGDOWNPOWER, 0.5)
+		movelimb(ARM, BRINGDOWNPOWER, 0.3)
 		time.sleep(0.5)
 
 		print "sliding down"
 		movelimb(ARM, SLIDEDOWNPOWER, 0.3)
 		
 		time.sleep(2)
-		break
