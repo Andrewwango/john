@@ -60,10 +60,10 @@ while True:
 		BrickPi.MotorSpeed[LWHEEL] = 0
 		BrickPi.MotorSpeed[RWHEEL] = 0
 		#shooby forward a wee
-		movelimb(LWHEEL, WHEELPOWER, 0.7)
-		movelimb(RWHEEL, WHEELPOWER, 0.7)
-		BrickPi.MotorSpeed[LWHEEL] = 0
-		BrickPi.MotorSpeed[RWHEEL] = 0
+#		movelimb(LWHEEL, WHEELPOWER, 0.7)
+#		movelimb(RWHEEL, WHEELPOWER, 0.7)
+#		BrickPi.MotorSpeed[LWHEEL] = 0
+#		BrickPi.MotorSpeed[RWHEEL] = 0
 		
 		time.sleep(1)
 		print "sliding down"
