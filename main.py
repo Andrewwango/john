@@ -48,7 +48,7 @@ while True:
 		print "object detected"
 
 		print "sliding down"
-		movelimb(ARM, 30, 0.3)
+		movelimb(ARM, 60, 0.3)
 		
 		print "closing"
 		movelimb(GRABBER, 40, 0.3)
@@ -60,12 +60,12 @@ while True:
 		movelimb(GRABBER, -40, 0.3)
 
 		print "bringing down"
-		movelimb(ARM, 100, 0.3)
+		movelimb(ARM, 150, 0.5)
 		
 		time.sleep(0.5)
 		
 		print "sliding up"
-		movelimb(ARM, -70, 0.3)
+		movelimb(ARM, -20, 0.3)
 		
 		time.sleep(2)
 		break
