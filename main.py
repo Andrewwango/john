@@ -53,7 +53,7 @@ while True:
 		movelimb(GRABBER, 40, 0.3)
 		
 		print "lifting"
-		movelimb(ARM, -150 0.7)
+		movelimb(ARM, -150, 0.7)
 
 		print "opening"
 		movelimb(GRABBER, -40, 0.3)
