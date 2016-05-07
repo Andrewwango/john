@@ -78,7 +78,7 @@ while True:
 		BrickPi.MotorSpeed[ARM] = -170
 		BrickPi.MotorSpeed[GRABBER] = 100
 		ot = time.time()
-		while(time.time() - ot < 0.7):
+		while(time.time() - ot < 1):
 			BrickPiUpdateValues()
 		time.sleep(.1)
 
