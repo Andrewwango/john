@@ -18,7 +18,7 @@ BrickPi.MotorEnable[GRABBER] = 1
 BrickPi.MotorEnable[ARM] = 1
 
 #constants
-USSTANDARD = 25 #us sensor reading of floor
+USSTANDARD = 20 #us sensor reading of floor
 
 def movelimb(limb, speed, length):
 		BrickPi.MotorSpeed[limb] = speed
@@ -42,7 +42,7 @@ while True:
 	usreading = max(set(uslist), key=uslist.count) #mode
 	print "usreading is " + str(usreading)
 
-	if usreading < USSTANDARD and (USSTANDARD-usreading) > 5:
+	if usreading < USSTANDARD:
 		#object detected
 		print "object detected"
 
