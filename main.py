@@ -33,7 +33,7 @@ BrickPiSetupSensors()
 
 def movelimb(limb, speed, length, grabberaswell=0):
 		BrickPi.MotorSpeed[limb] = speed
-		if grabberaswell=1:
+		if grabberaswell==1:
 			BrickPi.MotorSpeed[GRABBER] = GRABBERPOWER
 		ot = time.time()
 		while(time.time() - ot < length):
