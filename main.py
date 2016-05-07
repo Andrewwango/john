@@ -5,6 +5,11 @@ BrickPiSetupSensors()
 BrickPi.SensorType[PORT_4] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
 
+#if motors stalling - check voltage
+#brickpiupdatevalues error - do system thingy
+#if result=-1 - reboot
+
+
 #define motors
 #pos speed = rolling away from bum
 GRABBER = PORT_B
@@ -14,6 +19,15 @@ BrickPi.MotorEnable[ARM] = 1
 
 #constants
 USSTANDARD = 25 #us sensor reading of floor
+
+def movelimb(limb, speed, length):
+		BrickPi.MotorSpeed[limb] = speed
+		ot = time.time()
+		while(time.time() - ot < length):
+			BrickPiUpdateValues()
+		time.sleep(.1)
+
+#default pos is opened grabber, half down	
 
 while True:
 	#get us reading
@@ -32,48 +46,23 @@ while True:
 		#object detected
 		print "object detected"
 
-		print "bringing down"
-		BrickPi.MotorSpeed[ARM] = 100
-		ot = time.time()
-		while(time.time() - ot < 0.5):
-			BrickPiUpdateValues()
-		time.sleep(.1)
-		
-		print "opening"
-		BrickPi.MotorSpeed[GRABBER] = -40
-		ot = time.time()
-		while(time.time() - ot < 0.3):
-			BrickPiUpdateValues()
-		time.sleep(.1)
+		print "sliding down"
+		movelimb(ARM, 30, 0.3)
 		
 		print "closing"
-		BrickPi.MotorSpeed[GRABBER] = 40
-		ot = time.time()
-		while(time.time() - ot < 0.3):
-			BrickPiUpdateValues()
-		time.sleep(.1)
-
+		movelimb(GRABBER, 40, 0.3)
+		
 		print "lifting"
-		BrickPi.MotorSpeed[ARM] = -150
-		ot = time.time()
-		while(time.time() - ot < 0.7):
-			BrickPiUpdateValues()
-		time.sleep(.1)
-
+		movelimb(ARM, -150 0.7)
 
 		print "opening"
-		BrickPi.MotorSpeed[GRABBER] = -40
-		ot = time.time()
-		while(time.time() - ot < 0.3):
-			BrickPiUpdateValues()
-		time.sleep(.1)
+		movelimb(GRABBER, -40, 0.3)
 
-		print "closing"
-		BrickPi.MotorSpeed[GRABBER] = 40
-		ot = time.time()
-		while(time.time() - ot < 0.3):
-			BrickPiUpdateValues()
-		time.sleep(.1)
+		print "bringing down"
+		movelimb(ARM, 100, 0.5)
+		
+		print "sliding up"
+		movelimb(ARM, -30, 0.3)
 		
 		time.sleep(2)
 		break
