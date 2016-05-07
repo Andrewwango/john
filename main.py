@@ -15,7 +15,7 @@ GRABBER = PORT_B
 ARM = PORT_C
 HEAD = PORT_1
 USSTANDARD = 20 #us sensor reading of floor
-WHEELPOWER = -160
+WHEELPOWER = -200
 
 BrickPi.MotorEnable[GRABBER] = 1
 BrickPi.MotorEnable[ARM] = 1
