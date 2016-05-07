@@ -50,7 +50,7 @@ def takeusreading():
 	uslist=[]
 	for i in range(7):
 		result = BrickPiUpdateValues()
-		print result
+		#print result
 		if not result:
 			uslist += [int(BrickPi.Sensor[HEAD])]
 		time.sleep(.05)
@@ -69,13 +69,14 @@ while True:
 	
 	#check object detection
 	if takeusreading() < USSTANDARD:
+		print "object detected"
 		
 		#slide up
 		movelimb(ARM, -30, 0.3)
 		if takeusreading() > USSTANDARD:
 			#low-lying object
 		
-			print "object detected"
+			print "low-lying object detected"
 			print "stopping"
 			BrickPi.MotorSpeed[LWHEEL] = 0
 			BrickPi.MotorSpeed[RWHEEL] = 0
