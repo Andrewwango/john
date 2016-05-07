@@ -36,8 +36,8 @@ def movelimb(limb, speed, length):
 
 while True:
 	#move wheels
-	BrickPi.MotorSpeed[LWHEEL] = -120
-	BrickPi.MotorSpeed[RWHEEL] = -120
+	BrickPi.MotorSpeed[LWHEEL] = -150
+	BrickPi.MotorSpeed[RWHEEL] = -150
 	
 	#get us reading
 	uslist=[]
@@ -69,6 +69,8 @@ while True:
 		
 		print "closing"
 		movelimb(GRABBER, 40, 0.3)
+		
+		time.sleep(0.5)
 		
 		print "lifting"
 		movelimb(ARM, -150, 0.7)
