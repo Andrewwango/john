@@ -70,12 +70,12 @@ while True:
 		movelimb(ARM, 80, 0.3)
 		
 		print "closing"
-		movelimb(GRABBER, 40, 0.3)
+		movelimb(GRABBER, 60, 0.3)
 		
 		time.sleep(0.5)
 		
 		print "lifting"
-		movelimb(ARM, -150, 0.7)
+		movelimb(ARM, -170, 0.7)
 
 		print "opening"
 		movelimb(GRABBER, -40, 0.3)
