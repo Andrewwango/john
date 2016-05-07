@@ -15,7 +15,7 @@ GRABBER = PORT_B
 ARM = PORT_C
 HEAD = PORT_1
 USSTANDARD = 20 #us sensor reading of floor
-WHEELPOWER = -120
+WHEELPOWER = -160
 
 BrickPi.MotorEnable[GRABBER] = 1
 BrickPi.MotorEnable[ARM] = 1
@@ -36,8 +36,8 @@ def movelimb(limb, speed, length):
 
 while True:
 	#move wheels
-	BrickPi.MotorSpeed[LWHEEL] = -150
-	BrickPi.MotorSpeed[RWHEEL] = -150
+	BrickPi.MotorSpeed[LWHEEL] = WHEELPOWER
+	BrickPi.MotorSpeed[RWHEEL] = WHEELPOWER
 	
 	#get us reading
 	uslist=[]
