@@ -1,9 +1,7 @@
 from BrickPi import *
 import time
 BrickPiSetup()
-BrickPiSetupSensors()
-BrickPi.SensorType[PORT_4] = TYPE_SENSOR_ULTRASONIC_CONT
-BrickPiSetupSensors()
+v
 
 #if motors stalling - check voltage
 #brickpiupdatevalues error - do system thingy
@@ -13,12 +11,16 @@ BrickPiSetupSensors()
 #define motors
 #pos speed = rolling away from bum
 GRABBER = PORT_B
-ARM = PORT_A
+ARM = PORT_C
+HEAD = PORT_1
+USSTANDARD = 20 #us sensor reading of floor
+
+BrickPiSetupSensors()
+BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
+BrickPiSetupSensors()
 BrickPi.MotorEnable[GRABBER] = 1
 BrickPi.MotorEnable[ARM] = 1
 
-#constants
-USSTANDARD = 20 #us sensor reading of floor
 
 def movelimb(limb, speed, length):
 		BrickPi.MotorSpeed[limb] = speed
@@ -36,7 +38,7 @@ while True:
 		result = BrickPiUpdateValues()
 		print result
 		if not result :
-			uslist += [int(BrickPi.Sensor[PORT_4])]
+			uslist += [int(BrickPi.Sensor[HEAD])]
 		time.sleep(.05)
 	print uslist
 	usreading = max(set(uslist), key=uslist.count) #mode
@@ -53,7 +55,7 @@ while True:
 		movelimb(GRABBER, 40, 0.3)
 		
 		print "lifting"
-		movelimb(ARM, -150, 0.7)
+		movelimb(ARM, -150 0.7)
 
 		print "opening"
 		movelimb(GRABBER, -40, 0.3)
