@@ -1,7 +1,6 @@
 from BrickPi import *
 import time
 BrickPiSetup()
-v
 
 #if motors stalling - check voltage
 #brickpiupdatevalues error - do system thingy
