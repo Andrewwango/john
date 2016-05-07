@@ -15,6 +15,7 @@ GRABBER = PORT_B
 ARM = PORT_C
 HEAD = PORT_1
 USSTANDARD = 20 #us sensor reading of floor
+WHEELPOWER = -120
 
 BrickPi.MotorEnable[GRABBER] = 1
 BrickPi.MotorEnable[ARM] = 1
@@ -56,7 +57,9 @@ while True:
 		#object detected
 		print "object detected"
 		BrickPi.MotorSpeed[LWHEEL] = 0
-		BrickPi.MotorSpeed[RWHEEL] = 0		
+		BrickPi.MotorSpeed[RWHEEL] = 0
+		movelimb(LWHEEL, WHEELPOWER, 0.7)
+		movelimb(RWHEEL, WHEELPOWER, 0.7)
 		
 		time.sleep(1)
 		print "sliding down"
