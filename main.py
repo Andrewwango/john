@@ -15,7 +15,7 @@ GRABBER = PORT_B
 ARM = PORT_C
 HEAD = PORT_1
 USSTANDARD = 20 #us sensor reading of floor
-WHEELPOWER     = -140
+WHEELPOWER     = -100
 GRABBERPOWER   =  100
 LIFTPOWER      = -170
 SLIDEDOWNPOWER =  100
@@ -77,9 +77,9 @@ while True:
 		print "sliding down"
 		movelimb(ARM, SLIDEDOWNPOWER, 0.3)
 		
-		print "closing"
-		movelimb(GRABBER, GRABBERPOWER, 0.5)
-		time.sleep(0.5)
+#		print "closing"
+#		movelimb(GRABBER, GRABBERPOWER, 0.5)
+#		time.sleep(0.5)
 		
 		print "lifting"
 		movelimb(ARM, LIFTPOWER, 0.7, 1) #grabber grips as well
