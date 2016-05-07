@@ -67,10 +67,10 @@ while True:
 		
 		time.sleep(1)
 		print "sliding down"
-		movelimb(ARM, 80, 0.3)
+		movelimb(ARM, 100, 0.3)
 		
 		print "closing"
-		movelimb(GRABBER, 100, 0.3)
+		movelimb(GRABBER, 100, 0.5)
 		
 		time.sleep(0.5)
 		
