@@ -60,8 +60,8 @@ while True:
 		BrickPi.MotorSpeed[LWHEEL] = 0
 		BrickPi.MotorSpeed[RWHEEL] = 0
 		#shooby forward a wee
-		movelimb(LWHEEL, WHEELPOWER, 1)
-		movelimb(RWHEEL, WHEELPOWER, 1)
+		movelimb(LWHEEL, WHEELPOWER, 1.3)
+		movelimb(RWHEEL, WHEELPOWER, 1.3)
 		BrickPi.MotorSpeed[LWHEEL] = 0
 		BrickPi.MotorSpeed[RWHEEL] = 0
 		
@@ -70,7 +70,7 @@ while True:
 		movelimb(ARM, 80, 0.3)
 		
 		print "closing"
-		movelimb(GRABBER, 60, 0.3)
+		movelimb(GRABBER, 100, 0.3)
 		
 		time.sleep(0.5)
 		
