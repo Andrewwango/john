@@ -62,6 +62,10 @@ while True:
 	
 	#check object detection
 	if usreading < USSTANDARD:
+		#slide up
+		movelimb(ARM, -30, 0.3)
+		
+		
 		#object detected
 		print "object detected"
 		print "stopping"
