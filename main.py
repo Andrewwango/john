@@ -110,6 +110,20 @@ while True:
 			time.sleep(2)
 		else:
 			#wall
-			print "sliding down"
+			print "wall: sliding down"
 			movelimb(ARM, SLIDEDOWNPOWER, 0.3)
 			time.sleep(1)
+			
+			#reverse, turn right, go, then turn right again
+			movelimb(LWHEEL, -WHEELPOWER, 0.7)
+			movelimb(RWHEEL, -WHEELPOWER, 0.7)
+			
+			movelimb(LWHEEL, WHEELPOWER, 0.7)
+			movelimb(RWHEEL, -WHEELPOWER, 0.7)
+
+			movelimb(LWHEEL, WHEELPOWER, 0.7)
+			movelimb(RWHEEL, WHEELPOWER, 0.7)
+
+			movelimb(LWHEEL, WHEELPOWER, 0.7)
+			movelimb(RWHEEL, -WHEELPOWER, 0.7)
+			drivewheels(0,0)	
