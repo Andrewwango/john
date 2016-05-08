@@ -110,4 +110,6 @@ while True:
 			#wall
 			print "sliding down"
 			movelimb(ARM, SLIDEDOWNPOWER, 0.3)
+			BrickPi.MotorSpeed[GRABBER] = 0
+			BrickPi.MotorSpeed[ARM] = 0
 			time.sleep(1)
