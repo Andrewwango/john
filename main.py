@@ -76,7 +76,7 @@ while True:
 		#stop and slide up to check
 		print "stopping and checking"
 		drivewheels(0,0)
-		movelimb(ARM, -100, 0.3)
+		movelimb(ARM, -50, 0.3)
 		
 		if takeusreading() > USSTANDARD:
 			#low-lying object
@@ -109,3 +109,4 @@ while True:
 			#wall
 			print "sliding down"
 			movelimb(ARM, SLIDEDOWNPOWER, 0.3)
+			time.sleep(1)
