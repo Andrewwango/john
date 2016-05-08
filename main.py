@@ -37,14 +37,15 @@ BrickPiSetupSensors()
 
 
 ##FUNCTIONS##
-def movelimb(limb, speed, length, grabberaswell=0):
-		BrickPi.MotorSpeed[limb] = speed
-		if grabberaswell==1:
-			BrickPi.MotorSpeed[GRABBER] = GRABBERPOWER
-		ot = time.time()
-		while(time.time() - ot < length):
-			BrickPiUpdateValues()
-		time.sleep(.1)
+def movelimb(limb, speed, length, limb2=None, speed2=None):
+	#set speeds
+	BrickPi.MotorSpeed[limb] = speed
+	if limb2 != None:
+		BrickPi.MotorSpeed[limb2] = speed2
+	ot = time.time()
+	while(time.time() - ot < length):
+		BrickPiUpdateValues()
+	time.sleep(.1)
 
 def takeusreading():
 	#take 7 readings then find mode
@@ -88,8 +89,7 @@ while True:
 		
 			print "low-lying object detected"
 			#shooby forward a wee
-	#		movelimb(LWHEEL, WHEELPOWER, 0.7)
-	#		movelimb(RWHEEL, WHEELPOWER, 0.7)
+	#		movelimb(LWHEEL,  WHEELPOWER, 0.7, RHWEEL,  WHEELPOWER)
 	#		drivewheels(0,0)
 			
 			time.sleep(1)
@@ -98,7 +98,7 @@ while True:
 			time.sleep(0.2)
 			
 			print "lifting"
-			movelimb(ARM, LIFTPOWER, 0.7, 1) #grabber grips as well
+			movelimb(ARM, LIFTPOWER, 0.7, GRABBER, GRABBERPOWER) #grabber grips as well
 
 			print "opening"
 			movelimb(GRABBER, OPENPOWER, 0.3)
@@ -115,15 +115,8 @@ while True:
 			time.sleep(1)
 			
 			#reverse, turn right, go, then turn right again
-			movelimb(LWHEEL, -WHEELPOWER, 0.7)
-			movelimb(RWHEEL, -WHEELPOWER, 0.7)
-			
-			movelimb(LWHEEL, WHEELPOWER, 0.7)
-			movelimb(RWHEEL, -WHEELPOWER, 0.7)
-
-			movelimb(LWHEEL, WHEELPOWER, 0.7)
-			movelimb(RWHEEL, WHEELPOWER, 0.7)
-
-			movelimb(LWHEEL, WHEELPOWER, 0.7)
-			movelimb(RWHEEL, -WHEELPOWER, 0.7)
+			movelimb(LWHEEL, -WHEELPOWER, 0.7, RHWEEL, -WHEELPOWER)
+			movelimb(LWHEEL,  WHEELPOWER, 0.7, RHWEEL, -WHEELPOWER)			
+			movelimb(LWHEEL,  WHEELPOWER, 0.7, RHWEEL,  WHEELPOWER)
+			movelimb(LWHEEL,  WHEELPOWER, 0.7, RHWEEL, -WHEELPOWER)
 			drivewheels(0,0)	
