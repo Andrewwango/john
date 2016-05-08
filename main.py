@@ -77,6 +77,7 @@ while True:
 		print "stopping and checking"
 		drivewheels(0,0)
 		movelimb(ARM, -40, 0.2)
+		time.sleep(0.2)
 		
 		if takeusreading() > USSTANDARD:
 			#low-lying object
