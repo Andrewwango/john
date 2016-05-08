@@ -115,8 +115,8 @@ while True:
 			time.sleep(1)
 			
 			#reverse, turn right, go, then turn right again
-			movelimb(LWHEEL, -WHEELPOWER, 0.7, RWHEEL, -WHEELPOWER)
-			movelimb(LWHEEL,  WHEELPOWER, 0.7, RWHEEL, -WHEELPOWER)			
-			movelimb(LWHEEL,  WHEELPOWER, 0.7, RWHEEL,  WHEELPOWER)
-			movelimb(LWHEEL,  WHEELPOWER, 0.7, RWHEEL, -WHEELPOWER)
+			movelimb(LWHEEL, -WHEELPOWER, 0.4, RWHEEL, -WHEELPOWER)
+			movelimb(LWHEEL,  WHEELPOWER, 0.4, RWHEEL, -WHEELPOWER)			
+			movelimb(LWHEEL,  WHEELPOWER, 0.4, RWHEEL,  WHEELPOWER)
+			movelimb(LWHEEL,  WHEELPOWER, 0.4, RWHEEL, -WHEELPOWER)
 			drivewheels(0,0)	
