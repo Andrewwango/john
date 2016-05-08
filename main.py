@@ -31,7 +31,6 @@ BrickPi.MotorEnable[GRABBER] = 1
 BrickPi.MotorEnable[ARM] = 1
 BrickPi.MotorEnable[LWHEEL] = 1
 BrickPi.MotorEnable[RWHEEL] = 1
-BrickPiSetupSensors()
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
 
@@ -47,6 +46,7 @@ def movelimb(limb, speed, length, grabberaswell=0):
 		time.sleep(.1)
 
 def takeusreading():
+	#take 7 readings then find mode
 	uslist=[]
 	for i in range(7):
 		result = BrickPiUpdateValues()
@@ -59,32 +59,33 @@ def takeusreading():
 	print "usreading is " + str(usreading)
 	return usreading
 
+def drivewheels(lpower, rpower):
+	BrickPi.MotorSpeed[LWHEEL] = lpower
+	BrickPi.MotorSpeed[RWHEEL] = rpower	
 
 ##MAIN LOOP##
 while True:
-	#move wheels
-	BrickPi.MotorSpeed[LWHEEL] = WHEELPOWER
-	BrickPi.MotorSpeed[RWHEEL] = WHEELPOWER
+	#drive
+	drivewheels(WHEELPOWER, WHEELPOWER)
 		
 	
 	#check object detection
 	if takeusreading() < USSTANDARD:
 		print "object detected"
 		
-		#slide up
+		#stop and slide up to check
+		print "stopping and checking"
+		drivewheels(0,0)
 		movelimb(ARM, -30, 0.3)
+		
 		if takeusreading() > USSTANDARD:
 			#low-lying object
 		
 			print "low-lying object detected"
-			print "stopping"
-			BrickPi.MotorSpeed[LWHEEL] = 0
-			BrickPi.MotorSpeed[RWHEEL] = 0
 			#shooby forward a wee
 	#		movelimb(LWHEEL, WHEELPOWER, 0.7)
 	#		movelimb(RWHEEL, WHEELPOWER, 0.7)
-	#		BrickPi.MotorSpeed[LWHEEL] = 0
-	#		BrickPi.MotorSpeed[RWHEEL] = 0
+	#		drivewheels(0,0)
 			
 			time.sleep(1)
 			print "sliding down"
@@ -106,5 +107,6 @@ while True:
 			time.sleep(2)
 		else:
 			#wall
-			pass
-
+			print "bringing down"
+			movelimb(ARM, BRINGDOWNPOWER, 0.3)
+			time.sleep(0.5)
