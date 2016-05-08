@@ -23,7 +23,7 @@ GRABBERPOWER   =  100
 LIFTPOWER      = -170
 SLIDEDOWNPOWER =  100
 OPENPOWER      = -40
-BRINGDOWNPOWER =  150
+BRINGDOWNPOWER =  100
 
 
 ##SETUP##
@@ -76,7 +76,7 @@ while True:
 		#stop and slide up to check
 		print "stopping and checking"
 		drivewheels(0,0)
-		movelimb(ARM, -50, 0.3)
+		movelimb(ARM, -40, 0.2)
 		
 		if takeusreading() > USSTANDARD:
 			#low-lying object
@@ -90,6 +90,7 @@ while True:
 			time.sleep(1)
 			print "sliding down"
 			movelimb(ARM, SLIDEDOWNPOWER, 0.3)
+			time.sleep(0.2)
 			
 			print "lifting"
 			movelimb(ARM, LIFTPOWER, 0.7, 1) #grabber grips as well
