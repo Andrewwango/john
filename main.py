@@ -20,10 +20,11 @@ HEAD = PORT_1
 USSTANDARD = 25 #us sensor threshold
 WHEELPOWER     = -100
 GRABBERPOWER   =  100
-LIFTPOWER      = -170
+LIFTPOWER      = -140
 SLIDEDOWNPOWER =  100
 OPENPOWER      = -40
 BRINGDOWNPOWER =  100
+SLIDEUPPOWER = -40
 
 
 ##SETUP##
@@ -65,6 +66,9 @@ def drivewheels(lpower, rpower):
 
 ##MAIN LOOP##
 while True:
+	#stop actions
+	BrickPi.MotorSpeed[GRABBER] = 0
+	BrickPi.MotorSpeed[ARM] = 0
 	#drive
 	drivewheels(WHEELPOWER, WHEELPOWER)
 		
@@ -76,7 +80,7 @@ while True:
 		#stop and slide up to check
 		print "stopping and checking"
 		drivewheels(0,0)
-		movelimb(ARM, -40, 0.2)
+		movelimb(ARM, SLIDEUPPOWER, 0.2)
 		time.sleep(0.2)
 		
 		if takeusreading() > USSTANDARD:
@@ -103,14 +107,9 @@ while True:
 			movelimb(ARM, BRINGDOWNPOWER, 0.3)
 			time.sleep(0.5)
 			
-			#stop movement
-			BrickPi.MotorSpeed[GRABBER] = 0
-			BrickPi.MotorSpeed[ARM] = 0		
 			time.sleep(2)
 		else:
 			#wall
 			print "sliding down"
 			movelimb(ARM, SLIDEDOWNPOWER, 0.3)
-			BrickPi.MotorSpeed[GRABBER] = 0
-			BrickPi.MotorSpeed[ARM] = 0
 			time.sleep(1)
