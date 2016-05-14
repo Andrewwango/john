@@ -113,7 +113,7 @@ while True:
 			movelimb(GRABBER, OPENPOWER, 0.5)
 
 			print "bringing down"
-			movelimb(ARM, BRINGDOWNPOWER, 0.3)
+			movelimb(ARM, BRINGDOWNPOWER, 0.4)
 			time.sleep(0.5)
 			
 			time.sleep(2)
