@@ -82,7 +82,7 @@ while True:
 		#stop and slide up to check
 		print "stopping and checking"
 		drivewheels(0,0)
-		movelimb(ARM, SLIDEUPPOWER, 0.3)
+		movelimb(ARM, SLIDEUPPOWER, 0.2)
 		time.sleep(0.2)
 		
 		if takeusreading() > USSTANDARD:
@@ -95,7 +95,7 @@ while True:
 			
 			time.sleep(1)
 			print "sliding down"
-			movelimb(ARM, SLIDEDOWNPOWER, 0.3)
+			movelimb(ARM, SLIDEDOWNPOWER, 0.5)
 			time.sleep(0.2)
 			
 			print "lifting"
