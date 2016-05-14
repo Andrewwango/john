@@ -25,7 +25,7 @@ SLIDEDOWNPOWER =  60
 OPENPOWER      = 70
 BRINGDOWNPOWER =  100
 SLIDEUPPOWER = -40
-TURNPOWER = -200
+TURNPOWER = -255
 
 
 ##SETUP##
@@ -117,7 +117,7 @@ while True:
 			
 			#reverse, turn right, go, then turn right again
 			movelimb(LWHEEL, -WHEELPOWER, 0.4, RWHEEL, -WHEELPOWER)
-			movelimb(LWHEEL,  TURNPOWER, 1.4, RWHEEL, -TURNPOWER)			
+			movelimb(LWHEEL,  TURNPOWER, 2, RWHEEL, -TURNPOWER)			
 			movelimb(LWHEEL,  WHEELPOWER, 0.4, RWHEEL,  WHEELPOWER)
-			movelimb(LWHEEL,  TURNPOWER, 1.4, RWHEEL, -TURNPOWER)
+			movelimb(LWHEEL,  TURNPOWER, 2, RWHEEL, -TURNPOWER)
 			drivewheels(0,0)	
