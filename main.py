@@ -52,7 +52,7 @@ def takeusreading():
 	#take 7 readings then find mode
 	uslist=[]
 	BrickPi.MotorSpeed[GRABBER] = OPENPOWER #make sure grabber dunt interfere with reading
-	for i in range(7):
+	for i in range(9):
 		result = BrickPiUpdateValues()
 		#print result
 		if not result:
@@ -60,7 +60,8 @@ def takeusreading():
 		time.sleep(.05)
 	print uslist
 	BrickPi.MotorSpeed[GRABBER] = 0
-	usreading = max(set(uslist), key=uslist.count) #mode
+	#usreading = max(set(uslist), key=uslist.count) #mode
+	#usreading = sum(uslist)/len(uslist) #mean
 	print "usreading is " + str(usreading)
 	return usreading
 
