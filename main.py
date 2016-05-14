@@ -91,14 +91,16 @@ while True:
 			#low-lying object
 		
 			print "low-lying object detected"
-			#shooby forward a wee
-			movelimb(LWHEEL,  WHEELPOWER, 0.3, RWHEEL,  WHEELPOWER)
-			drivewheels(0,0)
 			
 			time.sleep(1)
 			print "sliding down"
 			movelimb(ARM, SLIDEDOWNPOWER, 0.5)
 			time.sleep(0.2)
+			
+			#shooby forward a wee
+			print "shooby"
+			movelimb(LWHEEL,  WHEELPOWER, 0.3, RWHEEL,  WHEELPOWER)
+			drivewheels(0,0)			
 			
 			#preliminary grab
 			movelimb(GRABBER, GRABBERPOWER, 0.4)
