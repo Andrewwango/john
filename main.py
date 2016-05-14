@@ -61,7 +61,7 @@ def takeusreading():
 	print uslist
 	BrickPi.MotorSpeed[GRABBER] = 0
 	#usreading = max(set(uslist), key=uslist.count) #mode
-	#usreading = sum(uslist)/len(uslist) #mean
+	usreading = sum(uslist)/len(uslist) #mean
 	print "usreading is " + str(usreading)
 	return usreading
 
