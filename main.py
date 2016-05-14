@@ -22,7 +22,7 @@ WHEELPOWER     = -100
 GRABBERPOWER   =  -100
 LIFTPOWER      = -140
 SLIDEDOWNPOWER =  60
-OPENPOWER      = 70
+OPENPOWER      = 40
 BRINGDOWNPOWER =  100
 SLIDEUPPOWER = -60
 TURNPOWER = -255
@@ -104,7 +104,7 @@ while True:
 			movelimb(ARM, LIFTPOWER, 0.7, GRABBER, GRABBERPOWER) #grabber grips as well
 
 			print "opening"
-			movelimb(GRABBER, OPENPOWER, 0.3)
+			movelimb(GRABBER, OPENPOWER, 0.5)
 
 			print "bringing down"
 			movelimb(ARM, BRINGDOWNPOWER, 0.3)
