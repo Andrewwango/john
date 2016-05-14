@@ -51,6 +51,7 @@ def movelimb(limb, speed, length, limb2=None, speed2=None):
 def takeusreading():
 	#take 7 readings then find mode
 	uslist=[]
+	BrickPi.MotorSpeed[GRABBER] = OPENPOWER #make sure grabber dunt interfere with reading
 	for i in range(7):
 		result = BrickPiUpdateValues()
 		#print result
@@ -58,6 +59,7 @@ def takeusreading():
 			uslist += [int(BrickPi.Sensor[HEAD])]
 		time.sleep(.05)
 	print uslist
+	BrickPi.MotorSpeed[GRABBER] = 0
 	usreading = max(set(uslist), key=uslist.count) #mode
 	print "usreading is " + str(usreading)
 	return usreading
