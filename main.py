@@ -92,7 +92,7 @@ while True:
 		
 			print "low-lying object detected"
 			#shooby forward a wee
-			movelimb(LWHEEL,  WHEELPOWER, 0.3, RHWEEL,  WHEELPOWER)
+			movelimb(LWHEEL,  WHEELPOWER, 0.3, RWHEEL,  WHEELPOWER)
 			drivewheels(0,0)
 			
 			time.sleep(1)
