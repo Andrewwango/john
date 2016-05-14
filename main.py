@@ -100,6 +100,9 @@ while True:
 			movelimb(ARM, SLIDEDOWNPOWER, 0.5)
 			time.sleep(0.2)
 			
+			#preliminary grab
+			movelimb(GRABBER, GRABBERPOWER, 0.4)
+			
 			print "lifting"
 			movelimb(ARM, LIFTPOWER, 0.7, GRABBER, GRABBERPOWER) #grabber grips as well
 
