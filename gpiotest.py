@@ -19,3 +19,4 @@ while GPIO.input(25) == 1:
 	stop = time.time()
 duration = stop - start
 distance = duration * 340 * 100 #cm
+print distance
