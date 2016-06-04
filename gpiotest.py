@@ -2,8 +2,8 @@ import RPi.GPIO as GPIO
 import time
 GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(25, GPIO.IN) #yellow
-GPIO.setup(24, GPIO.OUT) #brown
+GPIO.setup(23, GPIO.IN) #green, echo
+GPIO.setup(24, GPIO.OUT) #brown, trig
 
 while True:
 	GPIO.output(24, False)
@@ -14,9 +14,9 @@ while True:
 	
 	start = time.time()
 	stop = time.time()
-	while GPIO.input(25) == 0:
+	while GPIO.input(23) == 0:
 		start = time.time()
-	while GPIO.input(25) == 1:
+	while GPIO.input(23) == 1:
 		stop = time.time()
 	duration = stop - start
 	distance = duration * 340 * 100 #cm
