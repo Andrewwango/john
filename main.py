@@ -153,6 +153,9 @@ while True:
 			#wall
 			print "wall: sliding up" #get back into normal pos
 			movelimb(ARM, LIFTPOWER, 0.1)
+			#stop actions
+			BrickPi.MotorSpeed[GRABBER] = 0
+			BrickPi.MotorSpeed[ARM] = 0			
 			time.sleep(1)
 			
 			#reverse, turn right, go, then turn right again
