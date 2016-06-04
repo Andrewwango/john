@@ -14,11 +14,11 @@ GPIO.setmode(GPIO.BCM)
 #positive speed = rolling away from bum
 
 ##CONSTANTS##
-LWHEEL = PORT_D
-RWHEEL = PORT_A
-GRABBER = PORT_B
-ARM = PORT_C
-HEAD = PORT_1
+LWHEEL = BrickPi.PORT_D
+RWHEEL = BrickPi.PORT_A
+GRABBER = BrickPi.PORT_B
+ARM = BrickPi.PORT_C
+HEAD = BrickPi.PORT_1
 
 IRIN = 25 #yellow (when sth close, 0)
 USTRIG = 24 #brown, out
