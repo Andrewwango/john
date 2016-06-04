@@ -6,7 +6,7 @@ GPIO.setmode(GPIO.BCM)
 
 ##DEBUG##
 #if motors stalling - check voltage + PSU
-#BrickPi.BrickPiUpdateValues error - do system thingy (./stopev.sh)
+#BrickPiUpdateValues error - do system thingy (./stopev.sh)
 #if result=-1 - reboot
 
 ##NOTES##
@@ -96,7 +96,7 @@ def takeus2reading():
 		
 		#find length
 		distance = duration * 340 * 100 #cm
-		uslist += [int(distance)]
+		us2list += [int(distance)]
 		time.sleep(0.1)
 	print us2list
 	us2reading = max(set(us2list), key=us2list.count) #mode
