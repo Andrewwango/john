@@ -1,7 +1,7 @@
-import BrickPi
+from BrickPi import *
 import time
 import RPi.GPIO as GPIO
-BrickPi.BrickPiSetup()
+BrickPiSetup()
 GPIO.setmode(GPIO.BCM)
 
 ##DEBUG##
@@ -14,11 +14,11 @@ GPIO.setmode(GPIO.BCM)
 #positive speed = rolling away from bum
 
 ##CONSTANTS##
-LWHEEL = BrickPi.PORT_D
-RWHEEL = BrickPi.PORT_A
-GRABBER = BrickPi.PORT_B
-ARM = BrickPi.PORT_C
-HEAD = BrickPi.PORT_1
+LWHEEL = PORT_D
+RWHEEL = PORT_A
+GRABBER = PORT_B
+ARM = PORT_C
+HEAD = PORT_1
 
 IRIN = 25 #yellow (when sth close, 0)
 USTRIG = 24 #brown, out
@@ -44,8 +44,8 @@ BrickPi.MotorEnable[RWHEEL] = 1
 GPIO.setup(IRIN, GPIO.IN)
 GPIO.setup(USECHO, GPIO.IN)
 GPIO.setup(USTRIG, GPIO.OUT)
-BrickPi.SensorType[HEAD] = BrickPi.TYPE_SENSOR_ULTRASONIC_CONT
-BrickPi.BrickPiSetupSensors()
+BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
+BrickPiSetupSensors()
 
 #############
 ##FUNCTIONS##
@@ -57,14 +57,14 @@ def movelimb(limb, speed, length, limb2=None, speed2=None):
 		BrickPi.MotorSpeed[limb2] = speed2
 	ot = time.time()
 	while(time.time() - ot < length):
-		BrickPi.BrickPiUpdateValues()
+		BrickPiUpdateValues()
 	time.sleep(.1)
 
 def takeusreading():
 	#take 9 readings then find mode
 	uslist=[]
 	for i in range(9):
-		result = BrickPi.BrickPiUpdateValues()
+		result = BrickPiUpdateValues()
 		if not result:
 			uslist += [int(BrickPi.Sensor[HEAD])]
 		time.sleep(.05)
