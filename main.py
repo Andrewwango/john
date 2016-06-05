@@ -4,8 +4,6 @@ import RPi.GPIO as GPIO
 BrickPiSetup()
 GPIO.setmode(GPIO.BCM)
 
-##SORT OUT THE GRABBING ACTION
-
 ##DEBUG##
 #if motors stalling - check voltage + PSU
 #BrickPiUpdateValues error - do system thingy (./stopev.sh)
@@ -35,7 +33,7 @@ TURNPOWER      = -255
 GRABBERPOWER   = -100
 OPENPOWER      = 80
 
-LIFTPOWER      = -230
+LIFTPOWER      = -150
 BRINGDOWNPOWER = 140
 
 ##SETUP##
