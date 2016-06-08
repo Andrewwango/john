@@ -129,6 +129,7 @@ while True:
 	#check us for object
 	if takeusreading() < USSTANDARD:
 		print "object detected"
+		drivewheels(0,0)
 		
 		#check higher us2 for big thing
 		#activate us2 pos
