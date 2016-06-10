@@ -165,6 +165,7 @@ while True:
 			#carry on turning till arm reaches correct pos
 			BrickPi.MotorSpeed[ARM] = 60
 		BrickPi.MotorSpeed[ARM] = 0
+		time.sleep(0.5)
 
 		#check higher us2 for big thing		
 		if takeus2reading() > US2STANDARD:
