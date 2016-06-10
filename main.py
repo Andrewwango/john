@@ -35,7 +35,7 @@ USSTANDARD     = 25 #us sensor threshold
 US2STANDARD    = 100
 
 WHEELPOWER     = -100
-TURNPOWER      = 50
+TURNPOWER      = 150
 
 GRABBERPOWER   = -100
 OPENPOWER      = 80
