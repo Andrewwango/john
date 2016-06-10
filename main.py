@@ -210,4 +210,14 @@ while True:
 	
 	#check IR for cliff
 	if GPIO.input(IRIN) == 1: #nothing close
-		pass
+		#CLIFF
+		#turning procedure
+		time.sleep(1)
+		#check if turn left or right
+		if turnycount%2 == 1: #odd=left
+			turnwheels("left", xdegrees*2)
+		else:
+			turnwheels("right",xdegrees*2)
+		turnycount += 1 #next time turns other way
+		time.sleep(0.5)
+		#loop back and carry on
