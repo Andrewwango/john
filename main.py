@@ -163,7 +163,7 @@ while True:
 		startpos = takeencoderreading(ARM)
 		while takeencoderreading(ARM) - startpos < 80:
 			#carry on turning till arm reaches correct pos
-			BrickPi.MotorSpeed[ARM] = 80
+			BrickPi.MotorSpeed[ARM] = 60
 		BrickPi.MotorSpeed[ARM] = 0
 
 		#check higher us2 for big thing		
@@ -202,6 +202,10 @@ while True:
 				turnwheels("right",xdegrees*2)
 			turnycount += 1 #next time turns other way
 			time.sleep(0.5)
+			
+			#bring arm back up
+			print "lifting"
+			movelimb(ARM, LIFTPOWER, 0.3)
 			#loop back and carry on
 	
 	#check IR for cliff
