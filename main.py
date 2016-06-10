@@ -163,7 +163,7 @@ while True:
 		startpos = takeencoderreading(ARM)
 		while takeencoderreading(ARM) - startpos < 80:
 			#carry on turning till arm reaches correct pos
-			BrickPi.MotorSpeed[ARM] = 50
+			BrickPi.MotorSpeed[ARM] = 80
 		BrickPi.MotorSpeed[ARM] = 0
 
 		#check higher us2 for big thing		
