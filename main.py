@@ -54,6 +54,7 @@ GPIO.setup(USTRIG, GPIO.OUT)
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
 turnycount = 0
+xdegrees=100
 
 #############
 ##FUNCTIONS##
@@ -140,7 +141,7 @@ def turnwheels(direction, encoderdeg):
 ################
 #1. turn x degrees RIGHT to start
 print "turning"
-turnwheels("right", 80)
+turnwheels("right", xdegrees)
 turnycount = 1 #odd=needs to turn left on next turn
 
 #main loop
@@ -196,9 +197,9 @@ while True:
 			time.sleep(1)
 			#check if turn left or right
 			if turnycount%2 == 1: #odd=left
-				turnwheels("left", 160)
+				turnwheels("left", xdegrees*2)
 			else:
-				turnwheels("right",160)
+				turnwheels("right",xdegrees*2)
 			turnycount += 1 #next time turns other way
 			time.sleep(0.5)
 			#loop back and carry on
