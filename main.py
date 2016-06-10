@@ -140,7 +140,7 @@ def turnwheels(direction, encoderdeg):
 ################
 #1. turn x degrees RIGHT to start
 print "turning"
-turnwheels(right, 80)
+turnwheels("right", 80)
 turnycount = 1 #odd=needs to turn left on next turn
 
 #main loop
@@ -196,9 +196,9 @@ while True:
 			time.sleep(1)
 			#check if turn left or right
 			if turnycount%2 == 1: #odd=left
-				turnwheels(left, 160)
+				turnwheels("left", 160)
 			else:
-				turnwheels(right,160)
+				turnwheels("right",160)
 			turnycount += 1 #next time turns other way
 			time.sleep(0.5)
 			#loop back and carry on
