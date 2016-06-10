@@ -161,9 +161,9 @@ while True:
 		#activate us2 pos
 		print "sliding down bit by bit"
 		startpos = takeencoderreading(ARM)
-		while takeencoderreading(ARM) - startpos < 80:
+		while takeencoderreading(ARM) - startpos < 60:
 			#carry on turning till arm reaches correct pos
-			BrickPi.MotorSpeed[ARM] = 60
+			BrickPi.MotorSpeed[ARM] = 40
 		BrickPi.MotorSpeed[ARM] = 0
 		time.sleep(0.5)
 
