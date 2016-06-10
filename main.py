@@ -54,7 +54,7 @@ GPIO.setup(USTRIG, GPIO.OUT)
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
 turnycount = 0
-xdegrees=100
+xdegrees=200
 
 #############
 ##FUNCTIONS##
