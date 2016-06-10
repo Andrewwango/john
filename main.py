@@ -14,6 +14,12 @@ GPIO.setmode(GPIO.BCM)
 #positive speed = rolling away from bum
 #encoder increase = rolling away from bum
 
+'''PROGRAM
+- turn x degrees and go until edge.
+- turn -2x degrees and continue, turning -2x degrees each time
+- measure degrees using outside wheel
+'''
+
 ##CONSTANTS##
 LWHEEL = PORT_D
 RWHEEL = PORT_A
@@ -29,7 +35,7 @@ USSTANDARD     = 25 #us sensor threshold
 US2STANDARD    = 100
 
 WHEELPOWER     = -100
-TURNPOWER      = -255
+TURNPOWER      = 50
 
 GRABBERPOWER   = -100
 OPENPOWER      = 80
@@ -47,6 +53,7 @@ GPIO.setup(USECHO, GPIO.IN)
 GPIO.setup(USTRIG, GPIO.OUT)
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
+turnycount = 0
 
 #############
 ##FUNCTIONS##
@@ -113,11 +120,30 @@ def takeencoderreading(port):
 
 def drivewheels(lpower, rpower):
 	BrickPi.MotorSpeed[LWHEEL] = lpower
-	BrickPi.MotorSpeed[RWHEEL] = rpower	
+	BrickPi.MotorSpeed[RWHEEL] = rpower
 
-#############
-##MAIN LOOP##
-#############
+def turnwheels(direction, encoderdeg):
+	if direction == "right":
+		startpos = takeencoderreading(LWHEEL)
+		while takeencoderreading(LWHEEL) - startpos < encoderdeg:
+			#carry on turning right till left wheel reaches correct pos
+			drivewheels(TURNPOWER,-TURNPOWER)
+	elif direction == "left":
+		startpos = takeencoderreading(RWHEEL)
+		while takeencoderreading(RWHEEL) - startpos < encoderdeg:
+			#carry on turning left till right wheel reaches correct pos
+			drivewheels(-TURNPOWER,TURNPOWER)
+	drivewheels(0,0)
+
+################
+##MAIN PROGRAM##
+################
+#1. turn x degrees RIGHT to start
+print "turning"
+turnwheels(right, 80)
+turnycount = 1 #odd=needs to turn left on next turn
+
+#main loop
 while True:
 	#stop actions
 	BrickPi.MotorSpeed[GRABBER] = 0
@@ -131,7 +157,6 @@ while True:
 		print "object detected"
 		drivewheels(0,0)
 		
-		#check higher us2 for big thing
 		#activate us2 pos
 		print "sliding down bit by bit"
 		startpos = takeencoderreading(ARM)
@@ -139,10 +164,11 @@ while True:
 			#carry on turning till arm reaches correct pos
 			BrickPi.MotorSpeed[ARM] = 50
 		BrickPi.MotorSpeed[ARM] = 0
-		
-		#yay! correct pos!
+
+		#check higher us2 for big thing		
 		if takeus2reading() > US2STANDARD:
-			#low-lying object - pick up litter procedure
+			#LITTER (low-lying object)
+			#pick up litter procedure
 			print "low-lying object detected"
 			time.sleep(1)
 
@@ -165,17 +191,17 @@ while True:
 			time.sleep(2)
 			
 		else:
-			#wall
-			print "wall: sliding up" #get back into normal pos
-			movelimb(ARM, LIFTPOWER, 0.1)
+			#WALL
+			#turning procedure
 			time.sleep(1)
-			
-			#reverse, turn right, go, then turn right again
-			movelimb(LWHEEL, -WHEELPOWER, 0.4, RWHEEL, -WHEELPOWER)
-			movelimb(LWHEEL,  TURNPOWER, 2, RWHEEL, -TURNPOWER)			
-			movelimb(LWHEEL,  WHEELPOWER, 0.4, RWHEEL,  WHEELPOWER)
-			movelimb(LWHEEL,  TURNPOWER, 2, RWHEEL, -TURNPOWER)
-			drivewheels(0,0)
+			#check if turn left or right
+			if turnycount%2 == 1: #odd=left
+				turnwheels(left, 160)
+			else:
+				turnwheels(right,160)
+			turnycount += 1 #next time turns other way
+			time.sleep(0.5)
+			#loop back and carry on
 	
 	#check IR for cliff
 	if GPIO.input(IRIN) == 1: #nothing close
