@@ -15,7 +15,8 @@ GPIO.setmode(GPIO.BCM)
 #encoder increase = rolling away from bum
 
 '''PROGRAM
-- turn x degrees and go until edge.
+ XX- turn x degrees.
+- go until edge
 - turn -2x degrees and continue, turning -2x degrees each time
 - measure degrees using outside wheel
 '''
@@ -140,9 +141,9 @@ def turnwheels(direction, encoderdeg):
 ##MAIN PROGRAM##
 ################
 #1. turn x degrees RIGHT to start
-print "turning"
-turnwheels("right", xdegrees)
-turnycount = 1 #odd=needs to turn left on next turn
+#print "turning"
+#turnwheels("right", xdegrees)
+#turnycount = 1 #odd=needs to turn left on next turn
 
 #main loop
 while True:
