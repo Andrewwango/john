@@ -35,14 +35,14 @@ USECHO = 23 #green, in
 USSTANDARD     = 25 #us sensor threshold
 US2STANDARD    = 100
 
-WHEELPOWER     = -100
+WHEELPOWER     = -200
 TURNPOWER      = 200
 
 GRABBERPOWER   = -100
 OPENPOWER      = 80
 
 LIFTPOWER      = -150
-BRINGDOWNPOWER = 140
+BRINGDOWNPOWER = 170
 
 ##SETUP##
 BrickPi.MotorEnable[GRABBER] = 1
