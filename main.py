@@ -37,11 +37,11 @@ XDEGREES=200
 
 USSTANDARD     = 25 #us sensor threshold
 US2STANDARD    = 100
-OPTLITTERRANGE = [10,15] #the distance from which it can pick up stuff
+OPTLITTERRANGE = [10,13] #the distance from which it can pick up stuff
 
 WHEELPOWER     = -255
 TURNPOWER      = 255
-SHOOBYPOWER    = -70
+SHOOBYPOWER    = -100
 
 GRABBERPOWER   = -100
 OPENPOWER      = 80
