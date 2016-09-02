@@ -184,10 +184,11 @@ while True:
 	
 	#drive
 	drivewheels(WHEELPOWER, WHEELPOWER)
+	BrickPiUpdateValues()
 	
 	#check us for object
 	tempreading = takeusreading()
-	if tempreading() < USSTANDARD:
+	if tempreading < USSTANDARD:
 		print "object detected"
 		drivewheels(0,0)
 		
@@ -208,8 +209,10 @@ while True:
 			print "shooby" #shooby to get into place
 			while tempreading > OPTLITTERRANGE[1]: #too far away
 				drivewheels(WHEELPOWER, WHEELPOWER)
+				BrickPiUpdateValues()
 			while tempreading < OPTLITTERRANGE[0]: #too close
 				drivewheels(-WHEELPOWER, -WHEELPOWER)
+				BrickPiUpdateValues()
 			drivewheels(0,0)
 		
 			print "bringing down" #get grabber into pos
