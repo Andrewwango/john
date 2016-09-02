@@ -139,17 +139,17 @@ def turnwheels(direction, encoderdeg):
 			drivewheels(-TURNPOWER,TURNPOWER)
 	drivewheels(0,0)
 
-def turnprocedure():
-	#turning procedure
+def turnprocedure(thecountvar):
+	#turning procedure (param to prevent UnboundLocalError)
 	time.sleep(1)
 	#check if turn left or right
-	if turnycount%2 == 1: #odd=left
+	if thecountvar%2 == 1: #odd=left
 		print "turning left"
 		turnwheels("left", XDEGREES*2)
 	else:
 		print "turning right"
 		turnwheels("right",XDEGREES*2)
-	turnycount += 1 #next time turns other way
+	thecountvar += 1 #next time turns other way
 	time.sleep(0.5)	
 
 ################
@@ -211,7 +211,7 @@ while True:
 		else:
 			#WALL
 			print "WALL"
-			turnprocedure()
+			turnprocedure(turnycount)
 			
 			#bring arm back up
 			print "lifting"
@@ -222,5 +222,5 @@ while True:
 	if GPIO.input(IRIN) == 1: #nothing close
 		#CLIFF
 		print "CLIFF"
-		turnprocedure()
+		turnprocedure(turnycount)
 		#loop back and carry on
