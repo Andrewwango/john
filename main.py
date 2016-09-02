@@ -5,9 +5,10 @@ BrickPiSetup()
 GPIO.setmode(GPIO.BCM)
 
 ##DEBUG##
-#if motors stalling - check voltage + PSU
+#if motors stalling - check voltage + PSU - make sure it's 12V and connections are alright!
 #BrickPiUpdateValues error - do system thingy (./stopev.sh)
-#if result=-1 - reboot
+#if ir is dodgy - check input is 12V
+#if result=-1 (of usread) - reboot
 
 ##NOTES##
 #default position is grabber open, arm fully up
@@ -62,16 +63,6 @@ turnycount = 0
 #############
 ##FUNCTIONS##
 #############
-def movelimb(limb, speed, length, limb2=None, speed2=None):
-	#set speeds
-	BrickPi.MotorSpeed[limb] = speed
-	if limb2 != None:
-		BrickPi.MotorSpeed[limb2] = speed2
-	ot = time.time()
-	while(time.time() - ot < length):
-		BrickPiUpdateValues()
-	time.sleep(.1)
-
 def takeusreading():
 	#take 9 readings then find mode
 	uslist=[]
@@ -126,39 +117,55 @@ def drivewheels(lpower, rpower):
 	BrickPi.MotorSpeed[LWHEEL] = lpower
 	BrickPi.MotorSpeed[RWHEEL] = rpower
 
-def turnwheels(direction, encoderdeg):
-	if direction == "right":
-		startpos = takeencoderreading(LWHEEL)
-		while takeencoderreading(LWHEEL) - startpos < encoderdeg:
-			#carry on turning right till left wheel reaches correct pos
-			drivewheels(TURNPOWER,-TURNPOWER)
-	elif direction == "left":
-		startpos = takeencoderreading(RWHEEL)
-		while takeencoderreading(RWHEEL) - startpos < encoderdeg:
-			#carry on turning left till right wheel reaches correct pos
-			drivewheels(-TURNPOWER,TURNPOWER)
-	drivewheels(0,0)
-
 def turnprocedure(thecountvar):
 	#turning procedure (param to prevent UnboundLocalError)
 	time.sleep(1)
 	#check if turn left or right
 	if thecountvar%2 == 1: #odd=left
-		print "turning left"
-		turnwheels("left", XDEGREES*2)
+		print "turning left" #use right wheel to encode
+		movelimb(RWHEEL, -TURNPOWER, encoderdeg, LHWEEL, TURNPOWER)
 	else:
-		print "turning right"
-		turnwheels("right",XDEGREES*2)
+		print "turning right" #use left wheel to encode
+		movelimb(LWHEEL, TURNPOWER, XDEGREES*2, RHWEEL, -TURNPOWER)
+	drivewheels(0,0)
 	thecountvar += 1 #next time turns other way
 	time.sleep(0.5)	
+
+def movelimbOLD(limb, speed, length, limb2=None, speed2=None):
+	#set speeds
+	BrickPi.MotorSpeed[limb] = speed
+	if limb2 != None:
+		BrickPi.MotorSpeed[limb2] = speed2
+	ot = time.time()
+	while(time.time() - ot < length):
+		BrickPiUpdateValues()
+	time.sleep(.1)
+
+def movelimb(limb, speed, encoderdeg, limb2=None, speed2=None):
+	#encoderdeg is the change in encoder degrees
+	#positive speed is positive encoder increase
+	#i love to wear blue, red and pink dungarees
+	startpos = takeencoderreading(limb)
+	if speed > 0:
+		while takeencoderreading(limb) - startpos < encoderdeg:
+			#carry on turning till arm reaches correct pos
+			BrickPi.MotorSpeed[limb] = speed
+			if limb2 != None:
+				BrickPi.MotorSpeed[limb2] = speed
+		BrickPi.MotorSpeed[limb] = 0	
+	elif speed < 0:
+		while takeencoderreading(limb) - startpos > -encoderdeg:
+			#carry on turning till arm reaches correct pos
+			BrickPi.MotorSpeed[limb] = speed
+			if limb2 != None:
+				BrickPi.MotorSpeed[limb2] = speed
+		BrickPi.MotorSpeed[limb] = 0	
 
 ################
 ##MAIN PROGRAM##
 ################
 #1. turn x degrees RIGHT to start
-#print "turning"
-#turnwheels("right", XDEGREES)
-#turnycount = 1 #odd=needs to turn left on next turn
+#turnprocedure(turnycount)
 
 #main loop
 while True:
@@ -176,11 +183,7 @@ while True:
 		
 		#activate us2 pos
 		print "sliding down bit by bit"
-		startpos = takeencoderreading(ARM)
-		while takeencoderreading(ARM) - startpos < 60:
-			#carry on turning till arm reaches correct pos
-			BrickPi.MotorSpeed[ARM] = 40
-		BrickPi.MotorSpeed[ARM] = 0
+		movelimb(ARM, 70, 60)
 		time.sleep(0.5)
 
 		#check higher us2 for big thing		
@@ -191,21 +194,21 @@ while True:
 			time.sleep(1)
 
 			print "shooby" #shooby forwards to get into place
-			movelimb(LWHEEL,  WHEELPOWER, 0.3, RWHEEL,  WHEELPOWER)
+			movelimbOLD(LWHEEL,  WHEELPOWER, 0.3, RWHEEL,  WHEELPOWER)
 			drivewheels(0,0)
 		
 			print "bringing down" #get grabber into pos
-			movelimb(ARM, BRINGDOWNPOWER, 0.5)
+			movelimbOLD(ARM, BRINGDOWNPOWER, 0.5)
 			time.sleep(0.2)
 
 			#preliminary grab
-			movelimb(GRABBER, GRABBERPOWER, 0.4)
+			movelimbOLD(GRABBER, GRABBERPOWER, 0.4)
 			
 			print "lifting" #bring litter up
-			movelimb(ARM, LIFTPOWER, 0.7, GRABBER, GRABBERPOWER) #grabber grips as well
+			movelimbOLD(ARM, LIFTPOWER, 0.7, GRABBER, GRABBERPOWER) #grabber grips as well
 
 			print "opening" #dump litter
-			movelimb(GRABBER, OPENPOWER, 0.5)
+			movelimbOLD(GRABBER, OPENPOWER, 0.5)
 			time.sleep(2)
 			
 		else:
@@ -215,7 +218,7 @@ while True:
 			
 			#bring arm back up
 			print "lifting"
-			movelimb(ARM, LIFTPOWER, 0.3)
+			movelimbOLD(ARM, LIFTPOWER, 0.3)
 			#loop back and carry on
 	
 	#check IR for cliff
