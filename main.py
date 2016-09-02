@@ -124,15 +124,15 @@ def turnprocedure(thecountvar):
 	#check if turn left or right
 	if thecountvar%2 == 1: #odd=left
 		print "turning left" #use right wheel to encode
-		movelimb(RWHEEL, -TURNPOWER, encoderdeg, LWHEEL, TURNPOWER)
+		movelimbENC(RWHEEL, -TURNPOWER, XDEGREES*2, LWHEEL, TURNPOWER)
 	else:
 		print "turning right" #use left wheel to encode
-		movelimb(LWHEEL, TURNPOWER, XDEGREES*2, RWHEEL, -TURNPOWER)
+		movelimbENC(LWHEEL, TURNPOWER, XDEGREES*2, RWHEEL, -TURNPOWER)
 	drivewheels(0,0)
 	thecountvar += 1 #next time turns other way
 	time.sleep(0.5)	
 
-def movelimbOLD(limb, speed, length, limb2=None, speed2=None):
+def movelimbLENG(limb, speed, length, limb2=None, speed2=None): #movelimb based on time length
 	#set speeds
 	BrickPi.MotorSpeed[limb] = speed
 	if limb2 != None:
@@ -142,7 +142,7 @@ def movelimbOLD(limb, speed, length, limb2=None, speed2=None):
 		BrickPiUpdateValues()
 	time.sleep(.1)
 
-def movelimb(limb, speed, encoderdeg, limb2=None, speed2=None):
+def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None): #movelimb based on encoderdeg
 	#encoderdeg is the change in encoder degrees
 	#positive speed is positive encoder increase
 	#i love to wear blue, red and pink dungarees
@@ -184,10 +184,10 @@ while True:
 		
 		#activate us2 pos
 		print "sliding down bit by bit"
-		movelimb(ARM, BRINGDOWNPOWER, 50)
+		movelimbENC(ARM, BRINGDOWNPOWER, 50)
 		time.sleep(0.1)
-		movelimb(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
-		BrickPi.MotorSpeed[ARM] = 0
+#		movelimbENC(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
+#		BrickPi.MotorSpeed[ARM] = 0
 		time.sleep(0.5)
 
 
@@ -199,24 +199,22 @@ while True:
 			time.sleep(1)
 
 			print "shooby" #shooby forwards to get into place
-			movelimb(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
+			movelimbENC(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
 			drivewheels(0,0)
 		
 			print "bringing down" #get grabber into pos
-			movelimb(ARM, BRINGDOWNPOWER, 80)
-			movelimb(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
-			BrickPi.MotorSpeed[ARM] = 0
+			movelimbLENG(ARM, BRINGDOWNPOWER, 0.5)
 			time.sleep(0.5)
 
 
 			#preliminary grab
-			movelimb(GRABBER, GRABBERPOWER, 40)
+			movelimbLENG(GRABBER, GRABBERPOWER, 0.5)
 			
 			print "lifting" #bring litter up
-			movelimb(ARM, LIFTPOWER, 100, GRABBER, GRABBERPOWER) #grabber grips as well
+			movelimbLENG(ARM, LIFTPOWER, 0.7, GRABBER, GRABBERPOWER) #grabber grips as well
 
 			print "opening" #dump litter
-			movelimb(GRABBER, OPENPOWER, 40)
+			movelimbLENG(GRABBER, OPENPOWER, 0.5)
 			time.sleep(2)
 			
 		else:
@@ -226,7 +224,7 @@ while True:
 			
 			#bring us2 back up
 			print "lifting"
-			movelimb(ARM, LIFTPOWER, 30)
+			movelimbLENG(ARM, LIFTPOWER, 0.3)
 			#loop back and carry on
 	
 	#check IR for cliff
