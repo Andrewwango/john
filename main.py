@@ -41,6 +41,7 @@ OPTLITTERRANGE = [10,15] #the distance from which it can pick up stuff
 
 WHEELPOWER     = -255
 TURNPOWER      = 255
+SHOOBYPOWER    = 150
 
 GRABBERPOWER   = -100
 OPENPOWER      = 80
@@ -187,8 +188,7 @@ while True:
 	drivewheels(WHEELPOWER, WHEELPOWER)
 	
 	#check us for object
-	tempreading = takeusreading()
-	if tempreading < USSTANDARD:
+	if takeusreading() < USSTANDARD:
 		print "object detected"
 		drivewheels(0,0)
 		
@@ -207,10 +207,10 @@ while True:
 			time.sleep(1)
 
 			print "shooby" #shooby to get into place
-			while tempreading > OPTLITTERRANGE[1]: #too far away
-				drivewheels(WHEELPOWER, WHEELPOWER)
-			while tempreading < OPTLITTERRANGE[0]: #too close
-				drivewheels(-WHEELPOWER, -WHEELPOWER)
+			while takeusreading() > OPTLITTERRANGE[1]: #too far away
+				drivewheels(SHOOBYPOWER, SHOOBYPOWER)
+			while takeusreading() < OPTLITTERRANGE[0]: #too close
+				drivewheels(-SHOOBYPOWER, -SHOOBYPOWER)
 			drivewheels(0,0)
 		
 			print "bringing down" #get grabber into pos
