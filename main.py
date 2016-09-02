@@ -192,7 +192,7 @@ while True:
 		#activate us2 pos
 		print "sliding down bit by bit"
 		movelimbENC(ARM, BRINGDOWNPOWER, 50)
-		movelimbENC(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
+		movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 		time.sleep(0.5)
 
 
