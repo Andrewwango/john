@@ -141,6 +141,10 @@ def movelimbLENG(limb, speed, length, limb2=None, speed2=None): #movelimb based 
 	while(time.time() - ot < length):
 		BrickPiUpdateValues()
 	time.sleep(.1)
+	#stop
+	BrickPi.MotorSpeed[limb] = 0
+	if limb2 != None:
+		BrickPi.MotorSpeed[limb2] = 0
 
 def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None): #movelimb based on encoderdeg
 	#encoderdeg is the change in encoder degrees
@@ -153,14 +157,17 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None): #movelimb bas
 			BrickPi.MotorSpeed[limb] = speed
 			if limb2 != None:
 				BrickPi.MotorSpeed[limb2] = speed2
-		BrickPi.MotorSpeed[limb] = 0	
 	elif speed < 0:
 		while takeencoderreading(limb) - startpos > -encoderdeg:
 			#carry on turning till arm reaches correct pos
 			BrickPi.MotorSpeed[limb] = speed
 			if limb2 != None:
 				BrickPi.MotorSpeed[limb2] = speed2
-		BrickPi.MotorSpeed[limb] = 0	
+	#stop
+	BrickPi.MotorSpeed[limb] = 0
+	if limb2 != None:
+		BrickPi.MotorSpeed[limb2] = 0
+		
 
 ################
 ##MAIN PROGRAM##
@@ -185,9 +192,7 @@ while True:
 		#activate us2 pos
 		print "sliding down bit by bit"
 		movelimbENC(ARM, BRINGDOWNPOWER, 50)
-		time.sleep(0.2)
 		movelimbENC(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
-		BrickPi.MotorSpeed[ARM] = 0
 		time.sleep(0.5)
 
 
@@ -204,7 +209,7 @@ while True:
 		
 			print "bringing down" #get grabber into pos
 			movelimbLENG(ARM, BRINGDOWNPOWER, 0.5)
-			time.sleep(0.5)
+			time.sleep(0.2)
 
 
 			#preliminary grab
