@@ -202,10 +202,10 @@ while True:
 			drivewheels(0,0)
 		
 			print "bringing down" #get grabber into pos
-			movelimb(ARM, BRINGDOWNPOWER, 70)
+			movelimb(ARM, BRINGDOWNPOWER, 80)
 			movelimb(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
 			BrickPi.MotorSpeed[ARM] = 0
-			time.sleep(0.2)
+			time.sleep(0.5)
 
 
 			#preliminary grab
