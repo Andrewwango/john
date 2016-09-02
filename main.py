@@ -185,7 +185,7 @@ while True:
 		#activate us2 pos
 		print "sliding down bit by bit"
 		movelimb(ARM, BRINGDOWNPOWER, 50)
-		sleep(0.1)
+		time.sleep(0.1)
 		movelimb(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
 		BrickPi.MotorSpeed[ARM] = 0
 		time.sleep(0.5)
