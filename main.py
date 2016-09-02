@@ -45,7 +45,7 @@ GRABBERPOWER   = -100
 OPENPOWER      = 80
 
 LIFTPOWER      = -200
-BRINGDOWNPOWER = 200
+BRINGDOWNPOWER = 100
 
 ##SETUP##
 BrickPi.MotorEnable[GRABBER] = 1
@@ -183,8 +183,10 @@ while True:
 		
 		#activate us2 pos
 		print "sliding down bit by bit"
-		movelimb(ARM, 70, 60)
+		movelimb(ARM, BRINGDOWNPOWER, 50)
+		movelimb(ARM, LIFTPOWER, 10) #brake to prevent coast
 		time.sleep(0.5)
+		BrickPi.MotorSpeed[ARM] = 0
 
 		#check higher us2 for big thing		
 		if takeus2reading() > US2STANDARD:
@@ -194,21 +196,23 @@ while True:
 			time.sleep(1)
 
 			print "shooby" #shooby forwards to get into place
-			movelimbOLD(LWHEEL,  WHEELPOWER, 0.3, RWHEEL,  WHEELPOWER)
+			movelimb(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
 			drivewheels(0,0)
 		
 			print "bringing down" #get grabber into pos
-			movelimbOLD(ARM, BRINGDOWNPOWER, 0.5)
+			movelimb(ARM, BRINGDOWNPOWER, 100)
+			movelimb(ARM, LIFTPOWER, 10) #brake to prevent coast
 			time.sleep(0.2)
+			BrickPi.MotorSpeed[ARM] = 0
 
 			#preliminary grab
-			movelimbOLD(GRABBER, GRABBERPOWER, 0.4)
+			movelimb(GRABBER, GRABBERPOWER, 50)
 			
 			print "lifting" #bring litter up
-			movelimbOLD(ARM, LIFTPOWER, 0.7, GRABBER, GRABBERPOWER) #grabber grips as well
+			movelimb(ARM, LIFTPOWER, 100, GRABBER, GRABBERPOWER) #grabber grips as well
 
 			print "opening" #dump litter
-			movelimbOLD(GRABBER, OPENPOWER, 0.5)
+			movelimb(GRABBER, OPENPOWER, 50)
 			time.sleep(2)
 			
 		else:
@@ -216,9 +220,9 @@ while True:
 			print "WALL"
 			turnprocedure(turnycount)
 			
-			#bring arm back up
+			#bring us2 back up
 			print "lifting"
-			movelimbOLD(ARM, LIFTPOWER, 0.3)
+			movelimb(ARM, LIFTPOWER, 30)
 			#loop back and carry on
 	
 	#check IR for cliff
