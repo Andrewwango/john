@@ -38,8 +38,8 @@ XDEGREES=200
 USSTANDARD     = 25 #us sensor threshold
 US2STANDARD    = 100
 
-WHEELPOWER     = -200
-TURNPOWER      = 200
+WHEELPOWER     = -255
+TURNPOWER      = 255
 
 GRABBERPOWER   = -100
 OPENPOWER      = 80
@@ -185,9 +185,9 @@ while True:
 		#activate us2 pos
 		print "sliding down bit by bit"
 		movelimbENC(ARM, BRINGDOWNPOWER, 50)
-		time.sleep(0.1)
-#		movelimbENC(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
-#		BrickPi.MotorSpeed[ARM] = 0
+		time.sleep(0.2)
+		movelimbENC(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
+		BrickPi.MotorSpeed[ARM] = 0
 		time.sleep(0.5)
 
 
