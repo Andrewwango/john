@@ -32,6 +32,8 @@ IRIN = 25 #yellow (when sth close, 0)
 USTRIG = 24 #brown, out
 USECHO = 23 #green, in
 
+XDEGREES=200
+
 USSTANDARD     = 25 #us sensor threshold
 US2STANDARD    = 100
 
@@ -55,7 +57,7 @@ GPIO.setup(USTRIG, GPIO.OUT)
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
 turnycount = 0
-xdegrees=200
+
 
 #############
 ##FUNCTIONS##
@@ -137,12 +139,25 @@ def turnwheels(direction, encoderdeg):
 			drivewheels(-TURNPOWER,TURNPOWER)
 	drivewheels(0,0)
 
+def turnprocedure():
+	#turning procedure
+	time.sleep(1)
+	#check if turn left or right
+	if turnycount%2 == 1: #odd=left
+		print "turning left"
+		turnwheels("left", XDEGREES*2)
+	else:
+		print "turning right"
+		turnwheels("right",XDEGREES*2)
+	turnycount += 1 #next time turns other way
+	time.sleep(0.5)	
+
 ################
 ##MAIN PROGRAM##
 ################
 #1. turn x degrees RIGHT to start
 #print "turning"
-#turnwheels("right", xdegrees)
+#turnwheels("right", XDEGREES)
 #turnycount = 1 #odd=needs to turn left on next turn
 
 #main loop
@@ -195,15 +210,8 @@ while True:
 			
 		else:
 			#WALL
-			#turning procedure
-			time.sleep(1)
-			#check if turn left or right
-			if turnycount%2 == 1: #odd=left
-				turnwheels("left", xdegrees*2)
-			else:
-				turnwheels("right",xdegrees*2)
-			turnycount += 1 #next time turns other way
-			time.sleep(0.5)
+			print "WALL"
+			turnprocedure()
 			
 			#bring arm back up
 			print "lifting"
@@ -213,13 +221,6 @@ while True:
 	#check IR for cliff
 	if GPIO.input(IRIN) == 1: #nothing close
 		#CLIFF
-		#turning procedure
-		time.sleep(1)
-		#check if turn left or right
-		if turnycount%2 == 1: #odd=left
-			turnwheels("left", xdegrees*2)
-		else:
-			turnwheels("right",xdegrees*2)
-		turnycount += 1 #next time turns other way
-		time.sleep(0.5)
+		print "CLIFF"
+		turnprocedure()
 		#loop back and carry on
