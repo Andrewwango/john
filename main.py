@@ -41,7 +41,7 @@ OPTLITTERRANGE = [10,15] #the distance from which it can pick up stuff
 
 WHEELPOWER     = -255
 TURNPOWER      = 255
-SHOOBYPOWER    = 150
+SHOOBYPOWER    = 70
 
 GRABBERPOWER   = -100
 OPENPOWER      = 80
