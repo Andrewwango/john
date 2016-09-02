@@ -123,10 +123,10 @@ def turnprocedure(thecountvar):
 	#check if turn left or right
 	if thecountvar%2 == 1: #odd=left
 		print "turning left" #use right wheel to encode
-		movelimb(RWHEEL, -TURNPOWER, encoderdeg, LHWEEL, TURNPOWER)
+		movelimb(RWHEEL, -TURNPOWER, encoderdeg, LWHEEL, TURNPOWER)
 	else:
 		print "turning right" #use left wheel to encode
-		movelimb(LWHEEL, TURNPOWER, XDEGREES*2, RHWEEL, -TURNPOWER)
+		movelimb(LWHEEL, TURNPOWER, XDEGREES*2, RWHEEL, -TURNPOWER)
 	drivewheels(0,0)
 	thecountvar += 1 #next time turns other way
 	time.sleep(0.5)	
