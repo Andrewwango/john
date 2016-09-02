@@ -8,7 +8,7 @@ BrickPiSetupSensors()
 
 
 BrickPi.MotorSpeed[PORT_D] = -200
-BrickPi.MotorSpeed[PORT_A] = 200
+BrickPi.MotorSpeed[PORT_A] = -200
 ot = time.time()
 while(time.time() - ot < 5):    #running while loop for 3 seconds
 	BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
