@@ -207,10 +207,11 @@ while True:
 			time.sleep(1)
 
 			print "shooby" #shooby to get into place
-			while takeusreading() > OPTLITTERRANGE[1]: #too far away
-				drivewheels(SHOOBYPOWER, SHOOBYPOWER)
-			while takeusreading() < OPTLITTERRANGE[0]: #too close
-				drivewheels(-SHOOBYPOWER, -SHOOBYPOWER)
+			movelimbENC(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
+#			while takeusreading() > OPTLITTERRANGE[1]: #too far away
+#				drivewheels(SHOOBYPOWER, SHOOBYPOWER)
+#			while takeusreading() < OPTLITTERRANGE[0]: #too close
+#				drivewheels(-SHOOBYPOWER, -SHOOBYPOWER)
 			drivewheels(0,0)
 		
 			print "bringing down" #get grabber into pos
