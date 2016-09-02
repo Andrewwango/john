@@ -46,7 +46,7 @@ OPENPOWER      = 80
 
 LIFTPOWER      = -200
 BRINGDOWNPOWER = 100
-BRINGDOWNBRAKEPOWER = -20
+BRINGDOWNBRAKEPOWER = -5
 
 ##SETUP##
 BrickPi.MotorEnable[GRABBER] = 1
@@ -208,12 +208,10 @@ while True:
 			drivewheels(0,0)
 		
 			print "bringing down" #get grabber into pos
-			movelimbLENG(ARM, BRINGDOWNPOWER, 0.5)
-			time.sleep(0.2)
-
-
+			movelimbLENG(ARM, BRINGDOWNPOWER, 0.7)
+			
 			#preliminary grab
-			movelimbLENG(GRABBER, GRABBERPOWER, 0.5)
+			movelimbLENG(GRABBER, GRABBERPOWER, 0.5, ARM, BRINGDOWNPOWER)
 			
 			print "lifting" #bring litter up
 			movelimbLENG(ARM, LIFTPOWER, 0.7, GRABBER, GRABBERPOWER) #grabber grips as well
