@@ -186,7 +186,8 @@ while True:
 	drivewheels(WHEELPOWER, WHEELPOWER)
 	
 	#check us for object
-	if takeusreading() < USSTANDARD:
+	tempreading = takeusreading()
+	if tempreading() < USSTANDARD:
 		print "object detected"
 		drivewheels(0,0)
 		
@@ -205,7 +206,6 @@ while True:
 			time.sleep(1)
 
 			print "shooby" #shooby to get into place
-			tempreading = takeusreading()
 			while tempreading > OPTLITTERRANGE[1]: #too far away
 				drivewheels(WHEELPOWER, WHEELPOWER)
 			while tempreading < OPTLITTERRANGE[0]: #too close
