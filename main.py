@@ -37,6 +37,7 @@ XDEGREES=200
 
 USSTANDARD     = 25 #us sensor threshold
 US2STANDARD    = 100
+OPTLITTERRANGE = [10,15] #the distance from which it can pick up stuff
 
 WHEELPOWER     = -255
 TURNPOWER      = 255
@@ -203,8 +204,12 @@ while True:
 			print "low-lying object detected"
 			time.sleep(1)
 
-			print "shooby" #shooby forwards to get into place
-			movelimbENC(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
+			print "shooby" #shooby to get into place
+			tempreading = takeusreading()
+			while tempreading > OPTLITTERRANGE[1]: #too far away
+				drivewheels(WHEELPOWER, WHEELPOWER)
+			while tempreading < OPTLITTERRANGE[0]: #too close
+				drivewheels(-WHEELPOWER, -WHEELPOWER)
 			drivewheels(0,0)
 		
 			print "bringing down" #get grabber into pos
