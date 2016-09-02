@@ -1,3 +1,4 @@
+####SORT OUT DISTANCE ADJUSTING WHEN DETECTED LITTER###
 from BrickPi import *
 import time
 import RPi.GPIO as GPIO
