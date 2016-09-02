@@ -184,7 +184,7 @@ while True:
 		#activate us2 pos
 		print "sliding down bit by bit"
 		movelimb(ARM, BRINGDOWNPOWER, 50)
-		movelimb(ARM, LIFTPOWER, 2) #brake to prevent coast
+#		movelimb(ARM, LIFTPOWER, 2) #brake to prevent coast
 		BrickPi.MotorSpeed[ARM] = 0
 		time.sleep(0.5)
 
@@ -202,19 +202,19 @@ while True:
 		
 			print "bringing down" #get grabber into pos
 			movelimb(ARM, BRINGDOWNPOWER, 100)
-			movelimb(ARM, LIFTPOWER, 2) #brake to prevent coast
+#			movelimb(ARM, LIFTPOWER, 2) #brake to prevent coast
 			BrickPi.MotorSpeed[ARM] = 0
 			time.sleep(0.2)
 
 
 			#preliminary grab
-			movelimb(GRABBER, GRABBERPOWER, 50)
+			movelimb(GRABBER, GRABBERPOWER, 40)
 			
 			print "lifting" #bring litter up
 			movelimb(ARM, LIFTPOWER, 100, GRABBER, GRABBERPOWER) #grabber grips as well
 
 			print "opening" #dump litter
-			movelimb(GRABBER, OPENPOWER, 50)
+			movelimb(GRABBER, OPENPOWER, 40)
 			time.sleep(2)
 			
 		else:
