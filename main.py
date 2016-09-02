@@ -46,6 +46,7 @@ OPENPOWER      = 80
 
 LIFTPOWER      = -200
 BRINGDOWNPOWER = 100
+BRINGDOWNBRAKEPOWER = -20
 
 ##SETUP##
 BrickPi.MotorEnable[GRABBER] = 1
@@ -184,7 +185,7 @@ while True:
 		#activate us2 pos
 		print "sliding down bit by bit"
 		movelimb(ARM, BRINGDOWNPOWER, 50)
-#		movelimb(ARM, LIFTPOWER, 2) #brake to prevent coast
+		movelimb(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
 		BrickPi.MotorSpeed[ARM] = 0
 		time.sleep(0.5)
 
@@ -201,8 +202,8 @@ while True:
 			drivewheels(0,0)
 		
 			print "bringing down" #get grabber into pos
-			movelimb(ARM, BRINGDOWNPOWER, 100)
-#			movelimb(ARM, LIFTPOWER, 2) #brake to prevent coast
+			movelimb(ARM, BRINGDOWNPOWER, 70)
+			movelimb(ARM, BRINGDOWNBRAKEPOWER, 5) #brake to prevent coast
 			BrickPi.MotorSpeed[ARM] = 0
 			time.sleep(0.2)
 
