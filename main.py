@@ -151,14 +151,14 @@ def movelimb(limb, speed, encoderdeg, limb2=None, speed2=None):
 			#carry on turning till arm reaches correct pos
 			BrickPi.MotorSpeed[limb] = speed
 			if limb2 != None:
-				BrickPi.MotorSpeed[limb2] = speed
+				BrickPi.MotorSpeed[limb2] = speed2
 		BrickPi.MotorSpeed[limb] = 0	
 	elif speed < 0:
 		while takeencoderreading(limb) - startpos > -encoderdeg:
 			#carry on turning till arm reaches correct pos
 			BrickPi.MotorSpeed[limb] = speed
 			if limb2 != None:
-				BrickPi.MotorSpeed[limb2] = speed
+				BrickPi.MotorSpeed[limb2] = speed2
 		BrickPi.MotorSpeed[limb] = 0	
 
 ################
