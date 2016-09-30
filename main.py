@@ -211,8 +211,10 @@ while True:
 			print "shooby" #shooby to get into place
 			
 			if takeusreading() >= OPTLITTERRANGE[1]: #too far away
+				print "too far, shoobying NEAR"
 				movelimbENC(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
 			if takeusreading() <= OPTLITTERRANGE[0]: #too close
+				print "too close, shoobying AWAY"
 				movelimbENC(LWHEEL, -WHEELPOWER, 40, RWHEEL, -WHEELPOWER)
 		
 			print "bringing down" #get grabber into pos
