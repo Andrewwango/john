@@ -10,6 +10,7 @@ GPIO.setmode(GPIO.BCM)
 #BrickPiUpdateValues error - do system thingy (./stopev.sh)
 #if ir is dodgy - check input is 12V
 #if result=-1 (of usread) - reboot
+#if cliff sensor dodgy - check connections
 
 ##NOTES##
 #default position is grabber open, arm fully up
@@ -208,12 +209,11 @@ while True:
 			time.sleep(1)
 
 			print "shooby" #shooby to get into place
-			movelimbENC(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
-#			while takeusreading() > OPTLITTERRANGE[1]: #too far away
-#				drivewheels(SHOOBYPOWER, SHOOBYPOWER)
-#			while takeusreading() < OPTLITTERRANGE[0]: #too close
-#				drivewheels(-SHOOBYPOWER, -SHOOBYPOWER)
-			drivewheels(0,0)
+			
+			if takeusreading() >= OPTLITTERRANGE[1]: #too far away
+				movelimbENC(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
+			if takeusreading() <= OPTLITTERRANGE[0]: #too close
+				movelimbENC(LWHEEL, -WHEELPOWER, 40, RWHEEL, -WHEELPOWER)
 		
 			print "bringing down" #get grabber into pos
 			movelimbLENG(ARM, BRINGDOWNPOWER, 0.7)
