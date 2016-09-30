@@ -216,7 +216,7 @@ while True:
 				movelimbENC(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
 			if tempreading <= OPTLITTERRANGE[0]: #too close
 				print "too close, shoobying AWAY"
-				movelimbENC(LWHEEL, -WHEELPOWER, 40, RWHEEL, -WHEELPOWER)
+				movelimbENC(LWHEEL, -WHEELPOWER, 70, RWHEEL, -WHEELPOWER)
 		
 			print "bringing down" #get grabber into pos
 			movelimbLENG(ARM, BRINGDOWNPOWER, 0.7)
