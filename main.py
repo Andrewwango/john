@@ -211,10 +211,10 @@ while True:
 
 			print "shooby" #shooby to get into place
 			
-			if tempreading() >= OPTLITTERRANGE[1]: #too far away
+			if tempreading >= OPTLITTERRANGE[1]: #too far away
 				print "too far, shoobying NEAR"
 				movelimbENC(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
-			if tempreading() <= OPTLITTERRANGE[0]: #too close
+			if tempreading <= OPTLITTERRANGE[0]: #too close
 				print "too close, shoobying AWAY"
 				movelimbENC(LWHEEL, -WHEELPOWER, 40, RWHEEL, -WHEELPOWER)
 		
