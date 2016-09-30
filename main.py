@@ -37,7 +37,7 @@ USECHO = 23 #green, in
 
 XDEGREES=200
 
-USSTANDARD     = 25 #us sensor threshold
+USSTANDARD     = 20 #us sensor threshold
 US2STANDARD    = 100
 OPTLITTERRANGE = [10,13] #the distance from which it can pick up stuff
 
@@ -213,10 +213,10 @@ while True:
 			
 			if tempreading >= OPTLITTERRANGE[1]: #too far away
 				print "too far, shoobying NEAR"
-				movelimbENC(LWHEEL, WHEELPOWER, 40, RWHEEL, WHEELPOWER)
+				movelimbENC(LWHEEL, WHEELPOWER, 60, RWHEEL, WHEELPOWER)
 			if tempreading <= OPTLITTERRANGE[0]: #too close
 				print "too close, shoobying AWAY"
-				movelimbENC(LWHEEL, -WHEELPOWER, 70, RWHEEL, -WHEELPOWER)
+				movelimbENC(LWHEEL, -WHEELPOWER, 80, RWHEEL, -WHEELPOWER)
 		
 			print "bringing down" #get grabber into pos
 			movelimbLENG(ARM, BRINGDOWNPOWER, 0.7)
