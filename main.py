@@ -37,7 +37,7 @@ USECHO = 23 #green, in
 
 XDEGREES=200
 
-USSTANDARD     = 20 #us sensor threshold
+USSTANDARD     = 25 #us sensor threshold
 US2STANDARD    = 100
 MINLITTERRANGE = 10 #the min distance from which it can pick up stuff
 
