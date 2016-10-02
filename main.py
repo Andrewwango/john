@@ -229,7 +229,7 @@ while True:
 
 			print "opening" #dump litter
 			movelimbLENG(GRABBER, OPENPOWER, 0.5)
-			time.sleep(2)
+			time.sleep(0.5)
 			
 		else:
 			#WALL
