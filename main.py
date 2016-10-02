@@ -43,7 +43,7 @@ XDEGREES=200 #angle between robot path and normal to edge, measured by outside w
 
 USSTANDARD     = 25 #us sensor detection threshold
 US2STANDARD    = 100 #higher us(2) detection threshold
-MINLITTERRANGE = 10 #the min distance from which it can pick up stuff
+OPTLITTERRANGE = [10,15] #the opt distance range from which it can pick up stuff
 
 WHEELPOWER     = -255
 TURNPOWER      = 255
@@ -209,9 +209,12 @@ while True:
 			print "low-lying object detected"
 			time.sleep(0.5)
 
-			if tempreading <= MINLITTERRANGE: #too close
+			if tempreading <= OPTLITTERRANGE[0]: #too close
 				print "too close, shoobying AWAY"
 				movelimbENC(LWHEEL, -WHEELPOWER, 80, RWHEEL, -WHEELPOWER)
+			if tempreading >= OPTLITTERRANGE: #too far
+				print "too far, shoobying NEAR"
+				movelimbENC(LWHEEL, WHEELPOWER, 80, RWHEEL, WHEELPOWER)
 		
 			print "bringing down" #get grabber into pos
 			movelimbLENG(ARM, BRINGDOWNPOWER, 0.7)
