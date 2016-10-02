@@ -108,9 +108,11 @@ def takeus2reading(): #detect distance of us2
 		distance = duration * 340 * 100 #cm
 		us2list += [int(distance)]
 		time.sleep(0.1)
+	us2list.sort()
 	print us2list
 	#us2reading = max(set(us2list), key=us2list.count) #mode
-	us2reading = sum(us2list)/len(us2list) #mean
+	#us2reading = sum(us2list)/len(us2list) #mean
+	us2reading = us2list[2] #median
 	print "higher us2reading is " + str(us2reading)
 	return us2reading
 
