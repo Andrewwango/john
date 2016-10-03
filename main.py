@@ -244,6 +244,7 @@ while True:
 	#check IR for cliff
 	if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
 		#CLIFF
+		#reverse a wee here!
 		print "CLIFF"
 		turnprocedure(turnycount)
 		#loop back and carry on
