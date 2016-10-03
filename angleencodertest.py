@@ -34,4 +34,4 @@ def takeencoderreading(port): #read motor position
 #turn right
 while True:
 	BrickPi.MotorSpeed[RWHEEL] = 200; BrickPi.MotorSpeed[LWHEEL] = -200
-	takeencoderreading(LWHEEL)
+	takeencoderreading(RWHEEL)
