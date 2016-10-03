@@ -1,5 +1,5 @@
 ####TURNING PROGRAMMING
-####best collection of data from us and us2 (mode/mean/median/repeats)
+####best collection of data from us and us2 (mode/mean/median/repeats (distance and angle))
 from BrickPi import *
 import time
 import RPi.GPIO as GPIO
@@ -39,7 +39,7 @@ IRIN = 25 #yellow (when sth close, 0)
 USTRIG = 24 #brown, out
 USECHO = 23 #green, in
 
-XDEGREES=200 #angle between robot path and normal to edge, measured by outside wheel (in encoderdegs)
+XDEGREES=260 #angle between robot path and normal to edge, measured by outside wheel (in encoderdegs)
 
 USSTANDARD     = 25 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
