@@ -40,13 +40,14 @@ USTRIG = 24 #brown, out
 USECHO = 23 #green, in
 
 XDEGREES=260 #angle between robot path and normal to edge, measured by outside wheel (in encoderdegs)
+             #min 258.3 (see John movement model)
 
 USSTANDARD     = 25 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
 OPTLITTERRANGE = [10,15] #the opt distance range from which it can pick up stuff
 
 WHEELPOWER     = -255
-TURNPOWER      = 255
+TURNPOWER      = 255 #pos = forwards (for ease of use but not technically correct)
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -100
 OPENPOWER      = 80
@@ -133,7 +134,7 @@ def turnprocedure(thecountvar):
 	#check if turn left or right
 	if thecountvar%2 == 1: #odd=left
 		print "turnycount is" + str(thecountvar)
-		print "turning left" #use right wheel to encode
+		print "turning left" #use right wheel to encode (although it doesn't matter)
 		movelimbENC(RWHEEL, -TURNPOWER, XDEGREES*2, LWHEEL, TURNPOWER)
 	else:
 		print "turnycount is" + str(thecountvar)
