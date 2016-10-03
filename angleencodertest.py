@@ -10,7 +10,7 @@ ARM = PORT_C
 HEAD = PORT_1
 XDEGREES=260
 WHEELPOWER     = -255
-TURNPOWER      = 255
+TURNPOWER      = 255 
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -100
 OPENPOWER      = 80
@@ -33,5 +33,5 @@ def takeencoderreading(port): #read motor position
 
 #turn left
 while True:
-	BrickPi.MotorSpeed[RWHEEL] = 100; BrickPi.MotorSpeed[LWHEEL] = -100
+	BrickPi.MotorSpeed[RWHEEL] = -50; BrickPi.MotorSpeed[LWHEEL] = 50
 	takeencoderreading(RWHEEL)
