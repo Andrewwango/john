@@ -119,7 +119,7 @@ def takeus2reading(): #detect distance of us2
 def takeencoderreading(port): #read motor position
 	result = BrickPiUpdateValues()
 	if not result :
-		print "encoder reading is: " + str((BrickPi.Encoder[port]) /2)
+		#print "encoder reading is: " + str((BrickPi.Encoder[port]) /2)
 		return ((BrickPi.Encoder[port]) /2)
 
 def drivewheels(lpower, rpower):
@@ -132,11 +132,13 @@ def turnprocedure(thecountvar):
 	time.sleep(1)
 	#check if turn left or right
 	if thecountvar%2 == 1: #odd=left
+		print "turnycount is" + str(thecountvar)
 		print "turning left" #use right wheel to encode
 		movelimbENC(RWHEEL, -TURNPOWER, XDEGREES*2, LWHEEL, TURNPOWER)
 	else:
+		print "turnycount is" + str(thecountvar)
 		print "turning right" #use left wheel to encode
-		movelimbENC(LWHEEL, TURNPOWER, XDEGREES*2, RWHEEL, -TURNPOWER)
+		movelimbENC(LWHEEL, -TURNPOWER, XDEGREES*2, RWHEEL, TURNPOWER)
 	thecountvar += 1 #next time turns other way
 	time.sleep(0.5)	
 
