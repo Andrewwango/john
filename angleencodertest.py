@@ -21,9 +21,6 @@ BrickPi.MotorEnable[GRABBER] = 1
 BrickPi.MotorEnable[ARM] = 1
 BrickPi.MotorEnable[LWHEEL] = 1
 BrickPi.MotorEnable[RWHEEL] = 1
-GPIO.setup(IRIN, GPIO.IN)
-GPIO.setup(USECHO, GPIO.IN)
-GPIO.setup(USTRIG, GPIO.OUT)
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
 turnycount = 1 #first turn is left (excluding initial)
