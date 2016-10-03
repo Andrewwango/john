@@ -1,5 +1,5 @@
 ####TURNING PROGRAMMING
-####best collection of data from us and us2 (mode/mean/repeats)
+####best collection of data from us and us2 (mode/mean/median/repeats)
 from BrickPi import *
 import time
 import RPi.GPIO as GPIO
@@ -181,7 +181,7 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None): #move motor b
 ##MAIN PROGRAM##
 ################
 #1. turn x degrees LEFT to reach right facing direction
-#movelimbENC(RWHEEL, -TURNPOWER, XDEGREES, LWHEEL, TURNPOWER) #intial turn from facing 90o right
+movelimbENC(RWHEEL, -TURNPOWER, XDEGREES, LWHEEL, TURNPOWER) #intial turn from facing 90o right
 
 #main loop
 while True:
