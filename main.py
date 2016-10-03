@@ -64,7 +64,7 @@ GPIO.setup(USECHO, GPIO.IN)
 GPIO.setup(USTRIG, GPIO.OUT)
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
-turnycount = 0
+turnycount = 1 #first turn is left (excluding initial)
 
 
 #############
