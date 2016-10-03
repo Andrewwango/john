@@ -19,8 +19,8 @@ GPIO.setmode(GPIO.BCM)
 #encoder increase = rolling away from bum
 
 '''PROGRAM
-- start facing 90o right
-- turn x degrees left
+- start facing fowards
+- turn x degrees right
 - go until edge
 - turn 2x degrees and continue, turning 2x degrees each time
 - measure degrees using outside wheel
@@ -39,7 +39,7 @@ IRIN = 25 #yellow (when sth close, 0)
 USTRIG = 24 #brown, out
 USECHO = 23 #green, in
 
-XDEGREES=100 #angle between robot path and normal to edge, measured by outside wheel (in encoderdegs)
+XDEGREES=200 #angle between robot path and normal to edge, measured by outside wheel (in encoderdegs)
 
 USSTANDARD     = 25 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
@@ -180,8 +180,8 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None): #move motor b
 ################
 ##MAIN PROGRAM##
 ################
-#1. turn x degrees LEFT to reach right facing direction
-movelimbENC(RWHEEL, -TURNPOWER, XDEGREES, LWHEEL, TURNPOWER) #intial turn from facing 90o right
+#1. turn x degrees RIGHT to reach right facing direction
+movelimbENC(RWHEEL, TURNPOWER, XDEGREES, LWHEEL, -TURNPOWER) #intial turn from forwards
 
 #main loop
 while True:
