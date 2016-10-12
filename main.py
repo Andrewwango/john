@@ -135,12 +135,12 @@ def turnprocedure(deg):
 	time.sleep(1)
 	#check if turn left or right
 	if turnycount%2 == 1: #odd=left
-		print "turnycount is" + str(thecountvar)
+		print "turnycount is" + str(turnycount)
 		print "turning left" #use right wheel to encode (although it doesn't matter)
 		movelimbENC(RWHEEL, -TURNPOWER, deg, LWHEEL, TURNPOWER)
 		movelimbLENG(RWHEEL, BRAKEPOWER, 0.1, LWHEEL, -BRAKEPOWER)
 	else:
-		print "turnycount is" + str(thecountvar)
+		print "turnycount is" + str(turnycount)
 		print "turning right" #use left wheel to encode
 		movelimbENC(LWHEEL, -TURNPOWER, deg, RWHEEL, TURNPOWER)
 		movelimbLENG(LWHEEL, BRAKEPOWER, 0.1, RWHEEL, -BRAKEPOWER)
