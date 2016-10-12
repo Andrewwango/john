@@ -129,19 +129,19 @@ def drivewheels(lpower, rpower):
 	BrickPi.MotorSpeed[RWHEEL] = rpower
 	BrickPiUpdateValues()
 
-def turnprocedure(thecountvar):
+def turnprocedure(thecountvar, deg):
 	#turning procedure (param to prevent UnboundLocalError)
 	time.sleep(1)
 	#check if turn left or right
 	if thecountvar%2 == 1: #odd=left
 		print "turnycount is" + str(thecountvar)
 		print "turning left" #use right wheel to encode (although it doesn't matter)
-		movelimbENC(RWHEEL, -TURNPOWER, XDEGREES*2, LWHEEL, TURNPOWER)
+		movelimbENC(RWHEEL, -TURNPOWER, deg, LWHEEL, TURNPOWER)
 		movelimbLENG(RWHEEL, BRAKEPOWER, 0.1, LWHEEL, -BRAKEPOWER)
 	else:
 		print "turnycount is" + str(thecountvar)
 		print "turning right" #use left wheel to encode
-		movelimbENC(LWHEEL, -TURNPOWER, XDEGREES*2, RWHEEL, TURNPOWER)
+		movelimbENC(LWHEEL, -TURNPOWER, deg, RWHEEL, TURNPOWER)
 		movelimbLENG(LWHEEL, BRAKEPOWER, 0.1, RWHEEL, -BRAKEPOWER)
 	thecountvar += 1 #next time turns other way
 	time.sleep(0.5)	
@@ -187,7 +187,7 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None): #move motor b
 ##MAIN PROGRAM##
 ################
 #initial turn from forwards
-turnprocedure(turnycount)
+turnprocedure(turnycount, XDEGREES)
 
 #main loop
 while True:
@@ -240,7 +240,7 @@ while True:
 		else:
 			#WALL
 			print "WALL"
-			turnprocedure(turnycount)
+			turnprocedure(turnycount, XDEGREES*2)
 			
 			#bring us2 back up
 			print "lifting"
@@ -252,5 +252,5 @@ while True:
 		#CLIFF
 		#reverse a wee here!
 		print "CLIFF"
-		turnprocedure(turnycount)
+		turnprocedure(turnycount, XDEGREES*2)
 		#loop back and carry on
