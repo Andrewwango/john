@@ -1,5 +1,3 @@
-####make sure everything works
-####add touch sensors
 ####best collection of data from us and us2 (mode/mean/median/repeats (distance and angle))
 from BrickPi import *
 import time
