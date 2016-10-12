@@ -65,7 +65,7 @@ GPIO.setup(USECHO, GPIO.IN)
 GPIO.setup(USTRIG, GPIO.OUT)
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPiSetupSensors()
-turnycount = 1 #first turn is left (excluding initial)
+turnycount = 0 #first turn is left(1) or right (0) (excluding initial)
 
 
 #############
@@ -183,10 +183,13 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None): #move motor b
 ################
 ##MAIN PROGRAM##
 ################
-#1. turn x degrees RIGHT to reach right facing direction
-#movelimbENC(RWHEEL, TURNPOWER, XDEGREES, LWHEEL, -TURNPOWER) #intial turn from forwards
-#OR turn x degrees LEFT  to reach left  facing direction
-movelimbENC(LWHEEL, TURNPOWER, XDEGREES, RWHEEL, -TURNPOWER) #intial turn from forwards
+#initial turn from forwards
+if turnycount == 1:
+	#turn x degrees RIGHT to reach right facing direction
+	movelimbENC(RWHEEL, TURNPOWER, XDEGREES, LWHEEL, -TURNPOWER)
+else:
+	#turn x degrees LEFT  to reach left  facing direction
+	movelimbENC(LWHEEL, TURNPOWER, XDEGREES, RWHEEL, -TURNPOWER)
 
 #main loop
 while True:
