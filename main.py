@@ -128,8 +128,8 @@ def takeus2reading(): #detect distance of us2
 def taketouchreadings():
 	#check if any touch sensor is pressed
 	result = BrickPiUpdateValues()
-    if not result :
-        if BrickPi.Sensor[TOUCHL]==1 or BrickPi.Sensor[TOUCHR]==1:
+	if not result:
+		if BrickPi.Sensor[TOUCHL]==1 or BrickPi.Sensor[TOUCHR]==1:
 			return 1
 		else:
 			return 0
