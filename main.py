@@ -1,4 +1,5 @@
-####TURNING PROGRAMMING
+####make sure everything works
+####add touch sensors
 ####best collection of data from us and us2 (mode/mean/median/repeats (distance and angle))
 from BrickPi import *
 import time
@@ -33,13 +34,15 @@ RWHEEL = PORT_A
 GRABBER = PORT_B
 ARM = PORT_C
 HEAD = PORT_1
+TOUCHR = PORT_2
+TOUCHL = PORT_3
 
 #GPIO Pins
 IRIN = 25 #yellow (when sth close, 0)
 USTRIG = 24 #brown, out
 USECHO = 23 #green, in
 
-XDEGREES=250 #angle between robot path and normal to edge, measured by outside wheel (in encoderdegs)
+XDEGREES=240 #angle between robot path and normal to edge, measured by outside wheel (in encoderdegs)
              #min 258.3 (see John movement model)
 
 USSTANDARD     = 25 #us sensor detection threshold
@@ -65,6 +68,8 @@ GPIO.setup(IRIN, GPIO.IN)
 GPIO.setup(USECHO, GPIO.IN)
 GPIO.setup(USTRIG, GPIO.OUT)
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
+BrickPi.SensorType[TOUCHL] = TYPE_SENSOR_TOUCH
+BrickPi.SensorType[TOUCHR] = TYPE_SENSOR_TOUCH
 BrickPiSetupSensors()
 turnycount = 1 #first turn is left(1) or right (0) (INCLUDING initial)
 
@@ -119,6 +124,15 @@ def takeus2reading(): #detect distance of us2
 	us2reading = us2list[2] #median (get rid of anomalies)
 	print "higher us2reading is " + str(us2reading)
 	return us2reading
+
+def taketouchreadings():
+	#check if any touch sensor is pressed
+	result = BrickPiUpdateValues()
+    if not result :
+        if BrickPi.Sensor[TOUCHL]==1 or BrickPi.Sensor[TOUCHR]==1:
+			return 1
+		else:
+			return 0
 
 def takeencoderreading(port): #read motor position
 	result = BrickPiUpdateValues()
@@ -201,9 +215,10 @@ while True:
 	#drive
 	drivewheels(WHEELPOWER, WHEELPOWER)
 	
-	#check us for object
+	#check us or touch for object
 	tempreading = takeusreading()
-	if tempreading < USSTANDARD:
+	temptouchreading = taketouchreadings()
+	if tempreading < USSTANDARD or temptouchreading==1:
 		print "object detected"
 		drivewheels(0,0)
 		
@@ -220,7 +235,7 @@ while True:
 			print "low-lying object detected"
 			time.sleep(0.5)
 
-			if tempreading <= OPTLITTERRANGE[0]: #too close
+			if tempreading <= OPTLITTERRANGE[0] or temptouchreading==1: #too close
 				print "too close, shoobying AWAY"
 				movelimbENC(LWHEEL, -WHEELPOWER, 80, RWHEEL, -WHEELPOWER)
 			if tempreading >= OPTLITTERRANGE[1]: #too far
