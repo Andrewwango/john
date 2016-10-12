@@ -80,14 +80,16 @@ def takeusreading(): #detect distance of us
 		if not result:
 			uslist += [int(BrickPi.Sensor[HEAD])]
 		time.sleep(.02)
+	uslist.sort()
 	print uslist
-	usreading = max(set(uslist), key=uslist.count) #mode (removes anomalies)
+	#usreading = max(set(uslist), key=uslist.count) #mode (removes anomalies)
+	usreading = uslist[4] #median (get rid of anomalies)
 	#usreading = sum(uslist)/len(uslist) #mean
 	print "usreading is " + str(usreading)
 	return usreading
 	
 def takeus2reading(): #detect distance of us2
-	#take 5 readings then find mode
+	#take 5 readings then find average
 	us2list=[]
 	for i in range(5):
 		#send out signal
@@ -114,7 +116,7 @@ def takeus2reading(): #detect distance of us2
 	print us2list
 	#us2reading = max(set(us2list), key=us2list.count) #mode
 	#us2reading = sum(us2list)/len(us2list) #mean
-	us2reading = us2list[2] #median
+	us2reading = us2list[2] #median (get rid of anomalies)
 	print "higher us2reading is " + str(us2reading)
 	return us2reading
 
