@@ -184,7 +184,9 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None): #move motor b
 ##MAIN PROGRAM##
 ################
 #1. turn x degrees RIGHT to reach right facing direction
-movelimbENC(RWHEEL, TURNPOWER, XDEGREES, LWHEEL, -TURNPOWER) #intial turn from forwards
+#movelimbENC(RWHEEL, TURNPOWER, XDEGREES, LWHEEL, -TURNPOWER) #intial turn from forwards
+#OR turn x degrees LEFT  to reach left  facing direction
+movelimbENC(LWHEEL, TURNPOWER, XDEGREES, RWHEEL, -TURNPOWER) #intial turn from forwards
 
 #main loop
 while True:
