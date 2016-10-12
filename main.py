@@ -48,6 +48,7 @@ OPTLITTERRANGE = [10,15] #the opt distance range from which it can pick up stuff
 
 WHEELPOWER     = -255
 TURNPOWER      = 255 #pos = forwards (for ease of use but not technically correct)
+BRAKEPOWER     = -5  #"
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -100
 OPENPOWER      = 80
@@ -136,10 +137,12 @@ def turnprocedure(thecountvar):
 		print "turnycount is" + str(thecountvar)
 		print "turning left" #use right wheel to encode (although it doesn't matter)
 		movelimbENC(RWHEEL, -TURNPOWER, XDEGREES*2, LWHEEL, TURNPOWER)
+		movelimbLENG(RWHEEL, BRAKEPOWER, 0.1, LWHEEL, -BRAKEPOWER)
 	else:
 		print "turnycount is" + str(thecountvar)
 		print "turning right" #use left wheel to encode
 		movelimbENC(LWHEEL, -TURNPOWER, XDEGREES*2, RWHEEL, TURNPOWER)
+		movelimbLENG(LWHEEL, BRAKEPOWER, 0.1, RWHEEL, -BRAKEPOWER)
 	thecountvar += 1 #next time turns other way
 	time.sleep(0.5)	
 
