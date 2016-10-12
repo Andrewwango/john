@@ -235,7 +235,7 @@ while True:
 			print "low-lying object detected"
 			time.sleep(0.5)
 
-			if tempreading <= OPTLITTERRANGE[0] or temptouchreading==1: #too close
+			if tempreading <= OPTLITTERRANGE[0]: #too close
 				print "too close, shoobying AWAY"
 				movelimbENC(LWHEEL, -WHEELPOWER, 80, RWHEEL, -WHEELPOWER)
 			if tempreading >= OPTLITTERRANGE[1]: #too far
