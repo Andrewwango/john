@@ -86,7 +86,7 @@ def takeusreading(): #detect distance of us
 			uslist += [int(BrickPi.Sensor[HEAD])]
 		time.sleep(.02)
 	uslist.sort()
-	print uslist
+	#print uslist
 	#usreading = max(set(uslist), key=uslist.count) #mode (removes anomalies)
 	usreading = uslist[4] #median (get rid of anomalies)
 	#usreading = sum(uslist)/len(uslist) #mean
@@ -118,7 +118,7 @@ def takeus2reading(): #detect distance of us2
 		us2list += [int(distance)]
 		time.sleep(0.1)
 	us2list.sort()
-	print us2list
+	#print us2list
 	#us2reading = max(set(us2list), key=us2list.count) #mode
 	#us2reading = sum(us2list)/len(us2list) #mean
 	us2reading = us2list[2] #median (get rid of anomalies)
@@ -130,6 +130,7 @@ def taketouchreadings():
 	result = BrickPiUpdateValues()
 	if not result:
 		if BrickPi.Sensor[TOUCHL]==1 or BrickPi.Sensor[TOUCHR]==1:
+			print "TOUCH"
 			return 1
 		else:
 			return 0
