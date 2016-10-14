@@ -39,7 +39,7 @@ IRIN = 25 #yellow (when sth close, 0)
 USTRIG = 24 #brown, out
 USECHO = 23 #green, in
 
-XDEGREES=380 #angle between robot path and path (in wheel encoderdegs)
+XDEGREES=400 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
 USSTANDARD     = 25 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
