@@ -210,7 +210,7 @@ while True:
 		
 		#activate us2 pos
 		print "sliding down bit by bit"
-		movelimbENC(ARM, BRINGDOWNPOWER, 40)
+		movelimbENC(ARM, BRINGDOWNPOWER, 80)
 		movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 		time.sleep(0.3)
 
@@ -223,10 +223,10 @@ while True:
 
 			if tempreading <= OPTLITTERRANGE[0]: #too close
 				print "too close, shoobying AWAY"
-				movelimbENC(LWHEEL, -WHEELPOWER, 80, RWHEEL, -WHEELPOWER)
+				movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
 			if tempreading >= OPTLITTERRANGE[1]: #too far
 				print "too far, shoobying NEAR"
-				movelimbENC(LWHEEL, WHEELPOWER, 80, RWHEEL, WHEELPOWER)
+				movelimbENC(LWHEEL, WHEELPOWER, 160, RWHEEL, WHEELPOWER)
 		
 			print "bringing down" #get grabber into pos
 			movelimbLENG(ARM, BRINGDOWNPOWER, 0.7)
@@ -255,6 +255,6 @@ while True:
 	if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
 		#CLIFF - reverse
 		print "CLIFF"
-		movelimbENC(LWHEEL, -WHEELPOWER, 80, RWHEEL, -WHEELPOWER)
+		movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
 		turnprocedure(XDEGREES*2)
 		#loop back and carry on
