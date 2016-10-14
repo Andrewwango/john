@@ -28,8 +28,8 @@ turnycount = 1 #first turn is left (excluding initial)
 def takeencoderreading(port): #read motor position
 	result = BrickPiUpdateValues()
 	if not result :
-		print "encoder reading is: " + str((BrickPi.Encoder[port]) /2)
-		return ((BrickPi.Encoder[port]) /2)
+		print "encoder reading is: " + str(BrickPi.Encoder[port])
+		return (BrickPi.Encoder[port])
 
 #turn right
 initial=takeencoderreading(RWHEEL)
