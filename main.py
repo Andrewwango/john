@@ -39,7 +39,7 @@ IRIN = 25 #yellow (when sth close, 0)
 USTRIG = 24 #brown, out
 USECHO = 23 #green, in
 
-XDEGREES=240 #angle between robot path and path (in wheel encoderdegs)
+XDEGREES=363 #angle between robot path and path (in wheel encoderdegs)
              #min 258.3 (see John movement model)
 USSTANDARD     = 25 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
@@ -127,7 +127,7 @@ def taketouchreadings():
 def takeencoderreading(port): #read motor position
 	result = BrickPiUpdateValues()
 	if not result :
-		return ((BrickPi.Encoder[port]) /2)
+		return (BrickPi.Encoder[port])
 
 def drivewheels(lpower, rpower):
 	BrickPi.MotorSpeed[LWHEEL] = lpower
