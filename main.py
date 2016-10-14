@@ -1,4 +1,3 @@
-####best collection of data from us and us2 (mode/mean/median/repeats (distance and angle))
 from BrickPi import *
 import time
 import RPi.GPIO as GPIO
@@ -40,13 +39,13 @@ IRIN = 25 #yellow (when sth close, 0)
 USTRIG = 24 #brown, out
 USECHO = 23 #green, in
 
-XDEGREES=240 #angle between robot path and normal to edge, measured by outside wheel (in encoderdegs)
+XDEGREES=240 #angle between robot path and path (in wheel encoderdegs)
              #min 258.3 (see John movement model)
-
 USSTANDARD     = 25 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
 OPTLITTERRANGE = [10,15] #the opt distance range from which it can pick up stuff
 
+#Motor Power Constants
 WHEELPOWER     = -255
 TURNPOWER      = 255 #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5  #"
@@ -82,16 +81,12 @@ def takeusreading(): #detect distance of us
 		result = BrickPiUpdateValues()
 		if not result:
 			uslist += [int(BrickPi.Sensor[HEAD])]
-		time.sleep(.02)
-	uslist.sort()
-	#print uslist
-	#usreading = max(set(uslist), key=uslist.count) #mode (removes anomalies)
-	usreading = uslist[4] #median (get rid of anomalies)
-	#usreading = sum(uslist)/len(uslist) #mean
+		time.sleep(0.02)
+	uslist.sort(); usreading = uslist[4] #median (get rid of anomalies)
 	print "usreading is " + str(usreading)
 	return usreading
 	
-def takeus2reading(): #detect distance of us2
+def takeus2reading(): #detect distance of us2 (higher)
 	#take 5 readings then find average
 	us2list=[]
 	for i in range(5):
@@ -115,11 +110,7 @@ def takeus2reading(): #detect distance of us2
 		distance = duration * 340 * 100 #cm
 		us2list += [int(distance)]
 		time.sleep(0.1)
-	us2list.sort()
-	#print us2list
-	#us2reading = max(set(us2list), key=us2list.count) #mode
-	#us2reading = sum(us2list)/len(us2list) #mean
-	us2reading = us2list[2] #median (get rid of anomalies)
+	us2list.sort(); us2reading = us2list[2] #median (get rid of anomalies)
 	print "higher us2reading is " + str(us2reading)
 	return us2reading
 
@@ -136,7 +127,6 @@ def taketouchreadings():
 def takeencoderreading(port): #read motor position
 	result = BrickPiUpdateValues()
 	if not result :
-		#print "encoder reading is: " + str((BrickPi.Encoder[port]) /2)
 		return ((BrickPi.Encoder[port]) /2)
 
 def drivewheels(lpower, rpower):
@@ -144,16 +134,15 @@ def drivewheels(lpower, rpower):
 	BrickPi.MotorSpeed[RWHEEL] = rpower
 	BrickPiUpdateValues()
 
-def turnprocedure(deg):
-	#turning procedure
+def turnprocedure(deg): #turning procedure
 	global turnycount
-	time.sleep(1)
+	time.sleep(0.5)
 	#check if turn left or right
 	if turnycount%2 == 1: #odd=left
 		print "turnycount is" + str(turnycount)
 		print "turning left" #use right wheel to encode (although it doesn't matter)
 		movelimbENC(RWHEEL, -TURNPOWER, deg, LWHEEL, TURNPOWER)
-		movelimbLENG(RWHEEL, BRAKEPOWER, 0.1, LWHEEL, -BRAKEPOWER)
+		movelimbLENG(RWHEEL, BRAKEPOWER, 0.1, LWHEEL, -BRAKEPOWER) #brake
 	else:
 		print "turnycount is" + str(turnycount)
 		print "turning right" #use left wheel to encode
@@ -170,7 +159,7 @@ def movelimbLENG(limb, speed, length, limb2=None, speed2=None): #move motor base
 	ot = time.time()
 	while(time.time() - ot < length):
 		BrickPiUpdateValues()
-	time.sleep(.1)
+	time.sleep(0.1)
 	#stop
 	BrickPi.MotorSpeed[limb] = 0
 	if limb2 != None:
@@ -179,7 +168,6 @@ def movelimbLENG(limb, speed, length, limb2=None, speed2=None): #move motor base
 def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None): #move motor based on encoder
 	#encoderdeg is the change in encoder degrees (scalar)
 	#positive speed is positive encoder increase
-	#i love to wear blue, red and pink dungarees
 	startpos = takeencoderreading(limb)
 	if speed > 0:
 		while takeencoderreading(limb) - startpos < encoderdeg:
@@ -210,11 +198,10 @@ while True:
 	#stop actions
 	BrickPi.MotorSpeed[GRABBER] = 0
 	BrickPi.MotorSpeed[ARM] = 0
-	
 	#drive
 	drivewheels(WHEELPOWER, WHEELPOWER)
 	
-	#check us or touch for object
+	#check US or touch for object
 	tempreading = takeusreading()
 	temptouchreading = taketouchreadings()
 	if tempreading < USSTANDARD or temptouchreading==1:
@@ -225,7 +212,7 @@ while True:
 		print "sliding down bit by bit"
 		movelimbENC(ARM, BRINGDOWNPOWER, 40)
 		movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
-		time.sleep(0.5)
+		time.sleep(0.3)
 
 		#check higher us2 for big thing		
 		if takeus2reading() > US2STANDARD:
@@ -266,8 +253,8 @@ while True:
 	
 	#check IR for cliff
 	if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
-		#CLIFF
-		#reverse a wee here!
+		#CLIFF - reverse
 		print "CLIFF"
+		movelimbENC(LWHEEL, -WHEELPOWER, 80, RWHEEL, -WHEELPOWER)
 		turnprocedure(XDEGREES*2)
 		#loop back and carry on
