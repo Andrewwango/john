@@ -141,12 +141,12 @@ def turnprocedure(deg): #turning procedure
 	if turnycount%2 == 1: #odd=left
 		print "turnycount is" + str(turnycount)
 		print "turning left" #use right wheel to encode (although it doesn't matter)
-		movelimbENC(RWHEEL, -TURNPOWER, deg, LWHEEL, TURNPOWER)
+		movelimbENC(RWHEEL, -TURNPOWER, deg, LWHEEL, TURNPOWER, True)
 		movelimbLENG(RWHEEL, BRAKEPOWER, 0.1, LWHEEL, -BRAKEPOWER) #brake
 	else:
 		print "turnycount is" + str(turnycount)
 		print "turning right" #use left wheel to encode
-		movelimbENC(LWHEEL, -TURNPOWER, deg, RWHEEL, TURNPOWER)
+		movelimbENC(LWHEEL, -TURNPOWER, deg, RWHEEL, TURNPOWER, True)
 		movelimbLENG(LWHEEL, BRAKEPOWER, 0.1, RWHEEL, -BRAKEPOWER)
 	turnycount += 1 #next time turns other way
 	time.sleep(0.5)	
@@ -165,22 +165,19 @@ def movelimbLENG(limb, speed, length, limb2=None, speed2=None): #move motor base
 	if limb2 != None:
 		BrickPi.MotorSpeed[limb2] = 0
 
-def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None): #move motor based on encoder
+def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=False): #move motor based on encoder
 	#encoderdeg is the change in encoder degrees (scalar)
 	#positive speed is positive encoder increase
 	startpos = takeencoderreading(limb)
 	if speed > 0:
-		while takeencoderreading(limb) - startpos < encoderdeg:
-			#carry on turning till arm reaches correct pos
-			BrickPi.MotorSpeed[limb] = speed
-			if limb2 != None: #optional simultaneous second motor movement
-				BrickPi.MotorSpeed[limb2] = speed2
+		modifier=1
 	elif speed < 0:
-		while takeencoderreading(limb) - startpos > -encoderdeg:
-			#carry on turning till arm reaches correct pos
-			BrickPi.MotorSpeed[limb] = speed
-			if limb2 != None: #optional simultaneous second motor movement
-				BrickPi.MotorSpeed[limb2] = speed2
+		modifier=-1
+	while (takeencoderreading(limb) - startpos)*modifier < encoderdeg:
+		#carry on turning till arm reaches correct pos
+		BrickPi.MotorSpeed[limb] = speed
+		if limb2 != None: #optional simultaneous second motor movement
+			BrickPi.MotorSpeed[limb2] = speed2
 	#stop
 	BrickPi.MotorSpeed[limb] = 0
 	if limb2 != None:
