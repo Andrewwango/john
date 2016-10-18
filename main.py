@@ -248,7 +248,7 @@ while True:
 			
 			#bring us2 back up
 			print "lifting"
-			movelimbLENG(ARM, LIFTPOWER, 0.3)
+			movelimbLENG(ARM, LIFTPOWER, 0.1)
 			#loop back and carry on
 	
 	#check IR for cliff
