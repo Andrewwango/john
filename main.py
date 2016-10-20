@@ -139,15 +139,15 @@ def turnprocedure(deg): #turning procedure
 	time.sleep(0.5)
 	#check if turn left or right
 	if turnycount%2 == 1: #odd=left
-		print "turnycount is" + str(turnycount)
-		print "turning left" #use right wheel to encode (although it doesn't matter)
-		movelimbENC(RWHEEL, -TURNPOWER, deg, LWHEEL, TURNPOWER, True)
-		movelimbLENG(RWHEEL, BRAKEPOWER, 0.1, LWHEEL, -BRAKEPOWER) #brake
+		wheel1 = RWHEEL; wheel2 = LWHEEL
 	else:
-		print "turnycount is" + str(turnycount)
-		print "turning right" #use left wheel to encode
-		movelimbENC(LWHEEL, -TURNPOWER, deg, RWHEEL, TURNPOWER, True)
-		movelimbLENG(LWHEEL, BRAKEPOWER, 0.1, RWHEEL, -BRAKEPOWER)
+		wheel1 = LWHEEL; wheel2 = RWHEEL
+		
+	print "turnycount is" + str(turnycount)
+	print "turning" #use outside wheel to encode (although it doesn't matter)
+	movelimbENC(wheel1, -TURNPOWER, deg, wheel2, TURNPOWER, True)
+	movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
+	
 	turnycount += 1 #next time turns other way
 	time.sleep(0.5)	
 
@@ -168,36 +168,32 @@ def movelimbLENG(limb, speed, length, limb2=None, speed2=None): #move motor base
 def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=False): #move motor based on encoder
 	#encoderdeg is the change in encoder degrees (scalar)
 	#positive speed is positive encoder increase
+	global alreadyturning
 	startpos = takeencoderreading(limb)
 	if speed > 0:
 		modifier=1
 	elif speed < 0:
 		modifier=-1
-	while (takeencoderreading(limb) - startpos)*modifier < encoderdeg:
+	while True:
 		#carry on turning till arm reaches correct pos
+		modifiedreading = (takeencoderreading(limb) - startpos)*modifier
+		if modifiedreading >= encoderdeg:
+			break #at final position
+		
 		BrickPi.MotorSpeed[limb] = speed
 		if limb2 != None: #optional simultaneous second motor movement
 			BrickPi.MotorSpeed[limb2] = speed2
+		
+		if detection==True: #litter detection while moving
+			if modifiedreading >= 100: #turned enough so safe to start measuring for litter
+				detectprocedure(True)
+			
 	#stop
 	BrickPi.MotorSpeed[limb] = 0
 	if limb2 != None:
 		BrickPi.MotorSpeed[limb2] = 0
 		
-
-################
-##MAIN PROGRAM##
-################
-#initial turn from forwards
-turnprocedure(XDEGREES)
-
-#main loop
-while True:
-	#stop actions
-	BrickPi.MotorSpeed[GRABBER] = 0
-	BrickPi.MotorSpeed[ARM] = 0
-	#drive
-	drivewheels(WHEELPOWER, WHEELPOWER)
-	
+def detectprocedure(alreadyturning):
 	#check US or touch for object
 	tempreading = takeusreading()
 	temptouchreading = taketouchreadings()
@@ -211,7 +207,7 @@ while True:
 		movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 		time.sleep(0.3)
 
-		#check higher us2 for big thing		
+		#check higher us2 for big thing	
 		if takeus2reading() > US2STANDARD:
 			#LITTER (low-lying object)
 			#pick up litter procedure
@@ -239,14 +235,30 @@ while True:
 			time.sleep(0.5)
 			
 		else:
-			#WALL
-			print "WALL"
-			turnprocedure(XDEGREES*2)
+			print "WALL" #WALL
+			if alreadyturning == False: #im not turning already so i want to turn at wall
+				turnprocedure(XDEGREES*2)
 			
 			#bring us2 back up
 			print "lifting"
 			movelimbLENG(ARM, LIFTPOWER, 0.1)
 			#loop back and carry on
+
+################
+##MAIN PROGRAM##
+################
+#initial turn from forwards
+turnprocedure(XDEGREES)
+
+#main loop
+while True:
+	#stop actions
+	BrickPi.MotorSpeed[GRABBER] = 0
+	BrickPi.MotorSpeed[ARM] = 0
+	#drive
+	drivewheels(WHEELPOWER, WHEELPOWER)
+	
+	detectprocedure(False) #search for object
 	
 	#check IR for cliff
 	if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
