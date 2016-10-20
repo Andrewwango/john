@@ -13,6 +13,9 @@ GPIO.setmode(GPIO.BCM)
 #if ir is dodgy - check input is 12V
 #if result=-1 (of usread) - reboot
 #if cliff sensor dodgy - check connections
+#POTENTIAL PROBLEMS:
+#elastics getting dodgy
+#caster wheel getting rusty
 
 ##NOTES##
 #default position is grabber open, arm fully up
