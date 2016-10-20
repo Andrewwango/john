@@ -56,7 +56,8 @@ SHOOBYPOWER    = -100
 GRABBERPOWER   = -100
 OPENPOWER      = 80
 LIFTPOWER      = -200
-BRINGDOWNPOWER = 100
+SLIDEUPPOWER   = -70
+BRINGDOWNPOWER = 80
 BRINGDOWNBRAKEPOWER = -5
 
 ##SETUP## motors, sensors, GPIO Pins
@@ -246,7 +247,7 @@ def detectprocedure(alreadyturning):
 			
 				#bring us2 back up (deactivate)
 				print "lifting"
-				movelimbLENG(ARM, LIFTPOWER, 0.1)
+				movelimbLENG(ARM, SLIDEUPPOWER, 0.3)
 				#loop back and carry on
 
 ################
