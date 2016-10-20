@@ -47,7 +47,7 @@ OPTLITTERRANGE = [10,15] #the opt distance range from which it can pick up stuff
 
 #Motor Power Constants
 WHEELPOWER     = -255
-TURNPOWER      = 255 #pos = forwards (for ease of use but not technically correct)
+TURNPOWER      = 170 #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5  #"
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -100
