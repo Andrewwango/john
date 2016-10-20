@@ -202,10 +202,11 @@ def detectprocedure(alreadyturning):
 		drivewheels(0,0)
 		
 		#activate us2 pos
-		print "sliding down bit by bit"
-		movelimbENC(ARM, BRINGDOWNPOWER, 80)
-		movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
-		time.sleep(0.3)
+		if alreadyturning == False: #im not turning (so i want to activated pos)
+			print "sliding down bit by bit"
+			movelimbENC(ARM, BRINGDOWNPOWER, 80)
+			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
+			time.sleep(0.3)
 
 		#check higher us2 for big thing	
 		if takeus2reading() > US2STANDARD:
@@ -236,13 +237,13 @@ def detectprocedure(alreadyturning):
 			
 		else:
 			print "WALL" #WALL
-			if alreadyturning == False: #im not turning already so i want to turn at wall
+			if alreadyturning == False: #im not turning already so i want to turn and deactivate at wall
 				turnprocedure(XDEGREES*2)
 			
-			#bring us2 back up
-			print "lifting"
-			movelimbLENG(ARM, LIFTPOWER, 0.1)
-			#loop back and carry on
+				#bring us2 back up (deactivate)
+				print "lifting"
+				movelimbLENG(ARM, LIFTPOWER, 0.1)
+				#loop back and carry on
 
 ################
 ##MAIN PROGRAM##
