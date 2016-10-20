@@ -185,7 +185,7 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=Fals
 			BrickPi.MotorSpeed[limb2] = speed2
 		
 		if detection==True: #litter detection while moving
-			if modifiedreading >= 100: #turned enough so safe to start measuring for litter
+			if modifiedreading >= 120: #turned enough so safe to start measuring for litter
 				detectprocedure(True)
 			
 	#stop
@@ -215,12 +215,13 @@ def detectprocedure(alreadyturning):
 			print "low-lying object detected"
 			time.sleep(0.5)
 
-			if tempreading <= OPTLITTERRANGE[0]: #too close
-				print "too close, shoobying AWAY"
-				movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
-			if tempreading >= OPTLITTERRANGE[1]: #too far
-				print "too far, shoobying NEAR"
-				movelimbENC(LWHEEL, WHEELPOWER, 160, RWHEEL, WHEELPOWER)
+			if alreadyturning == False: #only correct position when not turning (or else it'll mess up the encoder)
+				if tempreading <= OPTLITTERRANGE[0]: #too close
+					print "too close, shoobying AWAY"
+					movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
+				if tempreading >= OPTLITTERRANGE[1]: #too far
+					print "too far, shoobying NEAR"
+					movelimbENC(LWHEEL, WHEELPOWER, 160, RWHEEL, WHEELPOWER)
 		
 			print "bringing down" #get grabber into pos
 			movelimbLENG(ARM, BRINGDOWNPOWER, 0.7)
