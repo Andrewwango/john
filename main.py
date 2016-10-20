@@ -57,7 +57,7 @@ GRABBERPOWER   = -100
 OPENPOWER      = 80
 LIFTPOWER      = -200
 SLIDEUPPOWER   = -70
-BRINGDOWNPOWER = 80
+BRINGDOWNPOWER = 100
 BRINGDOWNBRAKEPOWER = -5
 
 ##SETUP## motors, sensors, GPIO Pins
@@ -219,13 +219,12 @@ def detectprocedure(alreadyturning):
 			print "low-lying object detected"
 			time.sleep(0.5)
 
-			if alreadyturning == False: #only correct position when not turning (or else it'll mess up the encoder)
-				if tempreading <= OPTLITTERRANGE[0]: #too close
-					print "too close, shoobying AWAY"
-					movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
-				if tempreading >= OPTLITTERRANGE[1]: #too far
-					print "too far, shoobying NEAR"
-					movelimbENC(LWHEEL, WHEELPOWER, 160, RWHEEL, WHEELPOWER)
+			if tempreading <= OPTLITTERRANGE[0]: #too close
+				print "too close, shoobying AWAY"
+				movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
+			elif tempreading >= OPTLITTERRANGE[1]: #too far
+				print "too far, shoobying NEAR"
+				movelimbENC(LWHEEL, WHEELPOWER, 160, RWHEEL, WHEELPOWER)
 		
 			print "bringing down" #get grabber into pos
 			movelimbLENG(ARM, BRINGDOWNPOWER, 0.7)
@@ -239,6 +238,14 @@ def detectprocedure(alreadyturning):
 			print "opening" #dump litter
 			movelimbLENG(GRABBER, OPENPOWER, 0.5)
 			time.sleep(0.5)
+			
+			#move back if shoobied before
+			if tempreading <= OPTLITTERRANGE[0]: #too close
+				print "shoobying NEAR back to original pos"
+				movelimbENC(LWHEEL, WHEELPOWER, 160, RWHEEL, WHEELPOWER)
+			elif tempreading >= OPTLITTERRANGE[1]: #too far
+				print "shoobying AWAY back to original pos"
+				movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
 			
 		else:
 			print "WALL" #WALL
