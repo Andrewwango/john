@@ -28,7 +28,7 @@ IRIN = 25 #yellow (when sth close, 0)
 US2TRIG = 24 #brown, out
 US2ECHO = 23 #green, in
 
-XDEGREES=400 #angle between robot path and path (in wheel encoderdegs)
+XDEGREES=380 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
 USSTANDARD     = 25 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
@@ -43,7 +43,7 @@ GRABBERPOWER   = -100
 OPENPOWER      = 80
 LIFTPOWER      = -200
 SLIDEUPPOWER   = -70
-BRINGDOWNPOWER = 100
+BRINGDOWNPOWER = 120
 BRINGDOWNBRAKEPOWER = -5
 
 ##SETUP## motors, sensors, GPIO Pins
