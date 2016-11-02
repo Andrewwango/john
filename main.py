@@ -30,13 +30,13 @@ US2ECHO = 23 #green, in
 
 XDEGREES=380 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
-USSTANDARD     = 25 #us sensor detection threshold
+USSTANDARD     = 30 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
-OPTLITTERRANGE = [10,15] #the opt distance range from which it can pick up stuff
+OPTLITTERRANGE = [10,25] #the opt distance range from which it can pick up stuff
 
 #Motor Power Constants
 WHEELPOWER     = -255
-TURNPOWER      = 180 #pos = forwards (for ease of use but not technically correct)
+TURNPOWER      = 160 #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5  #"
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -100
@@ -194,7 +194,7 @@ def detectprocedure(alreadyturning):
 		#activate us2 pos
 		if alreadyturning == False: #im not turning (so i want to activated pos)
 			print "sliding down bit by bit"
-			movelimbENC(ARM, BRINGDOWNPOWER, 80)
+			movelimbENC(ARM, BRINGDOWNPOWER, 100)
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 			time.sleep(0.3)
 
