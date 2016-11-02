@@ -19,6 +19,6 @@ while True:
 	while GPIO.input(23) == 1:
 		stop = time.time()
 	duration = stop - start
-	distance = duration * 340 * 100 #cm
+	distance = int(duration * 340 * 100) #cm
 	print distance
-	time.sleep(0.5)
+	time.sleep(0.2)
