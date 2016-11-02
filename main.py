@@ -1,33 +1,16 @@
-'''DO
-- get more casters printed
-'''
 from BrickPi import *
 import time
 import RPi.GPIO as GPIO
 BrickPiSetup()
 GPIO.setmode(GPIO.BCM)
 
-##DEBUG##
-#if motors stalling - check voltage + PSU - make sure it's 12V and connections are alright!
-#BrickPiUpdateValues error - do system thingy (./stopev.sh)
-#if ir is dodgy - check input is 12V
-#if result=-1 (of usread) - reboot
-#if cliff sensor dodgy - check connections
-#POTENTIAL PROBLEMS:
-#elastics getting dodgy
-#caster wheel getting rusty
-
-##NOTES##
-#default position is grabber open, arm fully up
-#positive speed = rolling away from bum
-#encoder increase = rolling away from bum
-
-'''PROGRAM
-- start facing fowards
-- turn x degrees right
-- go until edge
-- turn 2x degrees and continue, turning 2x degrees each time
-- measure degrees using outside wheel
+'''ALGORITHM
+- Start facing fowards, and turn x degrees to activate sweeping position
+- Drive until US1 detects object.
+	- Activate the higher US (US2)'s position
+		- If object not detected, then object is small (litter). Perform picking procedure.
+		- If object is  detected, then object is big(wall/edge). Perform turning procedure.
+- If IR detects nothing, then it is far from ground(cliff/edge). Perform turning procedure.
 '''
 
 ##CONSTANTS##
@@ -42,8 +25,8 @@ TOUCHL = PORT_3
 
 #GPIO Pins
 IRIN = 25 #yellow (when sth close, 0)
-USTRIG = 24 #brown, out
-USECHO = 23 #green, in
+US2TRIG = 24 #brown, out
+US2ECHO = 23 #green, in
 
 XDEGREES=400 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
@@ -69,8 +52,8 @@ BrickPi.MotorEnable[ARM] = 1
 BrickPi.MotorEnable[LWHEEL] = 1
 BrickPi.MotorEnable[RWHEEL] = 1
 GPIO.setup(IRIN, GPIO.IN)
-GPIO.setup(USECHO, GPIO.IN)
-GPIO.setup(USTRIG, GPIO.OUT)
+GPIO.setup(US2ECHO, GPIO.IN)
+GPIO.setup(US2TRIG, GPIO.OUT)
 BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPi.SensorType[TOUCHL] = TYPE_SENSOR_TOUCH
 BrickPi.SensorType[TOUCHR] = TYPE_SENSOR_TOUCH
@@ -98,18 +81,18 @@ def takeus2reading(): #detect distance of us2 (higher)
 	us2list=[]
 	for i in range(5):
 		#send out signal
-		GPIO.output(USTRIG, False)
+		GPIO.output(US2TRIG, False)
 		time.sleep(0.1)
-		GPIO.output(USTRIG, True)
+		GPIO.output(US2TRIG, True)
 		time.sleep(0.001)
-		GPIO.output(USTRIG, False)
+		GPIO.output(US2TRIG, False)
 		
 		#find length of signal
 		start = time.time()
 		stop = time.time()
-		while GPIO.input(USECHO) == 0:
+		while GPIO.input(US2ECHO) == 0:
 			start = time.time()
-		while GPIO.input(USECHO) == 1:
+		while GPIO.input(US2ECHO) == 1:
 			stop = time.time()
 		duration = stop - start
 		
