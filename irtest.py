@@ -5,5 +5,9 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(25, GPIO.IN)
 
 while True:
-  print GPIO.input(25)
-  time.sleep(0.2)
+	state=GPIO.input(25)
+		if state==0:
+			print "0"
+		elif state==1:
+			print "11111111111111111111111111111111111111111111111111111111111111111111111111"
+	time.sleep(0.2)
