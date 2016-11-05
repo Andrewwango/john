@@ -21,4 +21,4 @@ while True:
 	duration = stop - start
 	distance = int(duration * 340 * 100) #cm
 	print distance
-	time.sleep(0.1)
+	time.sleep(0.5)
