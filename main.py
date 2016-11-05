@@ -36,7 +36,7 @@ OPTLITTERRANGE = [10,25] #the opt distance range from which it can pick up stuff
 
 #Motor Power Constants
 WHEELPOWER     = -255
-TURNPOWER      = 160 #pos = forwards (for ease of use but not technically correct)
+TURNPOWER      = 140 #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5  #"
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -100
@@ -194,7 +194,7 @@ def detectprocedure(alreadyturning):
 		#activate us2 pos
 		if alreadyturning == False: #im not turning (so i want to activated pos)
 			print "sliding down bit by bit"
-			movelimbENC(ARM, BRINGDOWNPOWER, 100)
+			movelimbENC(ARM, BRINGDOWNPOWER, 90)
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 			time.sleep(0.3)
 
