@@ -1,12 +1,17 @@
+#//John (fully automated roadside litter picker)//#
+#            //Started 29.05.16//v5//             #
+#                //Andrew Wang//                  #
+#BrickPi: github.com/DexterInd/BrickPi_Python
+#import relevant modules
 from BrickPi import *
 import time
 import RPi.GPIO as GPIO
-BrickPiSetup()
 GPIO.setmode(GPIO.BCM)
+BrickPiSetup()
 
 '''ALGORITHM
 - Start facing fowards, and turn x degrees to activate sweeping position
-- Drive until US1 detects object.
+- Drive until US1(USNEW) detects object.
 	- Activate the higher US (US2)'s position
 		- If object not detected, then object is small (litter). Perform picking procedure.
 		- If object is  detected, then object is big(wall/edge). Perform turning procedure.
@@ -27,12 +32,14 @@ TOUCHL = PORT_3
 IRIN = 25 #yellow (when sth close, 0)
 US2TRIG = 24 #brown, out
 US2ECHO = 23 #green, in
+USNEWTRIG=17 #purple
+USNEWECHO=22 #yellow
 
 XDEGREES=380 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
-USSTANDARD     = 30 #us sensor detection threshold
+USSTANDARD     = 25 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
-OPTLITTERRANGE = [10,25] #the opt distance range from which it can pick up stuff
+OPTLITTERRANGE = [13,22] #the opt distance range from which it can pick up stuff
 
 #Motor Power Constants
 WHEELPOWER     = -255
@@ -47,70 +54,57 @@ BRINGDOWNPOWER = 120
 BRINGDOWNBRAKEPOWER = -5
 
 ##SETUP## motors, sensors, GPIO Pins
-BrickPi.MotorEnable[GRABBER] = 1
-BrickPi.MotorEnable[ARM] = 1
-BrickPi.MotorEnable[LWHEEL] = 1
-BrickPi.MotorEnable[RWHEEL] = 1
-GPIO.setup(IRIN, GPIO.IN)
-GPIO.setup(US2ECHO, GPIO.IN)
-GPIO.setup(US2TRIG, GPIO.OUT)
-BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
+BrickPi.MotorEnable[GRABBER] = 1 ; BrickPi.MotorEnable[ARM]    = 1
+BrickPi.MotorEnable[LWHEEL]  = 1 ; BrickPi.MotorEnable[RWHEEL] = 1
+
+BrickPi.SensorType[HEAD]   = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPi.SensorType[TOUCHL] = TYPE_SENSOR_TOUCH
 BrickPi.SensorType[TOUCHR] = TYPE_SENSOR_TOUCH
 BrickPiSetupSensors()
+
+GPIO.setup(IRIN, GPIO.IN)
+GPIO.setup(US2ECHO,   GPIO.IN)   ; GPIO.setup(US2TRIG,   GPIO.OUT)
+GPIO.setup(USNEWECHO, GPIO.IN)   ; GPIO.setup(USNEWTRIG, GPIO.OUT)
 turnycount = 1 #first turn is left(1) or right (0) (INCLUDING initial)
 
 
 #############
 ##FUNCTIONS##
 #############
-def takeusreading(): #detect distance of us
-	#take 9 readings then find average
-	uslist=[]
-	for i in range(9):
-		result = BrickPiUpdateValues()
-		if not result:
-			uslist += [int(BrickPi.Sensor[HEAD])]
-		time.sleep(0.02)
-	uslist.sort(); usreading = uslist[4] #median (get rid of anomalies)
-	print "usreading is " + str(usreading)
-	return usreading
-	
-def takeus2reading(): #detect distance of us2 (higher)
+def takeusreading(trig, echo): #detect distance of us2 (higher)
 	#take 5 readings then find average
-	us2list=[]
+	uslist=[]
 	for i in range(5):
 		#send out signal
-		GPIO.output(US2TRIG, False)
-		time.sleep(0.1)
-		GPIO.output(US2TRIG, True)
+		GPIO.output(trig, False)
 		time.sleep(0.001)
-		GPIO.output(US2TRIG, False)
+		GPIO.output(trig, True)
+		time.sleep(0.001)
+		GPIO.output(trig, False)
 		
 		#find length of signal
 		start = time.time()
 		stop = time.time()
-		while GPIO.input(US2ECHO) == 0:
+		while GPIO.input(echo) == 0:
 			start = time.time()
-		while GPIO.input(US2ECHO) == 1:
+		while GPIO.input(echo) == 1:
 			stop = time.time()
 		duration = stop - start
 		
 		#find length
 		distance = duration * 340 * 100 #cm
-		us2list += [int(distance)]
-		time.sleep(0.1)
-	us2list.sort(); us2reading = us2list[2] #median (get rid of anomalies)
-	print "higher us2reading is " + str(us2reading)
-	return us2reading
+		uslist += [int(distance)]
+		time.sleep(0.01)
+	uslist.sort(); usreading = uslist[2] #median (get rid of anomalies)
+	print "US reading is " + str(usreading)
+	return usreading
 
 def taketouchreadings():
 	#check if any touch sensor is pressed
 	result = BrickPiUpdateValues()
 	if not result:
 		if BrickPi.Sensor[TOUCHL]==1 or BrickPi.Sensor[TOUCHR]==1:
-			print "TOUCH"
-			return 1
+			print "TOUCH"; return 1
 		else:
 			return 0
 
@@ -185,7 +179,7 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=Fals
 		
 def detectprocedure(alreadyturning):
 	#check US or touch for object
-	tempreading = takeusreading()
+	tempreading = takeusreading(USNEWTRIG, USNEWECHO)
 	temptouchreading = taketouchreadings()
 	if tempreading < USSTANDARD or temptouchreading==1:
 		print "object detected"
@@ -199,7 +193,7 @@ def detectprocedure(alreadyturning):
 			time.sleep(0.3)
 
 		#check higher us2 for big thing	
-		if takeus2reading() > US2STANDARD:
+		if takeusreading(US2TRIG, US2ECHO) > US2STANDARD:
 			#LITTER (low-lying object)
 			#pick up litter procedure
 			print "low-lying object detected"
@@ -252,10 +246,9 @@ turnprocedure(XDEGREES)
 #main loop
 while True:
 	#stop actions
-	BrickPi.MotorSpeed[GRABBER] = 0
-	BrickPi.MotorSpeed[ARM] = 0
-	#drive
-	drivewheels(WHEELPOWER, WHEELPOWER)
+	BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
+
+	drivewheels(WHEELPOWER, WHEELPOWER) #drive
 	
 	detectprocedure(False) #search for object
 	
