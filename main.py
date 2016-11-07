@@ -68,7 +68,10 @@ BrickPiSetupSensors()
 GPIO.setup(IRIN, GPIO.IN)
 GPIO.setup(US2ECHO,   GPIO.IN)   ; GPIO.setup(US2TRIG,   GPIO.OUT)
 GPIO.setup(USNEWECHO, GPIO.IN)   ; GPIO.setup(USNEWTRIG, GPIO.OUT)
+
 turnycount = 1 #first turn is left(1) or right (0) (INCLUDING initial)
+totElapsedTurningEnc = 0
+tempElapsedTurningEnc = 0
 
 
 #############
@@ -153,9 +156,9 @@ def movelimbLENG(limb, speed, length, limb2=None, speed2=None): #move motor base
 		BrickPi.MotorSpeed[limb2] = 0
 
 def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=False): #move motor based on encoder
+	global elapsedturningenc
 	#encoderdeg is the change in encoder degrees (scalar)
 	#positive speed is positive encoder increase
-	global alreadyturning
 	startpos = takeencoderreading(limb)
 	if speed > 0:
 		modifier=1
@@ -173,8 +176,8 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=Fals
 		
 		if detection==True: #litter detection while moving
 			if modifiedreading >= 120: #turned enough so safe to start measuring for litter
+				totElapsedTurningEnc = modifiedreading
 				detectprocedure(True)
-			
 	#stop
 	BrickPi.MotorSpeed[limb] = 0
 	if limb2 != None:
@@ -194,6 +197,9 @@ def detectprocedure(alreadyturning):
 			movelimbENC(ARM, BRINGDOWNPOWER, 85)
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 			time.sleep(0.3)
+		
+		if alreadyturning==True:
+			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
 
 		#check higher us2 for big thing	
 		if takeusreading(US2TRIG, US2ECHO) > US2STANDARD:
@@ -202,8 +208,8 @@ def detectprocedure(alreadyturning):
 			print "low-lying object detected"
 			time.sleep(0.5)
 			
-			#if while turning, turn back a wee to correct offshoot
-			if alreadyturning == True:
+			#if while turning, turn back a wee to correct offshoot (only when turning quite a lot ie turning quickly)
+			if alreadyturning == True and tempElapsedTurningEnc >= 100:
 				#check which direction the normal turning is
 				if turnycount%2 == 1: #odd=RIGHT (opposite to before)
 					wheel1 = LWHEEL; wheel2 = RWHEEL
