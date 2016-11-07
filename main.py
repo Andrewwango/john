@@ -38,7 +38,7 @@ USNEWECHO=22 #yellow
 XDEGREES=380 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
 USSTANDARD     = 30 #us sensor detection threshold
-US2STANDARD    = 70 #higher us(2) detection threshold
+US2STANDARD    = 40 #higher us(2) detection threshold
 OPTLITTERRANGE = [13,22] #the opt distance range from which it can pick up stuff
 
 #Motor Power Constants
@@ -188,7 +188,7 @@ def detectprocedure(alreadyturning):
 		#activate us2 pos
 		if alreadyturning == False: #im not turning (so i want to activated pos)
 			print "sliding down bit by bit"
-			movelimbENC(ARM, BRINGDOWNPOWER, 90)
+			movelimbENC(ARM, BRINGDOWNPOWER, 85)
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 			time.sleep(0.3)
 
