@@ -170,7 +170,6 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=Fals
 		modifiedreading = (takeencoderreading(limb) - startpos)*modifier
 		if modifiedreading >= encoderdeg:
 			break #at final position
-		print "now set motor speeds to " + str(speed)
 		BrickPi.MotorSpeed[limb] = speed
 		if limb2 != None: #optional simultaneous second motor movement
 			BrickPi.MotorSpeed[limb2] = speed2
@@ -185,10 +184,10 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=Fals
 		BrickPi.MotorSpeed[limb2] = 0
 		
 def detectprocedure(alreadyturning):
+	global tempElapsedTurningEnc
 	#check US or touch for object
 	tempreading = takeusreading(USNEWTRIG, USNEWECHO)
 	temptouchreading = taketouchreadings()
-	print "start dect if"
 	if tempreading < USSTANDARD or temptouchreading==1:
 		print "object detected"
 		drivewheels(0,0)
@@ -202,7 +201,6 @@ def detectprocedure(alreadyturning):
 		
 		if alreadyturning==True:
 			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
-			print "temp done."
 
 		#check higher us2 for big thing	
 		if takeusreading(US2TRIG, US2ECHO) > US2STANDARD:
