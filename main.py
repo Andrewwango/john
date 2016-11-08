@@ -188,6 +188,7 @@ def detectprocedure(alreadyturning):
 	#check US or touch for object
 	tempreading = takeusreading(USNEWTRIG, USNEWECHO)
 	temptouchreading = taketouchreadings()
+	print "start dect if"
 	if tempreading < USSTANDARD or temptouchreading==1:
 		print "object detected"
 		drivewheels(0,0)
