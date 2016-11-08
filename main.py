@@ -276,7 +276,7 @@ def detectprocedure(alreadyturning):
 
 					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
 					print str(wheel1) + " is set to -" + str(TURNPOWER)
-				BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
+				#BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
 				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
 				time.sleep(0.2)
 								
