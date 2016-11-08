@@ -20,6 +20,7 @@ BrickPiSetup()
 
 #DO
 #if already turning, john detecting tall object, ignoring it, then redetecting perpetually
+#why the fuck is it just stalling
 
 ##CONSTANTS##
 #Port Assignments
@@ -156,7 +157,7 @@ def movelimbLENG(limb, speed, length, limb2=None, speed2=None): #move motor base
 		BrickPi.MotorSpeed[limb2] = 0
 
 def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=False): #move motor based on encoder
-	global elapsedturningenc
+	global totElapsedTurningEnc
 	#encoderdeg is the change in encoder degrees (scalar)
 	#positive speed is positive encoder increase
 	startpos = takeencoderreading(limb)
