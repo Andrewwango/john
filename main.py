@@ -273,7 +273,8 @@ def detectprocedure(alreadyturning):
 				while takeusreading(US2TRIG, US2ECHO) <= US2STANDARD:
 					print "in while loop."
 					#turn until wall is no longer in sight (to get rid of stalling problem)
-					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
+					#BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
+					drivewheels(TURNPOWER, -TURNPOWER)
 					print "updating values..."
 					BrickPiUpdateValues()
 				BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
