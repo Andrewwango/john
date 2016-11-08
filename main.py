@@ -193,7 +193,7 @@ def detectprocedure(alreadyturning):
 		drivewheels(0,0)
 		
 		#activate us2 pos
-		if alreadyturning == False: #im not turning (so i want to activated pos)
+		if alreadyturning == False: #im not turning (so i want to activate us2 pos)
 			print "sliding down bit by bit"
 			movelimbENC(ARM, BRINGDOWNPOWER, 85)
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
@@ -201,6 +201,7 @@ def detectprocedure(alreadyturning):
 		
 		if alreadyturning==True:
 			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
+			print "temp done."
 
 		#check higher us2 for big thing	
 		if takeusreading(US2TRIG, US2ECHO) > US2STANDARD:
