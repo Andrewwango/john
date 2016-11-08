@@ -262,6 +262,20 @@ def detectprocedure(alreadyturning):
 				print "lifting"
 				movelimbLENG(ARM, SLIDEUPPOWER, 0.3)
 				#loop back and carry on
+			elif alreadyturning == True: #im already turning so i want to get away from this goddamm wall
+				print "turning away from goddamm wall"
+				while takeusreading(US2TRIG, US2ECHO) <= US2STANDARD:
+					#turn until wall is no longer in sight (to get rid of stalling problem)
+					if turnycount%2 == 1: #odd=LEFT
+						wheel1 = RWHEEL; wheel2 = LWHEEL
+					else:
+						wheel1 = LWHEEL; wheel2 = RWHEEL
+					#use outside wheel to encode (although it doesn't matter)
+					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
+				BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
+				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
+				time.sleep(0.2)
+								
 
 ################
 ##MAIN PROGRAM##
