@@ -269,8 +269,10 @@ def detectprocedure(alreadyturning):
 					print "turning away"
 					if turnycount%2 == 1: #odd=LEFT
 						wheel1 = RWHEEL; wheel2 = LWHEEL
+						print "wheel1 set to RIGHT and wheel2 set to LEFT"
 					else:
 						wheel1 = LWHEEL; wheel2 = RWHEEL
+						print "wheel1 set to LEFT and wheel2 set to RIGHT"
 					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
 					print str(wheel1) + " is set to -" + str(TURNPOWER)
 				BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
