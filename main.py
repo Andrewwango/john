@@ -19,7 +19,6 @@ BrickPiSetup()
 '''
 
 #DO
-#if already turning, john detecting tall object, ignoring it, then redetecting perpetually
 
 ##CONSTANTS##
 #Port Assignments
@@ -50,7 +49,7 @@ TURNPOWER      = 180 #pos = forwards (for ease of use but not technically correc
 BRAKEPOWER     = -5  #"
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -100
-OPENPOWER      = 80
+OPENPOWER      = 120
 LIFTPOWER      = -200
 SLIDEUPPOWER   = -70
 BRINGDOWNPOWER = 120
@@ -264,19 +263,14 @@ def detectprocedure(alreadyturning):
 				#loop back and carry on
 			elif alreadyturning == True: #im already turning so i want to get away from this goddamm wall
 				print "turning away from goddamm wall"
-
-					
 				while takeusreading(US2TRIG, US2ECHO) <= US2STANDARD:
-					print "in while loop."
 					if turnycount%2 == 1: #odd=LEFT
 						wheel1 = RWHEEL; wheel2 = LWHEEL
 					else:
 						wheel1 = LWHEEL; wheel2 = RWHEEL
-					print "wheels set."
+
 					#turn until wall is no longer in sight (to get rid of stalling problem)
 					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
-					#drivewheels(TURNPOWER, -TURNPOWER)
-					print "updating values..."
 					BrickPiUpdateValues()
 				BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
 				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
