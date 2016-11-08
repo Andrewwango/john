@@ -20,7 +20,6 @@ BrickPiSetup()
 
 #DO
 #if already turning, john detecting tall object, ignoring it, then redetecting perpetually
-#why the fuck is it just stalling
 
 ##CONSTANTS##
 #Port Assignments
@@ -103,7 +102,10 @@ def takeusreading(trig, echo): #detect distance of us2 (higher)
 		uslist += [int(distance)]
 		time.sleep(0.01)
 	uslist.sort(); usreading = uslist[1] #median (get rid of anomalies)
-	print "US reading is " + str(usreading)
+	if trig==US2TRIG:
+		print "US2 reading is " + str(usreading)
+	elif trig==USNEWTRIG:
+		print "USNEW bottom reading is " + str(usreading)
 	return usreading
 
 def taketouchreadings():
