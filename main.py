@@ -170,7 +170,7 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=Fals
 		modifiedreading = (takeencoderreading(limb) - startpos)*modifier
 		if modifiedreading >= encoderdeg:
 			break #at final position
-		print "now set motor speeds"
+		print "now set motor speeds to " + str(speed)
 		BrickPi.MotorSpeed[limb] = speed
 		if limb2 != None: #optional simultaneous second motor movement
 			BrickPi.MotorSpeed[limb2] = speed2
