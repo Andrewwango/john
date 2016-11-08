@@ -264,15 +264,16 @@ def detectprocedure(alreadyturning):
 				#loop back and carry on
 			elif alreadyturning == True: #im already turning so i want to get away from this goddamm wall
 				print "turning away from goddamm wall"
+				if turnycount%2 == 1: #odd=LEFT
+					wheel1 = RWHEEL; wheel2 = LWHEEL
+					print "wheel1 set to RIGHT and wheel2 set to LEFT"
+				else:
+					wheel1 = LWHEEL; wheel2 = RWHEEL
+					print "wheel1 set to LEFT and wheel2 set to RIGHT"
 				while takeusreading(US2TRIG, US2ECHO) <= US2STANDARD:
 					#turn until wall is no longer in sight (to get rid of stalling problem)
 					print "turning away"
-					if turnycount%2 == 1: #odd=LEFT
-						wheel1 = RWHEEL; wheel2 = LWHEEL
-						print "wheel1 set to RIGHT and wheel2 set to LEFT"
-					else:
-						wheel1 = LWHEEL; wheel2 = RWHEEL
-						print "wheel1 set to LEFT and wheel2 set to RIGHT"
+
 					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
 					print str(wheel1) + " is set to -" + str(TURNPOWER)
 				BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
