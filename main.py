@@ -266,6 +266,7 @@ def detectprocedure(alreadyturning):
 				print "turning away from goddamm wall"
 				while takeusreading(US2TRIG, US2ECHO) <= US2STANDARD:
 					#turn until wall is no longer in sight (to get rid of stalling problem)
+					print "turning away"
 					if turnycount%2 == 1: #odd=LEFT
 						wheel1 = RWHEEL; wheel2 = LWHEEL
 					else:
