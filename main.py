@@ -272,6 +272,7 @@ def detectprocedure(alreadyturning):
 				while takeusreading(US2TRIG, US2ECHO) <= US2STANDARD:
 					#turn until wall is no longer in sight (to get rid of stalling problem)
 					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
+					print "updating values..."
 					BrickPiUpdateValues()
 				BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
 				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
