@@ -4,6 +4,8 @@ GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(23, GPIO.IN) #green, echo
 GPIO.setup(24, GPIO.OUT) #brown, trig
+GPIO.setup(17, GPIO.OUT)
+GPIO.output(24, False); GPIO.output(17, False)
 
 while True:
 	GPIO.output(24, False)
