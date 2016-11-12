@@ -8,19 +8,22 @@ GPIO.setup(17, GPIO.OUT)
 GPIO.output(24, False); GPIO.output(17, False)
 
 while True:
-	GPIO.output(24, False)
-	time.sleep(0.1)
-	GPIO.output(24, True)
-	time.sleep(0.001)
-	GPIO.output(24, False)
-	
-	start = time.time()
-	stop = time.time()
-	while GPIO.input(23) == 0:
+	try:
+		GPIO.output(24, False)
+		time.sleep(0.1)
+		GPIO.output(24, True)
+		time.sleep(0.001)
+		GPIO.output(24, False)
+
 		start = time.time()
-	while GPIO.input(23) == 1:
 		stop = time.time()
-	duration = stop - start
-	distance = int(duration * 340 * 100) #cm
-	print distance
-	time.sleep(0.5)
+		while GPIO.input(23) == 0:
+			start = time.time()
+		while GPIO.input(23) == 1:
+			stop = time.time()
+		duration = stop - start
+		distance = int(duration * 340 * 100) #cm
+		print distance
+		time.sleep(0.5)
+	except KeyboardInterrupt:
+		GPIO.cleanup()
