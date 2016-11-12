@@ -77,6 +77,7 @@ tempElapsedTurningEnc = 0
 ##FUNCTIONS##
 #############
 def takeusreading(trig, echo): #detect distance of us2 (higher)
+	GPIO.output(US2TRIG, False); GPIO.output(USNEWTRIG, False) #switch everything off
 	#take 5 readings then find average
 	uslist=[]
 	for i in range(3):
