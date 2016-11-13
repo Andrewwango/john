@@ -1,5 +1,5 @@
 #//John (fully automated roadside litter picker)//#
-#            //Started 29.05.16//v5//             #
+#            //Started 29.05.16//v7//             #
 #                //Andrew Wang//                  #
 #BrickPi: github.com/DexterInd/BrickPi_Python
 #import relevant modules
@@ -26,22 +26,20 @@ LWHEEL = PORT_D
 RWHEEL = PORT_A
 GRABBER = PORT_B
 ARM = PORT_C
-HEAD = PORT_1
-TOUCHR = PORT_2
+HEAD = PORT_2
+TOUCHR = PORT_1
 TOUCHL = PORT_3
 
 #GPIO Pins
 IRIN = 25 #yellow (when sth close, 0)
 US2TRIG = 24 #brown, out
 US2ECHO = 23 #green, in
-USNEWTRIG=17 #purple
-USNEWECHO=22 #yellow
 
 XDEGREES=380 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
 USSTANDARD     = 30 #us sensor detection threshold
 US2STANDARD    = 40 #higher us(2) detection threshold
-OPTLITTERRANGE = [13,22] #the opt distance range from which it can pick up stuff
+OPTLITTERRANGE = [10,25] #the opt distance range from which it can pick up stuff
 
 #Motor Power Constants
 WHEELPOWER     = -255
@@ -76,7 +74,20 @@ tempElapsedTurningEnc = 0
 #############
 ##FUNCTIONS##
 #############
-def takeusreading(trig, echo): #detect distance of us2 (higher)
+
+def takeus1reading(): #detect distance of bottom us
+	#take 3 readings then find average
+	uslist=[]
+	for i in range(3):
+		result = BrickPiUpdateValues()
+		if not result:
+			uslist += [int(BrickPi.Sensor[HEAD])]
+		time.sleep(0.02)
+	uslist.sort(); usreading = uslist[1] #median (get rid of anomalies)
+	print "us1reading is " + str(usreading)
+	return usreading
+
+def takeus2reading(trig, echo): #detect distance of us2 (higher)
 	GPIO.output(US2TRIG, False); GPIO.output(USNEWTRIG, False) #switch everything off
 	#take 5 readings then find average
 	uslist=[]
@@ -102,10 +113,7 @@ def takeusreading(trig, echo): #detect distance of us2 (higher)
 		uslist += [int(distance)]
 		time.sleep(0.01)
 	uslist.sort(); usreading = uslist[1] #median (get rid of anomalies)
-	if trig==US2TRIG:
-		print "US2 reading is " + str(usreading)
-	elif trig==USNEWTRIG:
-		print "USNEW bottom reading is " + str(usreading)
+	print "US2 reading is " + str(usreading)
 	return usreading
 
 def taketouchreadings():
@@ -188,7 +196,7 @@ def movelimbENC(limb, speed, encoderdeg, limb2=None, speed2=None, detection=Fals
 def detectprocedure(alreadyturning):
 	global tempElapsedTurningEnc
 	#check US or touch for object
-	tempreading = takeusreading(USNEWTRIG, USNEWECHO)
+	tempreading = takeus1reading()
 	temptouchreading = taketouchreadings()
 	if tempreading < USSTANDARD or temptouchreading==1:
 		print "object detected"
@@ -205,7 +213,7 @@ def detectprocedure(alreadyturning):
 			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
 
 		#check higher us2 for big thing	
-		if takeusreading(US2TRIG, US2ECHO) > US2STANDARD:
+		if takeus2reading(US2TRIG, US2ECHO) > US2STANDARD:
 			#LITTER (low-lying object)
 			#pick up litter procedure
 			print "low-lying object detected"
@@ -264,7 +272,7 @@ def detectprocedure(alreadyturning):
 				#loop back and carry on
 			elif alreadyturning == True: #im already turning so i want to get away from this goddamm wall
 				print "turning away from goddamm wall"
-				while takeusreading(US2TRIG, US2ECHO) <= US2STANDARD:
+				while takeus2reading(US2TRIG, US2ECHO) <= US2STANDARD:
 					if turnycount%2 == 1: #odd=LEFT
 						wheel1 = RWHEEL; wheel2 = LWHEEL
 					else:
