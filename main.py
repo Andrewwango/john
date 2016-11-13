@@ -11,7 +11,7 @@ BrickPiSetup()
 
 '''ALGORITHM
 - Start facing fowards, and turn x degrees to activate sweeping position
-- Drive until US1(USNEW) detects object.
+- Drive until US1 detects object.
 	- Activate the higher US (US2)'s position
 		- If object not detected, then object is small (litter). Perform picking procedure.
 		- If object is  detected, then object is big(wall/edge). Perform turning procedure.
@@ -64,7 +64,6 @@ BrickPiSetupSensors()
 
 GPIO.setup(IRIN, GPIO.IN)
 GPIO.setup(US2ECHO,   GPIO.IN)   ; GPIO.setup(US2TRIG,   GPIO.OUT)
-GPIO.setup(USNEWECHO, GPIO.IN)   ; GPIO.setup(USNEWTRIG, GPIO.OUT)
 
 turnycount = 1 #first turn is left(1) or right (0) (INCLUDING initial)
 totElapsedTurningEnc = 0
@@ -88,7 +87,7 @@ def takeus1reading(): #detect distance of bottom us
 	return usreading
 
 def takeus2reading(trig, echo): #detect distance of us2 (higher)
-	GPIO.output(US2TRIG, False); GPIO.output(USNEWTRIG, False) #switch everything off
+	GPIO.output(US2TRIG, False) #switch everything off
 	#take 5 readings then find average
 	uslist=[]
 	for i in range(3):
@@ -294,17 +293,21 @@ turnprocedure(XDEGREES)
 
 #main loop
 while True:
-	#stop actions
-	BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
+	try:
+		#stop actions
+		BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
 
-	drivewheels(WHEELPOWER, WHEELPOWER) #drive
+		drivewheels(WHEELPOWER, WHEELPOWER) #drive
+		
+		detectprocedure(False) #search for object
+		
+		#check IR for cliff
+		if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
+			#CLIFF - reverse
+			print "CLIFF"
+			movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
+			turnprocedure(XDEGREES*2)
+			#loop back and carry on]
 	
-	detectprocedure(False) #search for object
-	
-	#check IR for cliff
-	if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
-		#CLIFF - reverse
-		print "CLIFF"
-		movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
-		turnprocedure(XDEGREES*2)
-		#loop back and carry on
+	except KeyboardInterrupt:
+		GPIO.cleanup()
