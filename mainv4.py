@@ -58,7 +58,7 @@ BrickPi.SensorType[HEAD] = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPi.SensorType[TOUCHL] = TYPE_SENSOR_TOUCH
 BrickPi.SensorType[TOUCHR] = TYPE_SENSOR_TOUCH
 BrickPiSetupSensors()
-turnycount = 1 #first turn is left(1) or right (0) (INCLUDING initial)
+turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
 
 
 #############
