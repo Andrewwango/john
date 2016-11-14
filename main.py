@@ -37,7 +37,7 @@ US2ECHO = 23 #green, in
 
 XDEGREES=380 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
-USSTANDARD     = 20 #us sensor detection threshold
+USSTANDARD     = 23 #us sensor detection threshold
 US2STANDARD    = 60 #higher us(2) detection threshold
 OPTLITTERRANGE = [10,25] #the opt distance range from which it can pick up stuff
 
@@ -208,8 +208,8 @@ def detectprocedure(alreadyturning):
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 			time.sleep(0.3)
 		
-#		if alreadyturning==True:
-#			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
+		if alreadyturning==True:
+			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
 
 		#check higher us2 for big thing	
 		if takeus2reading(US2TRIG, US2ECHO) > US2STANDARD:
