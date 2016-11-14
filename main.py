@@ -208,8 +208,8 @@ def detectprocedure(alreadyturning):
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 			time.sleep(0.3)
 		
-		if alreadyturning==True:
-			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
+#		if alreadyturning==True:
+#			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
 
 		#check higher us2 for big thing	
 		if takeus2reading(US2TRIG, US2ECHO) > US2STANDARD:
@@ -218,17 +218,17 @@ def detectprocedure(alreadyturning):
 			print "low-lying object detected"
 			time.sleep(0.5)
 			
-			#if while turning, turn back a wee to correct offshoot (only when turning quite a lot ie turning quickly)
-			if alreadyturning == True and tempElapsedTurningEnc >= 100:
-				#check which direction the normal turning is
-				if turnycount%2 == 1: #odd=RIGHT (opposite to before)
-					wheel1 = LWHEEL; wheel2 = RWHEEL
-				else:
-					wheel1 = RWHEEL; wheel2 = LWHEEL
-				#use outside wheel to encode (although it doesn't matter)
-				movelimbENC(wheel1, -TURNPOWER, 20, wheel2, TURNPOWER)
-				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake			
-				time.sleep(0.2)
+#			#if while turning, turn back a wee to correct offshoot (only when turning quite a lot ie turning quickly)
+#			if alreadyturning == True and tempElapsedTurningEnc >= 100:
+#				#check which direction the normal turning is
+#				if turnycount%2 == 1: #odd=RIGHT (opposite to before)
+#					wheel1 = LWHEEL; wheel2 = RWHEEL
+#				else:
+#					wheel1 = RWHEEL; wheel2 = LWHEEL
+#				#use outside wheel to encode (although it doesn't matter)
+#				movelimbENC(wheel1, -TURNPOWER, 20, wheel2, TURNPOWER)
+#				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake			
+#				time.sleep(0.2)
 			
 			#shooby
 			if tempreading <= OPTLITTERRANGE[0]: #too close
