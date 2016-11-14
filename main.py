@@ -37,7 +37,7 @@ US2ECHO = 23 #green, in
 
 XDEGREES=380 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
-USSTANDARD     = 23 #us sensor detection threshold
+USSTANDARD     = 20 #us sensor detection threshold
 US2STANDARD    = 60 #higher us(2) detection threshold
 OPTLITTERRANGE = [10,25] #the opt distance range from which it can pick up stuff
 
@@ -218,17 +218,17 @@ def detectprocedure(alreadyturning):
 			print "low-lying object detected"
 			time.sleep(0.5)
 			
-#			#if while turning, turn back a wee to correct offshoot (only when turning quite a lot ie turning quickly)
-#			if alreadyturning == True and tempElapsedTurningEnc >= 100:
-#				#check which direction the normal turning is
-#				if turnycount%2 == 1: #odd=RIGHT (opposite to before)
-#					wheel1 = LWHEEL; wheel2 = RWHEEL
-#				else:
-#					wheel1 = RWHEEL; wheel2 = LWHEEL
-#				#use outside wheel to encode (although it doesn't matter)
-#				movelimbENC(wheel1, -TURNPOWER, 20, wheel2, TURNPOWER)
-#				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake			
-#				time.sleep(0.2)
+			#if while turning, turn back a wee to correct offshoot (only when turning quite a lot ie turning quickly)
+			if alreadyturning == True and tempElapsedTurningEnc >= 100:
+				#check which direction the normal turning is
+				if turnycount%2 == 1: #odd=RIGHT (opposite to before)
+					wheel1 = LWHEEL; wheel2 = RWHEEL
+				else:
+					wheel1 = RWHEEL; wheel2 = LWHEEL
+				#use outside wheel to encode (although it doesn't matter)
+				movelimbENC(wheel1, -TURNPOWER, 20, wheel2, TURNPOWER)
+				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake			
+				time.sleep(0.2)
 			
 			#shooby
 			if tempreading <= OPTLITTERRANGE[0]: #too close
