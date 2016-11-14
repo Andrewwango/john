@@ -37,13 +37,13 @@ US2ECHO = 23 #green, in
 
 XDEGREES=380 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
-USSTANDARD     = 20 #us sensor detection threshold
-US2STANDARD    = 60 #higher us(2) detection threshold
+USSTANDARD     = 23 #us sensor detection threshold
+US2STANDARD    = 70 #higher us(2) detection threshold
 OPTLITTERRANGE = [10,25] #the opt distance range from which it can pick up stuff
 
 #Motor Power Constants
 WHEELPOWER     = -255
-TURNPOWER      = 180 #pos = forwards (for ease of use but not technically correct)
+TURNPOWER      = 150 #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5  #"
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -100
