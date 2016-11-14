@@ -305,7 +305,7 @@ while True:
 		if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
 			#CLIFF - reverse
 			print "CLIFF"
-			movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
+			movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER)
 			turnprocedure(XDEGREES*2)
 			#loop back and carry on]
 	
