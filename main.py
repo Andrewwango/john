@@ -37,8 +37,8 @@ US2ECHO = 23 #green, in
 
 XDEGREES=380 #angle between robot path and path (in wheel encoderdegs)
              #min 363 (see John movement model)
-USSTANDARD     = 30 #us sensor detection threshold
-US2STANDARD    = 40 #higher us(2) detection threshold
+USSTANDARD     = 20 #us sensor detection threshold
+US2STANDARD    = 60 #higher us(2) detection threshold
 OPTLITTERRANGE = [10,25] #the opt distance range from which it can pick up stuff
 
 #Motor Power Constants
