@@ -5,18 +5,25 @@ BrickPiSetup()
 BrickPi.MotorEnable[PORT_C] = 1
 BrickPiSetupSensors()
 
+#down
+BrickPi.MotorSpeed[PORT_C] = 80
+ot = time.time()
+while(time.time() - ot < 0.3):
+	BrickPiUpdateValues()
+	time.sleep(.1)
+
 for i in range(5):
-	#down
-	BrickPi.MotorSpeed[PORT_C] = 120
-	ot = time.time()
-	while(time.time() - ot < 0.5):
-		BrickPiUpdateValues()
-		time.sleep(.1)
+
 	#up
-	BrickPi.MotorSpeed[PORT_C] = -150
+	BrickPi.MotorSpeed[PORT_C] = -100
 	ot = time.time()
-	while(time.time() - ot < 0.5):
+	while(time.time() - ot < 0.2):
 		BrickPiUpdateValues()
 		time.sleep(.1)		
 		
-
+	#down
+	BrickPi.MotorSpeed[PORT_C] = 80
+	ot = time.time()
+	while(time.time() - ot < 0.2):
+		BrickPiUpdateValues()
+		time.sleep(.1)
