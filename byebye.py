@@ -8,7 +8,7 @@ BrickPiSetupSensors()
 #down
 BrickPi.MotorSpeed[PORT_C] = 80
 ot = time.time()
-while(time.time() - ot < 0.6):
+while(time.time() - ot < 0.7):
 	BrickPiUpdateValues()
 	time.sleep(.1)
 
@@ -24,6 +24,6 @@ for i in range(5):
 	#down
 	BrickPi.MotorSpeed[PORT_C] = 80
 	ot = time.time()
-	while(time.time() - ot < 0.5):
+	while(time.time() - ot < 0.4):
 		BrickPiUpdateValues()
 		time.sleep(.1)
