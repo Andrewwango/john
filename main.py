@@ -2,6 +2,7 @@
 #            //Started 29.05.16//v7//             #
 #                //Andrew Wang//                  #
 #BrickPi: github.com/DexterInd/BrickPi_Python
+#remember to ./stopev.sh (disable getty via systemctl) on boot!
 #import relevant modules
 from BrickPi import *
 import time
