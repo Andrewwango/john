@@ -1,13 +1,15 @@
 import time
 from BrickPi import *
 
+port=PORT_A
+
 BrickPiSetup()
-BrickPi.MotorEnable[PORT_D] = 1
+BrickPi.MotorEnable[port]=1
 #BrickPi.MotorEnable[PORT_D] = 1
 BrickPiSetupSensors()
 
 
-BrickPi.MotorSpeed[PORT_D] = -200
+BrickPi.MotorSpeed[port-200
 #BrickPi.MotorSpeed[PORT_A] = -200
 ot = time.time()
 while(time.time() - ot < 5):    #running while loop for 3 seconds
