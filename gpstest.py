@@ -1,5 +1,6 @@
 import gps
-
+#kill gpsd: sudo killall gpsd
+#sudo rm /var/run/gpsd.socket
 # Listen on port 2947 (gpsd) of localhost
 session = gps.gps("localhost", "2947")
 session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
