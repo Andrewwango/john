@@ -1,14 +1,8 @@
 #!/usr/bin/python
-import smbus
-import time
-import math
+import smbus, time, math
 
 bus = smbus.SMBus(1)
 address = 0x1e
-
-
-def read_byte(adr):
-    return bus.read_byte_data(address, adr)
 
 def read_word(adr):
     high = bus.read_byte_data(address, adr)
