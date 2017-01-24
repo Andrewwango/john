@@ -63,6 +63,6 @@ def getGPScoords(sesh):
 	except KeyboardInterrupt:
 		quit()
 	except StopIteration:
-		session = None
+		sesh = None
 		print "GPSD has terminated"
 
