@@ -36,11 +36,12 @@ while True:
 		if looper==3: #only check once every 3 loops
 			for i in range(3): #reliability
 				currentcoords = compassgpsutils.getGPScoords()
+				print currentcoords
 				print 'checkin'+str(i)
 				#am i at a cdp?
-				for point in cdp:
-					if abs(point[0]-currentcoords[0])<=0.00001 and abs(point[1]-currentcoords[1])<=0.00001:
-						checker+=[point]
+				#for point in cdp:
+				#	if abs(point[0]-currentcoords[0])<=0.00001 and abs(point[1]-currentcoords[1])<=0.00001:
+				#		checker+=[point]
 				if len(checker) < (i+1):
 					#no new point was added, no point in iterating anymore, get out of loop
 					break
