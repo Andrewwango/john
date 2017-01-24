@@ -15,6 +15,7 @@ while True:
             if hasattr(report, 'lon'):
 		if hasattr(report, 'lat'):
                 	print str(report.lat) + ", " + str(report. lon)
+			time.sleep(0.2)
     except KeyError:
 		pass
     except KeyboardInterrupt:
