@@ -1,4 +1,4 @@
-import gps
+import gps, time
 #kill gpsd: sudo killall gpsd
 #sudo rm /var/run/gpsd.socket
 # Listen on port 2947 (gpsd) of localhost
