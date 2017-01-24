@@ -46,7 +46,7 @@ while True:
 					#no new point was added, no point in iterating anymore, get out of loop
 					break
 						
-				
+		print 'looper' + str(looper)
 		if all(x == checker[0] for x in checker)==True and checker!=[]:
 			#CDP reached
 			print "cdp"
