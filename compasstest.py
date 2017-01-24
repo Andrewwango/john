@@ -26,8 +26,8 @@ write_byte(2, 0b00000000) # Continuous sampling
 
 scale = 0.92
 while 1:
-    x_offset = -23
-    y_offset = -84
+    x_offset = -55
+    y_offset = -26
     x_out = (read_word_2c(3) - x_offset) * scale
     y_out = (read_word_2c(7) - y_offset) * scale
     z_out = (read_word_2c(5)) * scale
