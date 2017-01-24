@@ -9,7 +9,7 @@ y_offset = -84
 scale=0.92
 
 #gps setup
-def gpssetup.py():
+def gpssetup():
 	global session
 	# Listen on port 2947 (gpsd) of localhost
 	session = gps.gps("localhost", "2947")
