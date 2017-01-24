@@ -39,10 +39,11 @@ while True:
 				currentcoords = compassgpsutils.getGPScoords(seshvar)
 				print currentcoords
 				print 'checkin'+str(i)
-				#am i at a cdp?
-				#for point in cdp:
-				#	if abs(point[0]-currentcoords[0])<=0.00001 and abs(point[1]-currentcoords[1])<=0.00001:
-				#		checker+=[point]
+				if currentcoords != None:
+					#am i at a cdp?
+					for point in cdp:
+						if abs(point[0]-currentcoords[0])<=0.00001 and abs(point[1]-currentcoords[1])<=0.00001:
+							checker+=[point]
 				if len(checker) < (i+1):
 					#no new point was added, no point in iterating anymore, get out of loop
 					break
