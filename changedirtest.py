@@ -42,7 +42,7 @@ while True:
 				if currentcoords != None:
 					#am i at a cdp?
 					for point in cdp:
-						if abs(point[0]-currentcoords[0])<=0.00005 and abs(point[1]-currentcoords[1])<=0.00005:
+						if abs(point[0]-currentcoords[0])<=0.00003 and abs(point[1]-currentcoords[1])<=0.00003:
 							checker+=[point]
 				if len(checker) < (i+1):
 					#no new point was added, no point in iterating anymore, get out of loop
@@ -56,7 +56,7 @@ while True:
 			print currentcdp
 			while abs(compassgpsutils.takebearing()-currentcdp[2]) > 10.0:
 				print "turn more"
-				time.sleep(0.2)
+				time.sleep(0.7)
 			print "cdpb reached"
 			cdp.remove(currentcdp)
 			time.sleep(1)
