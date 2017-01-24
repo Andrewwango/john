@@ -4,6 +4,8 @@ import RPi.GPIO as GPIO
 BrickPiSetup()
 GPIO.setmode(GPIO.BCM)
 
+###############OLD VERSION 4
+
 '''ALGORITHM
 - Start facing fowards, and turn x degrees to activate sweeping position
 - Drive until US1 detects object.
