@@ -34,6 +34,7 @@ while True:
 		#check if routepoint reached
 		checker=[]
 		if looper==3: #only check once every 3 loops
+			looper = 0
 			for i in range(3): #reliability
 				currentcoords = compassgpsutils.getGPScoords(seshvar)
 				print currentcoords
