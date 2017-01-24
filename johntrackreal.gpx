@@ -24,6 +24,9 @@
 <trkpt lat="53.41588" lon="-2.24375">
 <ele>41</ele>
 <time>2017-01-23T00:04:43Z</time></trkpt>
+<trkpt lat="53.41585" lon="-2.24375">
+<ele>41</ele>
+<time>2017-01-23T00:04:43Z</time></trkpt>
 </trkseg>
 </trk>
 </gpx>
