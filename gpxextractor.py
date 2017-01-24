@@ -1,7 +1,7 @@
 import math, os
 
 #import file
-gpxfile=open((os.getcwd()+'/johntrackreal.gpx'),'r') #see screenshot for 'jtreal'
+gpxfile=open((os.path.join(os.path.dirname(__file__),'johntrackreal.gpx')),'r') #see screenshot for 'jtreal'
 gpxdata=gpxfile.read().split()
 cdp=[] #changedirpoints - [[lat1,lon1,bear1],[lat2,...],...]
 
