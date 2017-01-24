@@ -36,5 +36,3 @@ def makecdp():
 	print cdp
 	return cdp
 
-for i in makecdp():
-	print i
