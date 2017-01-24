@@ -1,4 +1,4 @@
-import smbus, gps
+import smbus, gps, time
 session=None
 
 #compass setup
@@ -67,3 +67,8 @@ def getGPScoords():
 	except StopIteration:
 		session = None
 		print "GPSD has terminated"
+
+gpssetup()
+while 1:
+	getGPScoords()
+	time.sleep(0.2)
