@@ -6,6 +6,8 @@ XDEGREES=30
 ##PROCESS GPX##
 cdp = gpxextractor.makecdp()[:]
 currentcdp = cdp[0]
+print cdp
+print currentcdp
 
 compassgpsutils.gpssetup()
 
