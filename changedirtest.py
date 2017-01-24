@@ -44,6 +44,9 @@ while True:
 					for point in cdp:
 						if abs(point[0]-currentcoords[0])<=0.00003 and abs(point[1]-currentcoords[1])<=0.00003:
 							checker+=[point]
+							print 'point added'
+						else:
+							print 'point not added'
 				if len(checker) < (i+1):
 					#no new point was added, no point in iterating anymore, get out of loop
 					break
