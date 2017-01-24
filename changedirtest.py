@@ -58,6 +58,7 @@ while True:
 				print "turn more"
 				time.sleep(0.2)
 			print "cdpb reached"
+			cdp.remove(currentcdp)
 			time.sleep(1)
 			break
 		
