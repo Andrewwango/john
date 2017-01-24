@@ -1,5 +1,4 @@
 import smbus, gps, time
-session=None
 
 #compass setup
 bus = smbus.SMBus(1)
@@ -10,10 +9,10 @@ scale=0.92
 
 #gps setup
 def gpssetup():
-	global session
 	# Listen on port 2947 (gpsd) of localhost
 	session = gps.gps("localhost", "2947")
 	session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
+	return session
 
 #compass setup funcs
 def read_word(adr):
@@ -48,10 +47,9 @@ def takebearing():
 	print "Bearing: ", math.degrees(bearing)
 	return math.degrees(bearing)
 
-def getGPScoords():
-	global session
+def getGPScoords(sesh):
 	try:
-		report = session.next()
+		report = sesh.next()
 		# Wait for a 'TPV' report and display the current coods
 		#print report
 		if report['class'] == 'TPV':
@@ -68,7 +66,3 @@ def getGPScoords():
 		session = None
 		print "GPSD has terminated"
 
-gpssetup()
-while 1:
-	print getGPScoords()
-	time.sleep(0.2)
