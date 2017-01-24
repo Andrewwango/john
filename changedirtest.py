@@ -9,7 +9,7 @@ currentcdp = cdp[0]
 print cdp
 print currentcdp
 
-compassgpsutils.gpssetup()
+seshvar = compassgpsutils.gpssetup()
 
 #rest of setup
 
@@ -35,7 +35,7 @@ while True:
 		checker=[]
 		if looper==3: #only check once every 3 loops
 			for i in range(3): #reliability
-				currentcoords = compassgpsutils.getGPScoords()
+				currentcoords = compassgpsutils.getGPScoords(seshvar)
 				print currentcoords
 				print 'checkin'+str(i)
 				#am i at a cdp?
