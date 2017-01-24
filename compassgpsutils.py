@@ -1,4 +1,5 @@
 import smbus, gps
+session=None
 
 #compass setup
 bus = smbus.SMBus(1)
@@ -8,9 +9,11 @@ y_offset = -84
 scale=0.92
 
 #gps setup
-# Listen on port 2947 (gpsd) of localhost
-session = gps.gps("localhost", "2947")
-session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
+def gpssetup.py():
+	global session
+	# Listen on port 2947 (gpsd) of localhost
+	session = gps.gps("localhost", "2947")
+	session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
 
 #compass setup funcs
 def read_word(adr):
@@ -46,6 +49,7 @@ def takebearing():
 	return math.degrees(bearing)
 
 def getGPScoords():
+	global session
 	try:
 		report = session.next()
 		# Wait for a 'TPV' report and display the current coods
