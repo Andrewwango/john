@@ -1,4 +1,4 @@
-import smbus, gps, time
+import smbus, gps, time, math
 
 #compass setup
 bus = smbus.SMBus(1)
