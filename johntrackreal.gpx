@@ -6,6 +6,9 @@
 <trk>
 <name>Johntrackreal</name>
 <trkseg>
+<trkpt lat="53.41585" lon="-2.24374">
+<ele>41</ele>
+<time>2017-01-23T00:04:43Z</time></trkpt>
 <trkpt lat="53.41606" lon="-2.24351">
 <ele>38</ele>
 <time>2017-01-23T00:00:00Z</time></trkpt>
@@ -19,9 +22,6 @@
 <ele>41</ele>
 <time>2017-01-23T00:04:36Z</time></trkpt>
 <trkpt lat="53.41909" lon="-2.24121">
-<ele>41</ele>
-<time>2017-01-23T00:04:43Z</time></trkpt>
-<trkpt lat="53.41585" lon="-2.24374">
 <ele>41</ele>
 <time>2017-01-23T00:04:43Z</time></trkpt>
 </trkseg>
