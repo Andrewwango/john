@@ -70,5 +70,5 @@ def getGPScoords():
 
 gpssetup()
 while 1:
-	getGPScoords()
+	print getGPScoords()
 	time.sleep(0.2)
