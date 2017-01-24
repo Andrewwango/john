@@ -42,7 +42,7 @@ while True:
 				if currentcoords != None:
 					#am i at a cdp?
 					for point in cdp:
-						if abs(point[0]-currentcoords[0])<=0.00001 and abs(point[1]-currentcoords[1])<=0.00001:
+						if abs(point[0]-currentcoords[0])<=0.00003 and abs(point[1]-currentcoords[1])<=0.00003:
 							checker+=[point]
 				if len(checker) < (i+1):
 					#no new point was added, no point in iterating anymore, get out of loop
