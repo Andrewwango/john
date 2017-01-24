@@ -50,14 +50,12 @@ def takebearing():
 def getGPScoords(sesh):
 	try:
 		report = sesh.next()
-		print 'got report'
 		# Wait for a 'TPV' report and display the current coods
 		#print report
 		if report['class'] == 'TPV':
 			if hasattr(report, 'lon'):
 				if hasattr(report, 'lat'):
 					coordsout = [float(report.lat),float(report.lon)]
-					print coordsout
 					return coordsout
 	except KeyError:
 		pass
