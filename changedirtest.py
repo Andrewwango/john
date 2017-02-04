@@ -1,7 +1,8 @@
-import time, math
+import time, math, pygame
 import gpxextractor, compassgpsutils
 
 XDEGREES=30
+clock=pygame.time.Clock()
 
 ##PROCESS GPX##
 cdp = gpxextractor.makecdp()[:]
@@ -62,4 +63,5 @@ while True:
 			time.sleep(1)
 			break
 		
+		clock.tick(10)
 			
