@@ -63,5 +63,5 @@ while True:
 			time.sleep(1)
 			break
 		
-		clock.tick(10)
+		clock.tick(3)
 			
