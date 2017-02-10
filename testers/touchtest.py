@@ -2,7 +2,7 @@ from BrickPi import *
 
 BrickPiSetup()  # setup the serial port for communication
 
-BrickPi.SensorType[PORT_2] = TYPE_SENSOR_TOUCH   #Set the type of sensor at PORT_1
+BrickPi.SensorType[PORT_1] = TYPE_SENSOR_TOUCH   #Set the type of sensor at PORT_1
 
 BrickPiSetupSensors()   #Send the properties of sensors to BrickPi
 
