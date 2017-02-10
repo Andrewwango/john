@@ -1,7 +1,7 @@
 import time
 from BrickPi import *
 
-port=PORT_B
+port=PORT_A
 
 BrickPiSetup()
 BrickPi.MotorEnable[port]=1
