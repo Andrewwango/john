@@ -1,6 +1,10 @@
 #!/usr/bin/python
 import smbus, time, math
 
+x_offset = -300
+y_offset = -17
+north_offset = 32 #place phone facing in john direction
+
 bus = smbus.SMBus(1)
 address = 0x1e
 
@@ -26,15 +30,13 @@ write_byte(2, 0b00000000) # Continuous sampling
 
 scale = 0.92
 while 1:
-	x_offset = -300
-	y_offset = -17
 	x_out = (read_word_2c(3) - x_offset) * scale
 	y_out = (read_word_2c(7) - y_offset) * scale
 	z_out = (read_word_2c(5)) * scale
 
-	bearing  = math.atan2(y_out, x_out) 
+	bearing  = math.atan2(y_out, x_out)-math.radians(north_offset)
 	if (bearing < 0):
 		bearing += 2 * math.pi
-
+	
 	print "Bearing: ", math.degrees(bearing)
 	time.sleep(0.2)
