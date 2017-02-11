@@ -67,4 +67,4 @@ print "y offset: ", y_offset
 for i in results:
     data = "{} {}\n".format((i[0] - x_offset) * scale, (i[1] - y_offset) * scale)
     f.write(data)
-
+f.close()
