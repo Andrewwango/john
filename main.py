@@ -38,7 +38,7 @@ US2ECHO = 23 #green, in
 USNEWTRIG = 17 #out
 USNEWECHO = 22 #in
 
-XDEGREES=30.0 #angle between robot path and path (in degs) FLOAT POINT
+XDEGREES=50.0 #angle between robot path and path (in degs) FLOAT POINT
 USSTANDARD     = 50 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
 OPTLITTERRANGE = [45,55] #the opt distance range from which it can pick up stuff
