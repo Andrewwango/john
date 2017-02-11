@@ -227,7 +227,7 @@ def detectprocedure(alreadyturning):
 			print "sliding down bit by bit"
 			movelimbENC(ARM, BRINGDOWNPOWER, 85)
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
-			time.sleep(0.3)
+			time.sleep(0.7)
 		
 		if alreadyturning==True:
 			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
