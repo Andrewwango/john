@@ -5,7 +5,8 @@ import math
 
 bus = smbus.SMBus(1)
 address = 0x1e
-
+f = open('mydata.dat', 'w')
+results=[]
 
 def read_byte(adr):
     return bus.read_byte_data(address, adr)
@@ -41,26 +42,29 @@ for i in range(0,500):
     x_out = read_word_2c(3)
     y_out = read_word_2c(7)
     z_out = read_word_2c(5)
-    
+    results.append([x_out,y_out])
     
     if x_out < minx:
         minx=x_out
-    
     if y_out < miny:
         miny=y_out
-    
     if x_out > maxx:
         maxx=x_out
-    
     if y_out > maxy:
         maxy=y_out
     
-    #print x_out, y_out, (x_out * scale), (y_out * scale)
     time.sleep(0.1)
-
+    
 print "minx: ", minx
 print "miny: ", miny
 print "maxx: ", maxx
 print "maxy: ", maxy
-print "x offset: ", (maxx + minx) / 2
-print "y offset: ", (maxy + miny) / 2
+x_offset = (maxx + minx) / 2
+y_offset = (maxy + miny) / 2
+print "x offset: ", x_offset
+print "y offset: ", y_offset
+
+for i in results:
+    data = "{} {}\n".format((i[0] - x_offset) * scale, (i[1] - y_offset) * scale)
+    f.write(data)
+
