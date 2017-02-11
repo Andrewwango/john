@@ -205,7 +205,7 @@ def movelimbENC(limb, speed, deg, limb2=None, speed2=None, detection=False, comp
 			if detection==True: #litter detection while moving
 				if modifiedreading >= 120: #turned enough so safe to start measuring for litter
 					totElapsedTurningEnc = modifiedreading
-					detectprocedure(True)
+					detectprocedure(False)#(True)
 	
 	#stop
 	BrickPi.MotorSpeed[limb] = 0
