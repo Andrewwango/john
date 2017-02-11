@@ -48,8 +48,8 @@ WHEELPOWER     = -255
 TURNPOWER      = 100 #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5  #"
 SHOOBYPOWER    = -100
-GRABBERPOWER   = -70
-OPENPOWER      = 120
+GRABBERPOWER   = -110
+OPENPOWER      = 70
 LIFTPOWER      = -160
 SLIDEUPPOWER   = -70
 BRINGDOWNPOWER = 120
@@ -260,13 +260,13 @@ def detectprocedure(alreadyturning):
 			
 			#grabber procedure
 			print "bringing down" #get grabber into pos
-			movelimbLENG(ARM, BRINGDOWNPOWER, 0.7)
+			movelimbLENG(ARM, BRINGDOWNPOWER, 0.6)
 			
 			#preliminary grab
 			movelimbLENG(GRABBER, GRABBERPOWER, 0.5, ARM, BRINGDOWNPOWER)
 			
 			print "lifting" #bring litter up
-			movelimbLENG(ARM, LIFTPOWER, 0.7, GRABBER, GRABBERPOWER) #grabber grips as well
+			movelimbLENG(ARM, LIFTPOWER, 0.6, GRABBER, GRABBERPOWER) #grabber grips as well
 
 			print "opening" #dump litter
 			movelimbLENG(GRABBER, OPENPOWER, 0.5)
