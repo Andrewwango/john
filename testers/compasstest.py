@@ -3,7 +3,7 @@ import smbus, time, math
 
 x_offset = -300
 y_offset = -17
-north_offset = 60 #place phone facing in john direction
+north_offset = 0 #place phone facing in john direction
 
 bus = smbus.SMBus(1)
 address = 0x1e
