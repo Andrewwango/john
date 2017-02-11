@@ -68,7 +68,7 @@ GPIO.setup(IRIN, GPIO.IN)
 GPIO.setup(US2ECHO,   GPIO.IN) ; GPIO.setup(US2TRIG,   GPIO.OUT)
 GPIO.setup(USNEWECHO, GPIO.IN) ; GPIO.setup(USNEWTRIG, GPIO.OUT)
 
-turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
+turnycount = 1 #first turn is left(1) or right (0) (INCLUDING initial)
 totElapsedTurningEnc = 0
 tempElapsedTurningEnc = 0
 turnbears=[]
