@@ -122,9 +122,11 @@ def taketouchreadings():
 			return 0
 
 def takeencoderreading(port): #read motor position
-	result = BrickPiUpdateValues()
-	if not result :
-		return (BrickPi.Encoder[port])
+	for i in range(3): #deal with encoder glitches
+		result = BrickPiUpdateValues()
+		if not result :
+			return (BrickPi.Encoder[port])
+	return 0 #better than nonetype
 
 def takebearing():
 	return compassgpsutils.takebearing()
