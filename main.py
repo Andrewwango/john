@@ -72,7 +72,7 @@ turnycount = 1 #first turn is left(1) or right (0) (INCLUDING initial)
 totElapsedTurningEnc = 0
 tempElapsedTurningEnc = 0
 turnbears=[]
-STOPRANGE=10.0
+STOPRANGE=15.0
 
 ####PROCESS GPX FILE (EXTRACT CDP)
 ####
