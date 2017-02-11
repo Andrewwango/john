@@ -311,7 +311,7 @@ def detectprocedure(alreadyturning):
 ################
 while True:
 	#create list of bearings for each turn
-	fwdb=220#real thing changes this every new cdp
+	fwdb=312#real thing changes this every new cdp
 	turnbears=[fwdb-XDEGREES,fwdb+XDEGREES] #l,r
 	for i in range(len(turnbears)): #correct to 0<b<360
 		if turnbears[i] > 360: turnbears[i] -= 360
