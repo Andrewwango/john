@@ -34,7 +34,7 @@ while 1:
 	y_out = (read_word_2c(7) - y_offset) * scale
 	z_out = (read_word_2c(5)) * scale
 
-	bearing  = math.atan2(y_out, x_out)+(2*math.radians(north_offset))
+	bearing  = math.atan2(y_out, x_out)#+(2*math.radians(north_offset))
 	if (bearing < 0):
 		bearing += 2 * math.pi
 	
