@@ -140,6 +140,7 @@ def drivewheels(lpower, rpower):
 def turnprocedure(): #turning procedure
 	global turnycount; global turnbears
 	time.sleep(0.5)
+#	slidearm("down"); time.sleep(0.3) #ready to see walls
 	
 	if turnycount%2 == 1: #odd=left
 		wheel1 = RWHEEL; wheel2 = LWHEEL
@@ -147,15 +148,25 @@ def turnprocedure(): #turning procedure
 	else: #right
 		wheel1 = LWHEEL; wheel2 = RWHEEL
 		targBear = turnbears[1]
-		
+	
 	print "turnycount is" + str(turnycount)
 	print "turning" 
 	movelimbENC(wheel1, -TURNPOWER, targBear, wheel2, TURNPOWER, detection=True, compass=True)
 	movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
+#	slidearm("up") #deactivate
 	
 	turnycount += 1 #next time turns other way
 	time.sleep(0.5)	
 
+def slidearm(dir):
+	if dir=="up":#deactivate
+		print "sliding up, deactivate"
+		movelimbLENG(ARM, SLIDEUPPOWER, 0.3)
+	elif dir=="down":#activate
+		print "sliding down bit by bit, activate"
+		movelimbENC(ARM, BRINGDOWNPOWER, 85)
+		movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
+	
 def movelimbLENG(limb, speed, length, limb2=None, speed2=None): #move motor based on time length
 	#set speeds
 	BrickPi.MotorSpeed[limb] = speed
@@ -224,9 +235,7 @@ def detectprocedure(alreadyturning):
 		
 		#activate us2 pos
 		if alreadyturning == False: #im not turning (so i want to activate us2 pos)
-			print "sliding down bit by bit"
-			movelimbENC(ARM, BRINGDOWNPOWER, 85)
-			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
+			slidearm("down")
 			time.sleep(0.7)
 		
 		if alreadyturning==True:
@@ -288,7 +297,7 @@ def detectprocedure(alreadyturning):
 			
 				#bring us2 back up (deactivate)
 				print "lifting"
-				movelimbLENG(ARM, SLIDEUPPOWER, 0.3)
+				slidearm("up")
 				#loop back and carry on
 			elif alreadyturning == True: #im already turning so i want to get away from this goddamm wall
 				print "turning away from goddamm wall"
