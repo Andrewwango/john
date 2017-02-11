@@ -3,8 +3,8 @@ import smbus, gps, time, math
 #compass setup
 bus = smbus.SMBus(1)
 address = 0x1e
-x_offset = -17
-y_offset = -300
+x_offset = -300
+y_offset = -17
 scale=0.92
 
 #gps setup
