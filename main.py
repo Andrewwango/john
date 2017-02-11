@@ -5,7 +5,7 @@
 #remember to ./stopev.sh (disable getty via systemctl) on boot!
 #import relevant modules
 from BrickPi import *
-import time
+import time, compassgpsutils
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 BrickPiSetup()
@@ -127,7 +127,7 @@ def takeencoderreading(port): #read motor position
 		return (BrickPi.Encoder[port])
 
 def takebearing():
-	return 0
+	return compassgpsutils.takebearing()
 
 def drivewheels(lpower, rpower):
 	BrickPi.MotorSpeed[LWHEEL] = lpower
