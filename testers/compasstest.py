@@ -34,7 +34,7 @@ while 1:
 
     bearing  = math.atan2(y_out, x_out) 
    # if (bearing < 0):
-    bearing += 2 * math.pi
+ #   bearing += 2 * math.pi
 
     print "Bearing: ", math.degrees(bearing)
     time.sleep(0.2)
