@@ -110,7 +110,7 @@ def takeusreading(trig, echo): #detect distance of a us
 		time.sleep(0.01)
 	uslist.sort(); usreading = uslist[1] #median (get rid of anomalies)
 	GPIO.output(trig, False)
-	print "US reading is " + str(usreading)
+	print "US reading is ", str(usreading), uslist
 	return usreading
 
 def taketouchreadings():
