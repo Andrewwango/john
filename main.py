@@ -38,19 +38,19 @@ US2ECHO = 23 #green, in
 USNEWTRIG = 17 #out
 USNEWECHO = 22 #in
 
-XDEGREES=50.0 #angle between robot path and path (in degs) FLOAT POINT
-USSTANDARD     = 50 #us sensor detection threshold
+XDEGREES=30.0 #angle between robot path and path (in degs) FLOAT POINT
+USSTANDARD     = 30 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
-OPTLITTERRANGE = [45,55] #the opt distance range from which it can pick up stuff
+OPTLITTERRANGE = [25,35] #the opt distance range from which it can pick up stuff
 
 #Motor Power Constants
 WHEELPOWER     = -255
 TURNPOWER      = 180 #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5  #"
 SHOOBYPOWER    = -100
-GRABBERPOWER   = -100
+GRABBERPOWER   = -70
 OPENPOWER      = 120
-LIFTPOWER      = -200
+LIFTPOWER      = -160
 SLIDEUPPOWER   = -70
 BRINGDOWNPOWER = 120
 BRINGDOWNBRAKEPOWER = -5
