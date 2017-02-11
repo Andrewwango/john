@@ -72,6 +72,7 @@ turnycount = 1 #first turn is left(1) or right (0) (INCLUDING initial)
 totElapsedTurningEnc = 0
 tempElapsedTurningEnc = 0
 turnbears=[]
+STOPRANGE=10.0
 
 ####PROCESS GPX FILE (EXTRACT CDP)
 ####
@@ -194,7 +195,7 @@ def movelimbENC(limb, speed, deg, limb2=None, speed2=None, detection=False, comp
 			modifiedreading = (takeencoderreading(limb) - startpos)*modifier #encoder shiz
 			
 			#carry on turning till reaches correct bearing
-			if abs(takebearing()-deg) <= 10.0: #range of stopping
+			if abs(takebearing()-deg) <= STOPRANGE: #range of stopping
 				break
 				
 			BrickPi.MotorSpeed[limb] = speed
@@ -310,7 +311,7 @@ def detectprocedure(alreadyturning):
 ################
 while True:
 	#create list of bearings for each turn
-	fwdb=225#real thing changes this every new cdp
+	fwdb=220#real thing changes this every new cdp
 	turnbears=[fwdb-XDEGREES,fwdb+XDEGREES] #l,r
 	for i in range(len(turnbears)): #correct to 0<b<360
 		if turnbears[i] > 360: turnbears[i] -= 360
