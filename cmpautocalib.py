@@ -1,6 +1,7 @@
 import time
 from BrickPi import *
 
+SPEED=110 #pos acw
 
 BrickPiSetup()
 BrickPi.MotorEnable[PORT_A]=1
@@ -14,8 +15,8 @@ while True: #make sure we get an encoder reading! (break when we do)
 		initialr = BrickPi.Encoder[PORT_A]
 		break
 
-BrickPi.MotorSpeed[PORT_A]=-70
-BrickPi.MotorSpeed[PORT_D]=70
+BrickPi.MotorSpeed[PORT_A]=-SPEED
+BrickPi.MotorSpeed[PORT_D]=SPEED
 while True:
 	result = BrickPiUpdateValues()
 	if not result :
