@@ -1,8 +1,10 @@
 #!/usr/bin/python
 import smbus, time, math
 
-x_offset = -300
-y_offset = -17
+settingsfile=open("mainsettings.dat","r"); settings=settingsfile.split("\n")
+x_offset = settings[0]
+y_offset = settings[1]
+settingsfile.close()
 north_offset = 0 #place phone facing in john direction
 
 bus = smbus.SMBus(1)
