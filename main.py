@@ -81,7 +81,7 @@ currentcdp = 0
 
 #EXTRACT FWDB (local for demo) - real thing: change every cdp
 settingsfile = open('mainsettings.dat','r')
-fwdb=settingsfile.read().split('\n')[2]
+fwdb=float(settingsfile.read().split('\n')[2])
 print 'fwdb: ', fwdb
 
 #############
