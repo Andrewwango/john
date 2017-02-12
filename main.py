@@ -11,12 +11,12 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 BrickPiSetup()
 
-#Port Assignments      #GPIO Pins
-LWHEEL = PORT_D        IRIN     = 25 #yellow (when sth close, 0)
-RWHEEL = PORT_A        US2TRIG  = 24 #brown, out
-GRABBER= PORT_B        US2ECHO  = 23 #green, in
-ARM    = PORT_C        USNEWTRIG= 17 #out
-TOUCHR = PORT_1        USNEWECHO= 22 #in
+#Port Assignments  ;    #GPIO Pins
+LWHEEL = PORT_D    ;    IRIN     = 25 #yellow (when sth close, 0)
+RWHEEL = PORT_A    ;    US2TRIG  = 24 #brown, out
+GRABBER= PORT_B    ;    US2ECHO  = 23 #green, in
+ARM    = PORT_C    ;    USNEWTRIG= 17 #out
+TOUCHR = PORT_1    ;    USNEWECHO= 22 #in
 TOUCHL = PORT_3
 
 XDEGREES = 70.0 #angle between robot path and path (in degs) FLOAT POINT
