@@ -262,7 +262,7 @@ def detectprocedure(alreadyturning):
 				else:
 					wheel1 = RWHEEL; wheel2 = LWHEEL
 				#use outside wheel to encode (although it doesn't matter)
-				movelimbENC(wheel1, -TURNPOWER, 20, wheel2, TURNPOWER)
+				movelimbENC(wheel1, -TURNPOWER, (int(2.3*sqrt(tempElapsedTurningEnc))),wheel2, TURNPOWER)#fine tune this
 				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake			
 				time.sleep(0.2)
 			
