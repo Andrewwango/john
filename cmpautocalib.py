@@ -22,7 +22,7 @@ while True:
 	if not result :
 		encr = BrickPi.Encoder[PORT_A]-initialr
 		print encr
-		if encr > 100:
+		if abs(encr) > 1770: #a full turn
 			break #finshed turning
 	time.sleep(.1)
 
