@@ -71,5 +71,12 @@ y_offset = (maxy + miny) / 2
 print "x offset: ", x_offset
 print "y offset: ", y_offset
 f.write(str(x_offset) + "\n" + str(y_offset))
-f.close()
 print "file written" #saved to pi directory
+
+#make local fwdb (for demo)
+print "FACE JOHN FORWARDS"
+time.sleep(5)
+print "making fwdb!"
+fwdb = 
+
+f.close()
