@@ -5,7 +5,7 @@ bus = smbus.SMBus(1)
 address = 0x1e
 scale=0.92
 
-settingsfile=open("mainsettings.dat","r"); settings=settingsfile.split("\n")
+settingsfile=open("mainsettings.dat","r"); settings=settingsfile.read().split("\n")
 x_offset = settings[0]
 y_offset = settings[1]
 settingsfile.close()
