@@ -41,7 +41,6 @@ BRINGDOWNBRAKEPOWER = -5
 BrickPi.MotorEnable[GRABBER] = 1 ; BrickPi.MotorEnable[ARM]    = 1
 BrickPi.MotorEnable[LWHEEL]  = 1 ; BrickPi.MotorEnable[RWHEEL] = 1
 
-BrickPi.SensorType[HEAD]   = TYPE_SENSOR_ULTRASONIC_CONT
 BrickPi.SensorType[TOUCHL] = TYPE_SENSOR_TOUCH
 BrickPi.SensorType[TOUCHR] = TYPE_SENSOR_TOUCH
 BrickPiSetupSensors()
