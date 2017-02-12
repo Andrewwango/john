@@ -75,7 +75,7 @@ print "file written" #saved to pi directory
 
 #make local fwdb (for demo)
 print "FACE JOHN FORWARDS"
-time.sleep(5)
+time.sleep(10)
 print "making fwdb!"
 fwdb = math.atan2(y_out, x_out) 
 if (fwdb < 0):
