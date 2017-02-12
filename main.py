@@ -48,7 +48,7 @@ WHEELPOWER     = -255
 TURNPOWER      = 100 #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5  #"
 SHOOBYPOWER    = -100
-GRABBERPOWER   = -110
+GRABBERPOWER   = -150
 OPENPOWER      = 70
 LIFTPOWER      = -160
 SLIDEUPPOWER   = -70
