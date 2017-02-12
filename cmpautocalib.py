@@ -12,6 +12,7 @@ BrickPiSetupSensors()
 bus = smbus.SMBus(1)
 address = 0x1e #i2c
 f = open('mainsettings.dat', 'w')
+f.write('hello!')
 
 def read_word(adr):
 	high = bus.read_byte_data(address, adr)
