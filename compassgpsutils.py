@@ -6,8 +6,8 @@ address = 0x1e
 scale=0.92
 
 settingsfile=open("mainsettings.dat","r"); settings=settingsfile.read().split("\n")
-x_offset = settings[0]
-y_offset = settings[1]
+x_offset = int(settings[0])
+y_offset = int(settings[1])
 settingsfile.close()
 
 #gps setup
