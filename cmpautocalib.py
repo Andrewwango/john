@@ -77,6 +77,9 @@ print "file written" #saved to pi directory
 print "FACE JOHN FORWARDS"
 time.sleep(10)
 print "making fwdb!"
+x_out = (read_word_2c(3) - x_offset) * scale
+y_out = (read_word_2c(7) - y_offset) * scale
+z_out = (read_word_2c(5)) * scale
 fwdb = math.atan2(y_out, x_out) 
 if (fwdb < 0):
 	fwdb += 2 * math.pi
