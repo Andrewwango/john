@@ -1,5 +1,9 @@
 #TOP LEVEL CONSTANTS FOR MAIN.PY
 
+import RPi.GPIO as GPIO
+from BrickPi import *
+GPIO.setmode(GPIO.BCM)
+
 #Port Assignments
 LWHEEL = PORT_D
 RWHEEL = PORT_A
