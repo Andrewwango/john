@@ -49,7 +49,7 @@ for i in range(2):
 		if not result :
 			encr = BrickPi.Encoder[PORT_A]-initialr
 			print encr
-			if abs(encr) > 1770: #a full turn
+			if abs(encr) > 40: #1770: #a full turn
 				break #finshed turning
 		#read compass
 		x_out = read_word_2c(3)
