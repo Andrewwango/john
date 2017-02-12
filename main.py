@@ -323,8 +323,9 @@ while True:
 	fwdb=312#real thing changes this every new cdp
 	turnbears=[fwdb-XDEGREES,fwdb+XDEGREES] #l,r
 	#correct to 0<b<360
-	if turnbears[0] > 360: turnbears[0] -= 360; if turnbears[0] < 0  : turnbears[0] += 360
-	if turnbears[1] > 360: turnbears[1] -= 360; if turnbears[1] < 0  : turnbears[1] += 360
+	for i in range(len(turnbears)):
+		if turnbears[i] > 360: turnbears[i] -= 360
+		if turnbears[i] < 0  : turnbears[i] += 360
 	print turnbears
 	
 	#initial turn from forwards
