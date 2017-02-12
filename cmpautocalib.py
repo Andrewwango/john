@@ -11,8 +11,7 @@ BrickPiSetupSensors()
 
 bus = smbus.SMBus(1)
 address = 0x1e #i2c
-f = open('mainsettings.txt', 'w')
-f.write('hello!')
+f = open('mainsettings.dat', 'w')
 
 def read_word(adr):
 	high = bus.read_byte_data(address, adr)
@@ -71,10 +70,6 @@ x_offset = (maxx + minx) / 2
 y_offset = (maxy + miny) / 2
 print "x offset: ", x_offset
 print "y offset: ", y_offset
-data=str(x_offset) + "\n" + str(y_offset)
-print data
-for i in range(5):
-	f.write(data)
-
+f.write(str(x_offset) + "\n" + str(y_offset))
 f.close()
-print "file written"
+print "file written" #saved to pi directory
