@@ -11,9 +11,8 @@ BrickPiSetupSensors()
 
 bus = smbus.SMBus(1)
 address = 0x1e #i2c
-f = open('mainsettings.dat', 'w+')
+f = open('mainsettings.dat', 'w')
 f.write('hello!')
-print f.read()
 
 def read_word(adr):
 	high = bus.read_byte_data(address, adr)
@@ -77,6 +76,5 @@ print data
 for i in range(5):
 	f.write(data)
 
-print f.read()
 f.close()
 print "file written"
