@@ -34,7 +34,7 @@ scale = 0.92
 while 1:
 	x_out = (read_word_2c(3) - x_offset) * scale
 	y_out = (read_word_2c(7) - y_offset) * scale
-	z_out = (read_word_2c(5)) * scale
+	z_out = (read_word_2c(5)) * scale #IMPORTANT FOR I2C
 
 	bearing  = math.atan2(y_out, x_out)+math.radians(north_offset)
 	if (bearing < 0):
