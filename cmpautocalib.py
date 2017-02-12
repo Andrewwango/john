@@ -70,13 +70,17 @@ x_offset = (maxx + minx) / 2
 y_offset = (maxy + miny) / 2
 print "x offset: ", x_offset
 print "y offset: ", y_offset
-f.write(str(x_offset) + "\n" + str(y_offset))
+f.write(str(x_offset) + "\n" + str(y_offset) + "\n")
 print "file written" #saved to pi directory
 
 #make local fwdb (for demo)
 print "FACE JOHN FORWARDS"
 time.sleep(5)
 print "making fwdb!"
-fwdb = 
-
+fwdb = math.atan2(y_out, x_out) 
+if (fwdb < 0):
+	fwdb += 2 * math.pi
+fwdb = math.degrees(fwdb)
+print "fwdb: ", fwdb
+f.write(str(fwdb))
 f.close()
