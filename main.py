@@ -5,15 +5,50 @@
 #remember to ./stopev.sh (disable getty via systemctl) on boot!
 #import relevant modules
 import time, math
-from toplevelconstants import *
 from BrickPi import *
-from IOutils import *
 from compassgpsutils import *
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 BrickPiSetup()
 
-#TOP LEVEL CONSTANTS DEFINED IN MODULE
+#Port Assignments      #GPIO Pins
+LWHEEL = PORT_D        IRIN     = 25 #yellow (when sth close, 0)
+RWHEEL = PORT_A        US2TRIG  = 24 #brown, out
+GRABBER= PORT_B        US2ECHO  = 23 #green, in
+ARM    = PORT_C        USNEWTRIG= 17 #out
+TOUCHR = PORT_1        USNEWECHO= 22 #in
+TOUCHL = PORT_3
+
+XDEGREES = 70.0 #angle between robot path and path (in degs) FLOAT POINT
+USSTANDARD     = 30 #us sensor detection threshold
+US2STANDARD    = 70 #higher us(2) detection threshold
+OPTLITTERRANGE = [19,27] #the opt us distance range from which it can pick up stuff
+STOPRANGE = 15.0 #the allowable range for turnbear
+
+#Motor Power Constants
+WHEELPOWER     = -255
+TURNPOWER      = 100 #pos = forwards (for ease of use but not technically correct)
+BRAKEPOWER     = -5  #"
+SHOOBYPOWER    = -100
+GRABBERPOWER   = -150
+OPENPOWER      = 70
+LIFTPOWER      = -160
+SLIDEUPPOWER   = -70
+BRINGDOWNPOWER = 120
+BRINGDOWNBRAKEPOWER = -5
+
+##SETUP## motors, sensors, GPIO Pins
+BrickPi.MotorEnable[GRABBER] = 1 ; BrickPi.MotorEnable[ARM]    = 1
+BrickPi.MotorEnable[LWHEEL]  = 1 ; BrickPi.MotorEnable[RWHEEL] = 1
+
+BrickPi.SensorType[HEAD]   = TYPE_SENSOR_ULTRASONIC_CONT
+BrickPi.SensorType[TOUCHL] = TYPE_SENSOR_TOUCH
+BrickPi.SensorType[TOUCHR] = TYPE_SENSOR_TOUCH
+BrickPiSetupSensors()
+
+GPIO.setup(IRIN, GPIO.IN)
+GPIO.setup(US2ECHO,   GPIO.IN) ; GPIO.setup(US2TRIG,   GPIO.OUT)
+GPIO.setup(USNEWECHO, GPIO.IN) ; GPIO.setup(USNEWTRIG, GPIO.OUT)
 
 ##PROGRAM VARS##
 turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
@@ -37,6 +72,56 @@ print 'fwdb: ', fwdb
 ##FUNCTIONS##
 #############
 
+def takeusreading(trig, echo): #detect distance of a us
+	GPIO.output(trig, False) #switch everything off
+	#take 5 readings then find average
+	uslist=[]
+	for i in range(3):
+		#send out signal
+		GPIO.output(trig, False)
+		time.sleep(0.001)
+		GPIO.output(trig, True)
+		time.sleep(0.001)
+		GPIO.output(trig, False)
+		
+		#find length of signal
+		start = time.time()
+		stop = time.time()
+		while GPIO.input(echo) == 0:
+			start = time.time()
+		while GPIO.input(echo) == 1:
+			stop = time.time()
+		duration = stop - start
+		
+		#find length
+		distance = duration * 340 * 100 #cm
+		uslist += [int(distance)]
+		time.sleep(0.01)
+	uslist.sort(); usreading = uslist[1] #median (get rid of anomalies)
+	GPIO.output(trig, False)
+	print "US reading is ", str(usreading), uslist
+	return usreading
+
+def taketouchreadings():
+	#check if any touch sensor is pressed
+	result = BrickPiUpdateValues()
+	if not result:
+		if BrickPi.Sensor[TOUCHL]==1 or BrickPi.Sensor[TOUCHR]==1:
+			print "TOUCH"; return 1
+		else:
+			return 0
+def takeencoderreading(port): #read motor position
+	for i in range(3): #deal with encoder glitches
+		result = BrickPiUpdateValues()
+		if not result :
+			return (BrickPi.Encoder[port])
+	return 0 #better than nonetype
+
+def drivewheels(lpower, rpower):
+	BrickPi.MotorSpeed[LWHEEL] = lpower
+	BrickPi.MotorSpeed[RWHEEL] = rpower
+	BrickPiUpdateValues()
+
 def createturnbears():
 	#create list of bearings for each turn
 	turnbears=[fwdb-XDEGREES,fwdb+XDEGREES] #l,r
@@ -44,8 +129,7 @@ def createturnbears():
 	for i in range(len(turnbears)):
 		if turnbears[i] > 360: turnbears[i] -= 360
 		if turnbears[i] < 0  : turnbears[i] += 360
-	print turnbears
-	return turnbears
+	print turnbears; return turnbears
 
 def grabprocedure(): #picking procedure
 	print "bringing down" #get grabber into pos
