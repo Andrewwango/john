@@ -1,4 +1,4 @@
-import time; math; smbus
+import time, math, smbus
 from BrickPi import *
 
 SPEED=110 #pos acw first, cw 2nd
