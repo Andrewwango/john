@@ -5,7 +5,7 @@
 #remember to ./stopev.sh (disable getty via systemctl) on boot!
 #import relevant modules
 from BrickPi import *
-import time, compassgpsutils
+import time, compassgpsutils, math
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 BrickPiSetup()
@@ -262,7 +262,7 @@ def detectprocedure(alreadyturning):
 				else:
 					wheel1 = RWHEEL; wheel2 = LWHEEL
 				#use outside wheel to encode (although it doesn't matter)
-				movelimbENC(wheel1, -TURNPOWER, (int(2.3*sqrt(tempElapsedTurningEnc))),wheel2, TURNPOWER)#fine tune this
+				movelimbENC(wheel1, -TURNPOWER, (int(2.3*math.sqrt(tempElapsedTurningEnc))),wheel2, TURNPOWER)#fine tune this
 				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake			
 				time.sleep(0.2)
 			
