@@ -8,8 +8,7 @@ scale=0.92
 settingsfile=open("mainsettings.dat","r"); settings=settingsfile.read().split("\n")
 x_offset = int(settings[0])
 y_offset = int(settings[1])
-print settings
-print x_offset, y_offset
+print 'x_offset, y_offset, localfwdb', settings
 settingsfile.close()
 
 #gps setup
@@ -44,7 +43,6 @@ def takebearing():
 	x_out = (read_word_2c(3) - x_offset) * scale
 	y_out = (read_word_2c(7) - y_offset) * scale
 	z_out = (read_word_2c(5)) * scale #IMPORTANT FOR I2C
-	print x_out, y_out
 	bearing  = math.atan2(y_out, x_out) 
 	if (bearing < 0):
 		bearing += 2 * math.pi
