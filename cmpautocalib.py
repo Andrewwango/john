@@ -6,11 +6,23 @@ BrickPiSetup()
 BrickPi.MotorEnable[PORT_A]=1
 BrickPi.MotorEnable[PORT_D]=1
 BrickPiSetupSensors()
+initialr=0;encr=0
 
+while True: #make sure we get an encoder reading! (break when we do)
+	result = BrickPiUpdateValues()
+	if not result :
+		initialr = BrickPi.Encoder[port]
+		break
 
 BrickPi.MotorSpeed[PORT_A]=-70
 BrickPi.MotorSpeed[PORT_D]=70
-ot = time.time()
-while(time.time() - ot < 2):    #running while loop for 3 seconds
-	BrickPiUpdateValues()       # Ask BrickPi to update values for sensors/motors
+while True:
+	result = BrickPiUpdateValues()
+	if not result :
+		encr = BrickPi.Encoder[port]-initialr
+		print encr
+		if encr > 100:
+			break #finshed turning
 	time.sleep(.1)
+
+#process results
