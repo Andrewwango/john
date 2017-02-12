@@ -309,7 +309,7 @@ def detectprocedure(alreadyturning):
 ##MAIN PROGRAM##
 ################
 while True:
-	createturnbears()
+	turnbears = createturnbears()
 	
 	#initial turn from forwards
 	turnprocedure()
