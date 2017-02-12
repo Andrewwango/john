@@ -70,7 +70,9 @@ x_offset = (maxx + minx) / 2
 y_offset = (maxy + miny) / 2
 print "x offset: ", x_offset
 print "y offset: ", y_offset
-
-f.write(str(x_offset) + "\n" + str(y_offset))
+data=str(x_offset) + "\n" + str(y_offset)
+print data
+for i in range(5):
+	f.write(data)
 f.close()
 print "file written"
