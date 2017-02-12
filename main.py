@@ -41,7 +41,7 @@ USNEWECHO = 22 #in
 XDEGREES=70.0 #angle between robot path and path (in degs) FLOAT POINT
 USSTANDARD     = 30 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
-OPTLITTERRANGE = [19,24] #the opt distance range from which it can pick up stuff
+OPTLITTERRANGE = [19,27] #the opt distance range from which it can pick up stuff
 
 #Motor Power Constants
 WHEELPOWER     = -255
