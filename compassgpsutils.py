@@ -3,9 +3,12 @@ import smbus, gps, time, math
 #compass setup
 bus = smbus.SMBus(1)
 address = 0x1e
-x_offset = -300
-y_offset = -17
 scale=0.92
+
+settingsfile=open("mainsettings.dat","r"); settings=settingsfile.split("\n")
+x_offset = settings[0]
+y_offset = settings[1]
+settingsfile.close()
 
 #gps setup
 def gpssetup():
@@ -16,21 +19,21 @@ def gpssetup():
 
 #compass setup funcs
 def read_word(adr):
-    high = bus.read_byte_data(address, adr)
-    low = bus.read_byte_data(address, adr+1)
-    val = (high << 8) + low
-    return val
+	high = bus.read_byte_data(address, adr)
+	low = bus.read_byte_data(address, adr+1)
+	val = (high << 8) + low
+	return val
 
 def read_word_2c(adr):
-    val = read_word(adr)
-    if (val >= 0x8000):
-        return -((65535 - val) + 1)
-    else:
-        return val
+	val = read_word(adr)
+	if (val >= 0x8000):
+		return -((65535 - val) + 1)
+	else:
+		return val
 
 def write_byte(adr, value):
-    bus.write_byte_data(address, adr, value)
-   
+	bus.write_byte_data(address, adr, value)
+
 write_byte(0, 0b01110000) # Set to 8 samples @ 15Hz
 write_byte(1, 0b00100000) # 1.3 gain LSb / Gauss 1090 (default)
 write_byte(2, 0b00000000) # Continuous sampling
