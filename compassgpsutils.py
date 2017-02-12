@@ -43,7 +43,7 @@ write_byte(2, 0b00000000) # Continuous sampling
 def takebearing():
 	x_out = (read_word_2c(3) - x_offset) * scale
 	y_out = (read_word_2c(7) - y_offset) * scale
-	z_out = (read_word_2c(5)) * scale
+	z_out = (read_word_2c(5)) * scale #IMPORTANT FOR I2C
 	print x_out, y_out
 	bearing  = math.atan2(y_out, x_out) 
 	if (bearing < 0):
