@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import smbus, time, math
 
-settingsfile=open("mainsettings.dat","r"); settings=settingsfile.split("\n")
+settingsfile=open("mainsettings.dat","r"); settings=settingsfile.read().split("\n")
 x_offset = settings[0]
 y_offset = settings[1]
 settingsfile.close()
