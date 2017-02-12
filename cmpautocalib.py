@@ -7,15 +7,16 @@ BrickPiSetup()
 BrickPi.MotorEnable[PORT_A]=1
 BrickPi.MotorEnable[PORT_D]=1
 BrickPiSetupSensors()
-initialr=0;encr=0
-
-while True: #make sure we get an encoder reading! (break when we do)
-	result = BrickPiUpdateValues()
-	if not result :
-		initialr = BrickPi.Encoder[PORT_A]
-		break
 
 for i in range(2):
+	initialr=0;encr=0
+	
+	while True: #make sure we get an encoder reading! (break when we do)
+		result = BrickPiUpdateValues()
+		if not result :
+			initialr = BrickPi.Encoder[PORT_A]
+			break
+
 	if i==0: BrickPi.MotorSpeed[PORT_A]=-SPEED; BrickPi.MotorSpeed[PORT_D]= SPEED 
 	else:    BrickPi.MotorSpeed[PORT_A]= SPEED; BrickPi.MotorSpeed[PORT_D]=-SPEED #turn back
 
