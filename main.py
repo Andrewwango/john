@@ -79,6 +79,11 @@ STOPRANGE=15.0
 cdp=[[0,0,225]] #adjust for testing
 currentcdp = 0
 
+#EXTRACT FWDB (local for demo) - real thing: change every cdp
+settingsfile = open('mainsettings.dat','r')
+fwdb=settingsfile.read().split('\n')[2]
+print 'fwdb: ', fwdb
+
 #############
 ##FUNCTIONS##
 #############
@@ -320,7 +325,6 @@ def detectprocedure(alreadyturning):
 ################
 while True:
 	#create list of bearings for each turn
-	fwdb=312#real thing changes this every new cdp
 	turnbears=[fwdb-XDEGREES,fwdb+XDEGREES] #l,r
 	#correct to 0<b<360
 	for i in range(len(turnbears)):
