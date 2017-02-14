@@ -347,13 +347,16 @@ while True:
 			fwdb=0
 			if ircode[0] == "startmainfwdleft":
 				turnycount = 1 ; fwdb = origfwdb; buzz("short short")
-				#start main in all of these
+				startmain = True; time.sleep(2)
 			elif ircode[0]=="startmainfwdright":
 				turnycount = 0 ; fwdb = origfwdb; buzz("short short")
+				startmain = True; time.sleep(2)
 			elif ircode[0]=="startmainbwdleft":
 				turnycount = 1 ; fwdb = origfwdb + 180.0 ; buzz("short short")
+				startmain = True; time.sleep(2)
 			elif ircode[0]=="startmainbwdright":
 				turnycount = 0 ; fwdb = origfwdb + 180.0 ; buzz("short short")
+				startmain = True; time.sleep(2)
 			elif ircode[0]=="startshutdown":
 				print "Shutting down!"
 				buzz("short short short short")
@@ -368,6 +371,7 @@ while True:
 
 		
 		if startmain == True:
+			print "main has started"
 			#initial stuff
 			turnbears = createturnbears()
 
