@@ -4,7 +4,7 @@
 #BrickPi: github.com/DexterInd/BrickPi_Python
 #remember to ./stopev.sh (disable getty via systemctl) on boot!
 #import relevant modules
-import time, math, lirc
+import time, math, lirc, sys
 from BrickPi import *
 from compassgpsutils import *
 import RPi.GPIO as GPIO
@@ -362,5 +362,7 @@ while True:
 					#make new turnbears based on current cdp
 				except KeyboardInterrupt:
 					GPIO.cleanup()
+					sys.exit()
 	except KeyboardInterrupt:
 		GPIO.cleanup()
+		sys.exit()
