@@ -338,6 +338,7 @@ while True:
 		#IRRC handling loop
 		ircode = lirc.nextcode()
 		if ircode:
+			fwdb=0
 			if ircode[0] == "startmainfwdleft":
 				turnycount = 1 ; fwdb = origfwdb; buzz("short short")
 				#start main in all of these
