@@ -1,18 +1,18 @@
 def maincalibprogram():
 
-	import time, math, smbus
-	from BrickPi import *
+	#import time, math, smbus
+	#from BrickPi import *
 
 	SPEED=110 #pos acw first, cw 2nd
 	scale = 0.92; minx = 0; maxx = 0; miny = 0; maxy = 0
 
-	BrickPiSetup()
-	BrickPi.MotorEnable[PORT_A]=1
-	BrickPi.MotorEnable[PORT_D]=1
-	BrickPiSetupSensors()
+	#BrickPiSetup()
+	#BrickPi.MotorEnable[PORT_A]=1
+	#BrickPi.MotorEnable[PORT_D]=1
+	#BrickPiSetupSensors()
 
-	bus = smbus.SMBus(1)
-	address = 0x1e #i2c
+	#bus = smbus.SMBus(1)
+	#address = 0x1e #i2c
 	f = open('mainsettings.dat', 'w')
 
 	def read_word(adr):
@@ -29,9 +29,9 @@ def maincalibprogram():
 	def write_byte(adr, value):
 		bus.write_byte_data(address, adr, value)
 
-	write_byte(0, 0b01110000) # Set to 8 samples @ 15Hz
-	write_byte(1, 0b00100000) # 1.3 gain LSb / Gauss 1090 (default)
-	write_byte(2, 0b00000000) # Continuous sampling
+	#write_byte(0, 0b01110000) # Set to 8 samples @ 15Hz
+	#write_byte(1, 0b00100000) # 1.3 gain LSb / Gauss 1090 (default)
+	#write_byte(2, 0b00000000) # Continuous sampling
 
 	for i in range(2):
 		initialr=0;encr=0
