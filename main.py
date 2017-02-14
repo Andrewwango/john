@@ -12,12 +12,12 @@ GPIO.setmode(GPIO.BCM)
 BrickPiSetup()
 
 #Port Assignments  ;    #GPIO Pins
-LWHEEL = PORT_D    ;    IRIN     = 25 #yellow (when sth close, 0)
+LWHEEL = PORT_D    ;    IRIN     = 25 #yellow in (when sth close, 0)
 RWHEEL = PORT_A    ;    US2TRIG  = 24 #brown, out
 GRABBER= PORT_B    ;    US2ECHO  = 23 #green, in
 ARM    = PORT_C    ;    USNEWTRIG= 17 #out
 TOUCHR = PORT_1    ;    USNEWECHO= 22 #in
-TOUCHL = PORT_3
+TOUCHL = PORT_3    ;    BUZZOUT  = 7  #out
 
 XDEGREES = 70.0 #angle between robot path and path (in degs) FLOAT POINT
 USSTANDARD     = 30 #us sensor detection threshold
@@ -44,7 +44,7 @@ BrickPi.SensorType[TOUCHL] = TYPE_SENSOR_TOUCH
 BrickPi.SensorType[TOUCHR] = TYPE_SENSOR_TOUCH
 BrickPiSetupSensors()
 
-GPIO.setup(IRIN, GPIO.IN)
+GPIO.setup(IRIN,      GPIO.IN) ; GPIO.setup(BUZZOUT,   GPIO.OUT)
 GPIO.setup(US2ECHO,   GPIO.IN) ; GPIO.setup(US2TRIG,   GPIO.OUT)
 GPIO.setup(USNEWECHO, GPIO.IN) ; GPIO.setup(USNEWTRIG, GPIO.OUT)
 
@@ -69,7 +69,15 @@ print 'fwdb: ', fwdb
 #############
 ##FUNCTIONS##
 #############
-
+def buzz(patternofbuzz):
+	patternofbuzz = patternofbuzz.split()
+	for i in range(len(patternofbuzz)):
+		GPIO.output(BUZZOUT, True)
+		if patternofbuzz[i]=="short" : time.sleep(0.1)
+		elif patternofbuzz[i]=="long": time.sleep(0.3)
+		GPIO.output(BUZZOUT, False)
+		if len(patternofbuzz) >= 1 and i != len(patternofbuzz)-1: time.sleep(0.2) #if more than one beep and not at end
+		
 def takeusreading(trig, echo): #detect distance of a us
 	GPIO.output(trig, False) #switch everything off
 	#take 5 readings then find average
