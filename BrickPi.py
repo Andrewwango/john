@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+###################MODIFIED BY ANDREW TO BYPASS IR DISABLING
 # Jaikrishna
 # Karan Nayan
 # John Cole
@@ -58,8 +59,7 @@ import sys
 import ir_receiver_check
 
 if ir_receiver_check.check_ir():
-    print("Disable IR receiver before continuing")
-    exit()
+    print("Meant to disable IR but bypassing anyway - just don't connect anything to GPIO14/15!")
 
 if sys.version_info<(3,0):
     p_version=2
