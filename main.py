@@ -64,9 +64,9 @@ currentcdp = 0
 
 #EXTRACT FWDB (local for demo) - real thing: change every cdp
 settingsfile = open('mainsettings.dat','r')
-fwdb=float(settingsfile.read().split('\n')[2])
+origfwdb=float(settingsfile.read().split('\n')[2])
 settingsfile.close()
-print 'fwdb: ', fwdb
+print 'origfwdb ', origfwdb
 
 #############
 ##FUNCTIONS##
@@ -326,25 +326,26 @@ while True:
 		ircode = lirc.nextcode()
 		if ircode:
 			if ircode[0] == "startmainfwdleft":
-				turnycount = 1 ; buzz("short short")
+				turnycount = 1 ; fwdb = origfwdb; buzz("short short")
 				#start main in all of these
 			elif ircode[0]=="startmainfwdright":
-				turnycount = 0 ; buzz("short short")
+				turnycount = 0 ; fwdb = origfwdb; buzz("short short")
 			elif ircode[0]=="startmainbwdleft":
-				turnycount = 1 ; fwdb += 180.0 ; buzz("short short")
+				turnycount = 1 ; fwdb = origfwdb + 180.0 ; buzz("short short")
 			elif ircode[0]=="startmainbwdright":
-				turnycount = 0 ; fwdb += 180.0 ; buzz("short short")
+				turnycount = 0 ; fwdb = origfwdb + 180.0 ; buzz("short short")
 			elif ircode[0]=="startshutdown":
 				print "Shutting down!"
 				buzz("short short short short")
 				#shutdown here!
 			elif ircode[0]=="startcmpautocalib":
 				print "starting calibration script"
-				buzz("short long")
+				buzz("long long")
 				pass #cmpautocalib script!
+			if fwdb > 360.0: fwdb -= 360.0
 			print turnycount, fwdb
 		
-		if fwdb > 360.0: fwdb -= 360.0
+
 		
 		if startmain == True:
 			#initial stuff
