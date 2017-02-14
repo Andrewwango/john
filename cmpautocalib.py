@@ -11,7 +11,6 @@ BrickPiSetupSensors()
 
 bus = smbus.SMBus(1)
 address = 0x1e #i2c
-f = open('mainsettings.dat', 'w')
 
 def read_word(adr):
 	high = bus.read_byte_data(address, adr)
@@ -71,9 +70,7 @@ def maincalibprogram():
 		y_offset = (maxy + miny) / 2
 		print "x offset: ", x_offset
 		print "y offset: ", y_offset
-		f.write(str(x_offset) + "\n" + str(y_offset) + "\n")
-		print "file written" #saved to pi directory
-
+		
 		#make local fwdb (for demo)
 		print "FACE JOHN FORWARDS"
 		time.sleep(10)
@@ -86,5 +83,9 @@ def maincalibprogram():
 			fwdb += 2 * math.pi
 		fwdb = math.degrees(fwdb)
 		print "fwdb: ", fwdb
+		
+		f = open('mainsettings.dat', 'w')
+		f.write(str(x_offset) + "\n" + str(y_offset) + "\n")
 		f.write(str(fwdb))
+		print "file written" #saved to pi directory
 		f.close()
