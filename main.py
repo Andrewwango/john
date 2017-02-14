@@ -49,8 +49,6 @@ BrickPiSetupSensors()
 GPIO.setup(IRIN,      GPIO.IN) ; GPIO.setup(BUZZOUT,   GPIO.OUT)
 GPIO.setup(US2ECHO,   GPIO.IN) ; GPIO.setup(US2TRIG,   GPIO.OUT)
 GPIO.setup(USNEWECHO, GPIO.IN) ; GPIO.setup(USNEWTRIG, GPIO.OUT)
-#set GPIO interrupts
-GPIO.add_event_detect(10, GPIO.RISING, callback=restartprogram) 
 
 ##PROGRAM VARS##
 turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
@@ -75,10 +73,14 @@ print 'origfwdb ', origfwdb
 #############
 def restartprogram(channel):
 	#handle button being pressed when main is running - restart (essentially, stop)
+	print "event detected"
 	if startmain == True: #only restart program if main is actually running!
 		print "Restarting program"
 		os.execl(sys.executable, sys.executable, *sys.argv)
 
+#set GPIO interrupts
+GPIO.add_event_detect(10, GPIO.RISING, callback=restartprogram) 
+		
 def buzz(patternofbuzz):
 	patternofbuzz = patternofbuzz.split()
 	for i in range(len(patternofbuzz)):
