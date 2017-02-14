@@ -20,6 +20,7 @@ GRABBER= PORT_B    ;    US2ECHO  = 23 #green, in
 ARM    = PORT_C    ;    USNEWTRIG= 17 #out
 TOUCHR = PORT_1    ;    USNEWECHO= 22 #in
 TOUCHL = PORT_3    ;    BUZZOUT  = 7  #out
+''''''             ;    IRRCINT  = 8  #irrc interrupt pin
 
 XDEGREES = 70.0 #angle between robot path and path (in degs) FLOAT POINT
 USSTANDARD     = 30 #us sensor detection threshold
@@ -46,10 +47,10 @@ BrickPi.SensorType[TOUCHL] = TYPE_SENSOR_TOUCH
 BrickPi.SensorType[TOUCHR] = TYPE_SENSOR_TOUCH
 BrickPiSetupSensors()
 
-GPIO.setup(IRIN,      GPIO.IN) ; GPIO.setup(BUZZOUT,   GPIO.OUT)
-GPIO.setup(US2ECHO,   GPIO.IN) ; GPIO.setup(US2TRIG,   GPIO.OUT)
+GPIO.setup(IRIN     , GPIO.IN) ; GPIO.setup(BUZZOUT,   GPIO.OUT)
+GPIO.setup(US2ECHO  , GPIO.IN) ; GPIO.setup(US2TRIG,   GPIO.OUT)
 GPIO.setup(USNEWECHO, GPIO.IN) ; GPIO.setup(USNEWTRIG, GPIO.OUT)
-GPIO.setup(8,GPIO.IN)#, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(IRRCINT  , GPIO.IN)
 
 ##PROGRAM VARS##
 turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
@@ -77,17 +78,17 @@ def restartprogram(channel):
 	global debouncetimestamp
 	timenow = time.time()
 	#handle button being pressed when main is running - restart (essentially, stop)
-	print "event detected"
-	if timenow - debouncetimestamp >= 0.3:
-		print "actually taking action"
+	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
+		print "taking action on interrupt"
 		if startmain == True: #only restart program if main is actually running!
 			print "Restarting program"
+			time.sleep(1)
 			GPIO.cleanup()
 			os.execl(sys.executable, sys.executable, *sys.argv)
 	debouncetimestamp = timenow
 
 #set GPIO interrupts
-GPIO.add_event_detect(8, GPIO.RISING, callback=restartprogram) 
+GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram) 
 		
 def buzz(patternofbuzz):
 	patternofbuzz = patternofbuzz.split()
