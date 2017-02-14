@@ -75,7 +75,7 @@ print 'origfwdb ', origfwdb
 def restartprogram(channel):
 	#handle button being pressed when main is running - restart (essentially, stop)
 	print "event detected"
-	time.sleep(5)
+	time.sleep(7)
 	print "finished waiting"
 	if startmain == True: #only restart program if main is actually running!
 		print "Restarting program"
