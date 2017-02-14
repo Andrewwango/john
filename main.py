@@ -81,9 +81,9 @@ def restartprogram(channel):
 	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
 		print "taking action on interrupt"
 		if startmain == True: #only restart program if main is actually running!
-			print "Restarting program"
 			time.sleep(1)
 			GPIO.cleanup()
+			print "Restarting program"
 			os.execl(sys.executable, sys.executable, *sys.argv)
 	debouncetimestamp = timenow
 
@@ -374,6 +374,9 @@ while True:
 			print "main has started"
 			#initial stuff
 			turnbears = createturnbears()
+			
+			#bring arm back up in case it's not
+			movelimbLENG(ARM, SLIDEUPPOWER, 0.3)
 
 			#initial turn from forwards
 			turnprocedure()
