@@ -319,45 +319,48 @@ def detectprocedure(alreadyturning):
 ################
 startmain = False
 while True:
-	#IRRC handling loop
-	ircode = lirc.nextcode()
-	if ircode:
-		print ircode[0]
-		buzz("short long short")
-	
-	if startmain == True:
-		#initial stuff
-		turnbears = createturnbears()
+	try:
+		#IRRC handling loop
+		ircode = lirc.nextcode()
+		if ircode:
+			print ircode[0]
+			buzz("short long short")
 
-		#initial turn from forwards
-		turnprocedure()
+		if startmain == True:
+			#initial stuff
+			turnbears = createturnbears()
 
-		#main loop
-		while True:
-			try:
-				#stop actions
-				BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
+			#initial turn from forwards
+			turnprocedure()
 
-				#drive
-				drivewheels(WHEELPOWER, WHEELPOWER)
+			#main loop
+			while True:
+				try:
+					#stop actions
+					BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
 
-				#search for object
-				detectprocedure(False)
+					#drive
+					drivewheels(WHEELPOWER, WHEELPOWER)
 
-				#check IR for cliff
-				if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
-					print "CLIFF"
-					#reverse!
-					movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER)
-					turnprocedure()
-					#loop back and carry on
+					#search for object
+					detectprocedure(False)
 
-				#check if routepoint reached
-				for i in range(3):
-					pass
-					#get gps coords
-					#check if within +=0.00001
-				#if reached cdp, cdp steering procedure (use compass to control)
-				#make new turnbears based on current cdp
-			except KeyboardInterrupt:
-				GPIO.cleanup()
+					#check IR for cliff
+					if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
+						print "CLIFF"
+						#reverse!
+						movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER)
+						turnprocedure()
+						#loop back and carry on
+
+					#check if routepoint reached
+					for i in range(3):
+						pass
+						#get gps coords
+						#check if within +=0.00001
+					#if reached cdp, cdp steering procedure (use compass to control)
+					#make new turnbears based on current cdp
+				except KeyboardInterrupt:
+					GPIO.cleanup()
+	except KeyboardInterrupt:
+		GPIO.cleanup()
