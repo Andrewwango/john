@@ -76,6 +76,7 @@ def restartprogram(channel):
 	#handle button being pressed when main is running - restart (essentially, stop)
 	print "event detected"
 	time.sleep(5)
+	print "finished waiting"
 	if startmain == True: #only restart program if main is actually running!
 		print "Restarting program"
 		os.execl(sys.executable, sys.executable, *sys.argv)
