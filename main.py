@@ -57,6 +57,7 @@ totElapsedTurningEnc = 0
 tempElapsedTurningEnc = 0
 turnbears=[]
 shoobied='no'
+debouncetimestamp = time.time()
 
 ####PROCESS GPX FILE (EXTRACT CDP)
 ####
@@ -73,13 +74,16 @@ print 'origfwdb ', origfwdb
 ##FUNCTIONS##
 #############
 def restartprogram(channel):
+	global debouncetimestamp
+	timenow = time.time()
 	#handle button being pressed when main is running - restart (essentially, stop)
 	print "event detected"
-	time.sleep(7)
-	print "finished waiting"
-	if startmain == True: #only restart program if main is actually running!
-		print "Restarting program"
-		os.execl(sys.executable, sys.executable, *sys.argv)
+	if timenow - debouncetimestamp >= 0.3:
+		print "actually taking action"
+		if startmain == True: #only restart program if main is actually running!
+			print "Restarting program"
+			os.execl(sys.executable, sys.executable, *sys.argv)
+	debouncetimestamp = timenow
 
 #set GPIO interrupts
 GPIO.add_event_detect(8, GPIO.RISING, callback=restartprogram) 
