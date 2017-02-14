@@ -10,7 +10,7 @@ from compassgpsutils import *
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 BrickPiSetup()
-sockid = lirc.init("main",blocking=False)
+#sockid = lirc.init("main",blocking=False)
 
 #Port Assignments  ;    #GPIO Pins
 LWHEEL = PORT_D    ;    IRIN     = 25 #yellow in (when sth close, 0)
