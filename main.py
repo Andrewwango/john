@@ -4,7 +4,7 @@
 #BrickPi: github.com/DexterInd/BrickPi_Python
 #remember to ./stopev.sh (disable getty via systemctl) on boot!
 #import relevant modules
-import time, math, lirc, sys, pygame, os
+import time, math, lirc, sys, pygame, os, cmpautocalib
 from BrickPi import *
 from compassgpsutils import *
 import RPi.GPIO as GPIO
@@ -81,7 +81,6 @@ def restartprogram(channel):
 	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
 		print "taking action on interrupt"
 		if startmain == True: #only restart program if main is actually running!
-			time.sleep(1)
 			GPIO.cleanup()
 			print "Restarting program"
 			os.execl(sys.executable, sys.executable, *sys.argv)
@@ -364,7 +363,7 @@ while True:
 			elif ircode[0]=="startcmpautocalib":
 				print "starting calibration script"
 				buzz("long long")
-				pass #cmpautocalib script!
+				cmpautocalib.maincalibprogram()
 			if fwdb > 360.0: fwdb -= 360.0
 			print turnycount, fwdb
 		
