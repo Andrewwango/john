@@ -321,7 +321,7 @@ def detectprocedure(alreadyturning):
 startmain = False
 while True:
 	try:
-		clock.tick(3)
+		clock.tick(10)
 		#IRRC handling loop
 		ircode = lirc.nextcode()
 		if ircode:
