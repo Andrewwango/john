@@ -368,7 +368,7 @@ while True:
 				buzz("long long")
 				cmpautocalib.maincalibprogram()
 			elif ircode[0]=="bants":
-				buzz("short long short short long short short short long short short")
+				buzz("long long short short long short short short long short short")
 			if fwdb > 360.0: fwdb -= 360.0
 			print turnycount, fwdb
 		
