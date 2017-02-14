@@ -255,6 +255,7 @@ def detectprocedure(alreadyturning):
 	temptouchreading = taketouchreadings()
 	if tempreading < USSTANDARD or temptouchreading==1:
 		print "object detected"
+		buzz("long")
 		drivewheels(0,0)
 		
 		#activate us2 pos
@@ -270,6 +271,7 @@ def detectprocedure(alreadyturning):
 		#check higher us2 for big thing	
 		if takeusreading(US2TRIG, US2ECHO) > US2STANDARD:
 			#LITTER (low-lying object)
+			buzz("short short")
 			#pick up litter procedure
 			print "low-lying object detected"
 			time.sleep(0.5)
@@ -309,6 +311,7 @@ def detectprocedure(alreadyturning):
 			
 		else:
 			print "WALL" #WALL
+			buzz("long")
 			if alreadyturning == False: #im not turning already so i want to turn and deactivate at wall
 				turnprocedure()
 			
@@ -364,6 +367,8 @@ while True:
 				print "starting calibration script"
 				buzz("long long")
 				cmpautocalib.maincalibprogram()
+			elif ircode[0]=="bants":
+				buzz("short long short short long short short short long short short")
 			if fwdb > 360.0: fwdb -= 360.0
 			print turnycount, fwdb
 		
@@ -395,6 +400,7 @@ while True:
 					#check IR for cliff
 					if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
 						print "CLIFF"
+						buzz("long")
 						#reverse!
 						movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER)
 						turnprocedure()
