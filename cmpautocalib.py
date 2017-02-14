@@ -67,27 +67,27 @@ def maincalibprogram():
 		BrickPi.MotorSpeed[PORT_A]=0; BrickPi.MotorSpeed[PORT_D]=0
 		time.sleep(0.4)
 
-		#process results
-		x_offset = (maxx + minx) / 2
-		y_offset = (maxy + miny) / 2
-		print "x offset: ", x_offset
-		print "y offset: ", y_offset
-		
-		#make local fwdb (for demo)
-		print "FACE JOHN FORWARDS"
-		time.sleep(10)
-		print "making fwdb!"
-		x_out = (read_word_2c(3) - x_offset) * scale
-		y_out = (read_word_2c(7) - y_offset) * scale
-		z_out = (read_word_2c(5)) * scale
-		fwdb = math.atan2(y_out, x_out) 
-		if (fwdb < 0):
-			fwdb += 2 * math.pi
-		fwdb = math.degrees(fwdb)
-		print "fwdb: ", fwdb
-		
-		f = open('mainsettings.dat', 'w')
-		f.write(str(x_offset) + "\n" + str(y_offset) + "\n")
-		f.write(str(fwdb))
-		print "file written" #saved to pi directory
-		f.close()
+	#process results
+	x_offset = (maxx + minx) / 2
+	y_offset = (maxy + miny) / 2
+	print "x offset: ", x_offset
+	print "y offset: ", y_offset
+
+	#make local fwdb (for demo)
+	print "FACE JOHN FORWARDS"
+	time.sleep(10)
+	print "making fwdb!"
+	x_out = (read_word_2c(3) - x_offset) * scale
+	y_out = (read_word_2c(7) - y_offset) * scale
+	z_out = (read_word_2c(5)) * scale
+	fwdb = math.atan2(y_out, x_out) 
+	if (fwdb < 0):
+		fwdb += 2 * math.pi
+	fwdb = math.degrees(fwdb)
+	print "fwdb: ", fwdb
+
+	f = open('mainsettings.dat', 'w')
+	f.write(str(x_offset) + "\n" + str(y_offset) + "\n")
+	f.write(str(fwdb))
+	print "file written" #saved to pi directory
+	f.close()
