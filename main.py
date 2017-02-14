@@ -4,13 +4,14 @@
 #BrickPi: github.com/DexterInd/BrickPi_Python
 #remember to ./stopev.sh (disable getty via systemctl) on boot!
 #import relevant modules
-import time, math, lirc, sys
+import time, math, lirc, sys, pygame
 from BrickPi import *
 from compassgpsutils import *
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 BrickPiSetup()
 sockid = lirc.init("main",blocking=False)
+clock=pygame.time.Clock()
 
 #Port Assignments  ;    #GPIO Pins
 LWHEEL = PORT_D    ;    IRIN     = 25 #yellow in (when sth close, 0)
@@ -320,6 +321,7 @@ def detectprocedure(alreadyturning):
 startmain = False
 while True:
 	try:
+		clock.tick(3)
 		#IRRC handling loop
 		ircode = lirc.nextcode()
 		if ircode:
