@@ -1,3 +1,5 @@
+print "SATATR"
+
 import os, sys, time
 i=0
 
