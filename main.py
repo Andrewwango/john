@@ -325,10 +325,26 @@ while True:
 		#IRRC handling loop
 		ircode = lirc.nextcode()
 		if ircode:
-			print ircode[0]
-			buzz("short long short")
+			if ircode[0] == "startmainfwdleft":
+				turnycount = 1 ; buzz("short short")
+				#start main in all of these
+			elif ircode[0]=="startmainfwdright":
+				turnycount = 0 ; buzz("short short")
+			elif ircode[0]=="startmainbwdleft":
+				turnycount = 1 ; fwdb += 180.0 ; buzz("short short")
+			elif ircode[0]=="startmainbwdright":
+				turnycount = 0 ; fwdb += 180.0 ; buzz("short short")
+			elif ircode[0]=="startshutdown":
+				print "Shutting down!"
+				buzz("short short short short")
+				#shutdown here!
+			elif ircode[0]=="startcmpautocalib":
+				print "starting calibration script"
+				buzz("short long")
+				pass #cmpautocalib script!
+			print turnycount, fwdb
 		
-		print taketouchreadings()
+		if fwdb > 360.0: fwdb -= 360.0
 		
 		if startmain == True:
 			#initial stuff
