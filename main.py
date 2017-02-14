@@ -400,9 +400,9 @@ while True:
 					#check IR for cliff
 					if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
 						print "CLIFF"
-						buzz("long")
 						#reverse!
 						movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER)
+						buzz("long")
 						turnprocedure()
 						#loop back and carry on
 
