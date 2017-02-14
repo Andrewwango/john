@@ -4,12 +4,13 @@
 #BrickPi: github.com/DexterInd/BrickPi_Python
 #remember to ./stopev.sh (disable getty via systemctl) on boot!
 #import relevant modules
-import time, math
+import time, math, lirc
 from BrickPi import *
 from compassgpsutils import *
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 BrickPiSetup()
+sockid = lirc.init("main",blocking=False)
 
 #Port Assignments  ;    #GPIO Pins
 LWHEEL = PORT_D    ;    IRIN     = 25 #yellow in (when sth close, 0)
@@ -316,38 +317,47 @@ def detectprocedure(alreadyturning):
 ################
 ##MAIN PROGRAM##
 ################
+startmain = False
 while True:
-	turnbears = createturnbears()
+	#IRRC handling loop
+	ircode = lirc.nextcode()
+	if ircode:
+		print ircode[0]
+		buzz("short long short")
 	
-	#initial turn from forwards
-	turnprocedure()
+	if startmain == True:
+		#initial stuff
+		turnbears = createturnbears()
 
-	#main loop
-	while True:
-		try:
-			#stop actions
-			BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
-			
-			#drive
-			drivewheels(WHEELPOWER, WHEELPOWER)
-			
-			#search for object
-			detectprocedure(False)
-			
-			#check IR for cliff
-			if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
-				print "CLIFF"
-				#reverse!
-				movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER)
-				turnprocedure()
-				#loop back and carry on
-			
-			#check if routepoint reached
-			for i in range(3):
-				pass
-				#get gps coords
-				#check if within +=0.00001
-			#if reached cdp, cdp steering procedure (use compass to control)
-			#make new turnbears based on current cdp
-		except KeyboardInterrupt:
-			GPIO.cleanup()
+		#initial turn from forwards
+		turnprocedure()
+
+		#main loop
+		while True:
+			try:
+				#stop actions
+				BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
+
+				#drive
+				drivewheels(WHEELPOWER, WHEELPOWER)
+
+				#search for object
+				detectprocedure(False)
+
+				#check IR for cliff
+				if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
+					print "CLIFF"
+					#reverse!
+					movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER)
+					turnprocedure()
+					#loop back and carry on
+
+				#check if routepoint reached
+				for i in range(3):
+					pass
+					#get gps coords
+					#check if within +=0.00001
+				#if reached cdp, cdp steering procedure (use compass to control)
+				#make new turnbears based on current cdp
+			except KeyboardInterrupt:
+				GPIO.cleanup()
