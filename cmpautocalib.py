@@ -2,7 +2,7 @@ import time, math, smbus
 from BrickPi import *
 
 SPEED=110 #pos acw first, cw 2nd
-scale = 0.92; minx = 0; maxx = 0; miny = 0; maxy = 0
+scale = 0.92
 
 BrickPiSetup()
 BrickPi.MotorEnable[PORT_A]=1
@@ -31,6 +31,8 @@ write_byte(1, 0b00100000) # 1.3 gain LSb / Gauss 1090 (default)
 write_byte(2, 0b00000000) # Continuous sampling
 
 def maincalibprogram():
+	minx = 0; maxx = 0; miny = 0; maxy = 0
+	
 	for i in range(2):
 		initialr=0;encr=0
 
