@@ -33,58 +33,58 @@ write_byte(2, 0b00000000) # Continuous sampling
 
 def maincalibprogram():
 	for i in range(2):
-	initialr=0;encr=0
+		initialr=0;encr=0
 
-	while True: #make sure we get an encoder reading! (break when we do)
-		result = BrickPiUpdateValues()
-		if not result :
-			initialr = BrickPi.Encoder[PORT_A]
-			break
+		while True: #make sure we get an encoder reading! (break when we do)
+			result = BrickPiUpdateValues()
+			if not result :
+				initialr = BrickPi.Encoder[PORT_A]
+				break
 
-	if i==0: BrickPi.MotorSpeed[PORT_A]=-SPEED; BrickPi.MotorSpeed[PORT_D]= SPEED 
-	else:    BrickPi.MotorSpeed[PORT_A]= SPEED; BrickPi.MotorSpeed[PORT_D]=-SPEED #turn back
+		if i==0: BrickPi.MotorSpeed[PORT_A]=-SPEED; BrickPi.MotorSpeed[PORT_D]= SPEED 
+		else:    BrickPi.MotorSpeed[PORT_A]= SPEED; BrickPi.MotorSpeed[PORT_D]=-SPEED #turn back
 
-	while True:
-		result = BrickPiUpdateValues()
-		if not result :
-			encr = BrickPi.Encoder[PORT_A]-initialr
-			print encr
-			if abs(encr) > 1767: #a full turn
-				break #finshed turning
-		#read compass
-		x_out = read_word_2c(3)
-		y_out = read_word_2c(7)
-		z_out = read_word_2c(5)
+		while True:
+			result = BrickPiUpdateValues()
+			if not result :
+				encr = BrickPi.Encoder[PORT_A]-initialr
+				print encr
+				if abs(encr) > 1767: #a full turn
+					break #finshed turning
+			#read compass
+			x_out = read_word_2c(3)
+			y_out = read_word_2c(7)
+			z_out = read_word_2c(5)
 
-		if x_out < minx: minx=x_out
-		if y_out < miny: miny=y_out
-		if x_out > maxx: maxx=x_out
-		if y_out > maxy: maxy=y_out
+			if x_out < minx: minx=x_out
+			if y_out < miny: miny=y_out
+			if x_out > maxx: maxx=x_out
+			if y_out > maxy: maxy=y_out
 
-		time.sleep(.1)
+			time.sleep(.1)
 
-	BrickPi.MotorSpeed[PORT_A]=0; BrickPi.MotorSpeed[PORT_D]=0
-	time.sleep(0.4)
+		BrickPi.MotorSpeed[PORT_A]=0; BrickPi.MotorSpeed[PORT_D]=0
+		time.sleep(0.4)
 
-	#process results
-	x_offset = (maxx + minx) / 2
-	y_offset = (maxy + miny) / 2
-	print "x offset: ", x_offset
-	print "y offset: ", y_offset
-	f.write(str(x_offset) + "\n" + str(y_offset) + "\n")
-	print "file written" #saved to pi directory
+		#process results
+		x_offset = (maxx + minx) / 2
+		y_offset = (maxy + miny) / 2
+		print "x offset: ", x_offset
+		print "y offset: ", y_offset
+		f.write(str(x_offset) + "\n" + str(y_offset) + "\n")
+		print "file written" #saved to pi directory
 
-	#make local fwdb (for demo)
-	print "FACE JOHN FORWARDS"
-	time.sleep(10)
-	print "making fwdb!"
-	x_out = (read_word_2c(3) - x_offset) * scale
-	y_out = (read_word_2c(7) - y_offset) * scale
-	z_out = (read_word_2c(5)) * scale
-	fwdb = math.atan2(y_out, x_out) 
-	if (fwdb < 0):
-	fwdb += 2 * math.pi
-	fwdb = math.degrees(fwdb)
-	print "fwdb: ", fwdb
-	f.write(str(fwdb))
-	f.close()
+		#make local fwdb (for demo)
+		print "FACE JOHN FORWARDS"
+		time.sleep(10)
+		print "making fwdb!"
+		x_out = (read_word_2c(3) - x_offset) * scale
+		y_out = (read_word_2c(7) - y_offset) * scale
+		z_out = (read_word_2c(5)) * scale
+		fwdb = math.atan2(y_out, x_out) 
+		if (fwdb < 0):
+			fwdb += 2 * math.pi
+		fwdb = math.degrees(fwdb)
+		print "fwdb: ", fwdb
+		f.write(str(fwdb))
+		f.close()
