@@ -325,7 +325,9 @@ while True:
 		if ircode:
 			print ircode[0]
 			buzz("short long short")
-
+		
+		print taketouchreadings()
+		
 		if startmain == True:
 			#initial stuff
 			turnbears = createturnbears()
