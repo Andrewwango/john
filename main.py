@@ -4,7 +4,7 @@
 #BrickPi: github.com/DexterInd/BrickPi_Python
 #remember to ./stopev.sh (disable getty via systemctl) on boot!
 #import relevant modules
-import time, math, lirc, sys, pygame
+import time, math, lirc, sys, pygame, os
 from BrickPi import *
 from compassgpsutils import *
 import RPi.GPIO as GPIO
@@ -82,6 +82,7 @@ def restartprogram(channel):
 		print "actually taking action"
 		if startmain == True: #only restart program if main is actually running!
 			print "Restarting program"
+			GPIO.cleanup()
 			os.execl(sys.executable, sys.executable, *sys.argv)
 	debouncetimestamp = timenow
 
