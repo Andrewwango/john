@@ -49,6 +49,7 @@ BrickPiSetupSensors()
 GPIO.setup(IRIN,      GPIO.IN) ; GPIO.setup(BUZZOUT,   GPIO.OUT)
 GPIO.setup(US2ECHO,   GPIO.IN) ; GPIO.setup(US2TRIG,   GPIO.OUT)
 GPIO.setup(USNEWECHO, GPIO.IN) ; GPIO.setup(USNEWTRIG, GPIO.OUT)
+GPIO.setup(10,GPIO.IN)
 
 ##PROGRAM VARS##
 turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
