@@ -1,6 +1,6 @@
 import lirc, time
 
-sockid = lirc.init("irrctest",blocking=False)
+sockid = lirc.init("irrctest")#,blocking=False)
 print("Ready")
 i=0
 while True:
