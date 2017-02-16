@@ -75,32 +75,6 @@ print 'origfwdb ', origfwdb
 #############
 ##FUNCTIONS##
 #############
-def restartprogram(channel):
-	global debouncetimestamp
-	timenow = time.time()
-	#handle button being pressed when main is running - restart (essentially, stop)
-	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
-		print "taking action on interrupt"
-		if startmain == True: #only restart program if main is actually running!
-			BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0; drivewheeels(0,0) #stop all
-			buzz("short long")
-			GPIO.cleanup()
-			print "Stop pressed - Restarting program"
-			os.execl(sys.executable, sys.executable, *sys.argv)
-	debouncetimestamp = timenow
-
-def shutdownprogram(channel=0):
-	global debouncetimestamp
-	timenow = time.time()
-	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
-		buzz("short short short short")
-		print "shutbutt pressed, shutting down"
-		GPIO.cleanup()
-	debouncetimestamp = timenow
-
-#set GPIO interrupts
-GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram)
-GPIO.add_event_detect(SHUTBUTT,GPIO.FALLING,callback=shutdownprogram) 
 		
 def buzz(patternofbuzz):
 	patternofbuzz = patternofbuzz.split()
@@ -348,7 +322,33 @@ def detectprocedure(alreadyturning):
 
 				time.sleep(0.2)
 								
+def restartprogram(channel):
+	global debouncetimestamp
+	timenow = time.time()
+	#handle button being pressed when main is running - restart (essentially, stop)
+	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
+		print "taking action on interrupt"
+		if startmain == True: #only restart program if main is actually running!
+			BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0; drivewheeels(0,0) #stop all
+			buzz("short long")
+			GPIO.cleanup()
+			print "Stop pressed - Restarting program"
+			os.execl(sys.executable, sys.executable, *sys.argv)
+	debouncetimestamp = timenow
 
+def shutdownprogram(channel):
+	global debouncetimestamp
+	timenow = time.time()
+	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
+		buzz("short short short short")
+		print "shutbutt pressed, shutting down"
+		GPIO.cleanup()
+	debouncetimestamp = timenow
+
+#set GPIO interrupts
+GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram)
+GPIO.add_event_detect(SHUTBUTT,GPIO.FALLING,callback=shutdownprogram) 
+					
 ################
 ##MAIN PROGRAM##
 ################
@@ -374,7 +374,7 @@ while True:
 				startmain = True; time.sleep(2)
 			elif ircode[0]=="startshutdown":
 				print "Shutting down!"
-				shutdownprogram()
+				buzz("short short short short")
 			elif ircode[0]=="startcmpautocalib":
 				print "starting calibration script"
 				buzz("long long")
