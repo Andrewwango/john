@@ -92,10 +92,10 @@ def restartprogram(channel):
 def shutdownprogram(channel=0):
 	global debouncetimestamp
 	timenow = time.time()
-		if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
-			buzz("short short short short")
-			print "shutbutt pressed, shutting down"
-			GPIO.cleanup()
+	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
+		buzz("short short short short")
+		print "shutbutt pressed, shutting down"
+		GPIO.cleanup()
 	debouncetimestamp = timenow
 
 #set GPIO interrupts
