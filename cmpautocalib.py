@@ -1,17 +1,26 @@
 import time, math, smbus
 from BrickPi import *
+import RPi.GPIO as GPIO
 
 SPEED=110 #pos acw first, cw 2nd
 scale = 0.92
+BUZZOUT  = 7 #buzzer pin
 
 BrickPiSetup()
-BrickPi.MotorEnable[PORT_A]=1
-BrickPi.MotorEnable[PORT_D]=1
+GPIO.setmode(GPIO.BCM)        ; GPIO.setup(BUZZOUT, GPIO.OUT)
+BrickPi.MotorEnable[PORT_A]=1 ; BrickPi.MotorEnable[PORT_D]=1
 BrickPiSetupSensors()
 
+#setup i2c
 bus = smbus.SMBus(1)
-address = 0x1e #i2c
+address = 0x1e #i2c address
 
+def buzz():
+	for i in range(2):
+		GPIO.output(BUZZOUT, True)  ; time.sleep(0.3)
+		GPIO.output(BUZZOUT, False) ; time.sleep(0.2)
+
+#compass I2C functions
 def read_word(adr):
 	high = bus.read_byte_data(address, adr)
 	low = bus.read_byte_data(address, adr+1)
@@ -75,7 +84,7 @@ def maincalibprogram():
 
 	#make local fwdb (for demo)
 	print "FACE JOHN FORWARDS"
-	time.sleep(10)
+	buzz(); time.sleep(10)
 	print "making fwdb!"
 	x_out = (read_word_2c(3) - x_offset) * scale
 	y_out = (read_word_2c(7) - y_offset) * scale
@@ -87,7 +96,6 @@ def maincalibprogram():
 	print "fwdb: ", fwdb
 
 	f = open('mainsettings.dat', 'w')
-	f.write(str(x_offset) + "\n" + str(y_offset) + "\n")
-	f.write(str(fwdb))
+	f.write(str(x_offset) + "\n" + str(y_offset) + "\n" + str(fwdb))
 	print "file written" #saved to pi directory
-	f.close()
+	f.close(); buzz(); print "cmpautocalib completed"
