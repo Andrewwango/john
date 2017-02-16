@@ -21,6 +21,7 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #out
 TOUCHR = PORT_1    ;    USNEWECHO= 22 #in
 TOUCHL = PORT_3    ;    BUZZOUT  = 7  #out
 ''''''             ;    IRRCINT  = 8  #irrc interrupt pin
+''''''             ;    SHUTBUTT = 9  #force shutdown button
 
 XDEGREES = 80.0 #angle between robot path and path (in degs) FLOAT POINT
 USSTANDARD     = 30 #us sensor detection threshold
@@ -50,7 +51,7 @@ BrickPiSetupSensors()
 GPIO.setup(IRIN     , GPIO.IN) ; GPIO.setup(BUZZOUT,   GPIO.OUT)
 GPIO.setup(US2ECHO  , GPIO.IN) ; GPIO.setup(US2TRIG,   GPIO.OUT)
 GPIO.setup(USNEWECHO, GPIO.IN) ; GPIO.setup(USNEWTRIG, GPIO.OUT)
-GPIO.setup(IRRCINT  , GPIO.IN)
+GPIO.setup(IRRCINT  , GPIO.IN) ; GPIO.setup(SHUTBUTT,  GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 ##PROGRAM VARS##
 turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
@@ -81,13 +82,25 @@ def restartprogram(channel):
 	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
 		print "taking action on interrupt"
 		if startmain == True: #only restart program if main is actually running!
+			BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0; drivewheeels(0,0) #stop all
+			buzz("short long")
 			GPIO.cleanup()
-			print "Restarting program"
+			print "Stop pressed - Restarting program"
 			os.execl(sys.executable, sys.executable, *sys.argv)
 	debouncetimestamp = timenow
 
+def shutdownprogram(channel=0):
+	global debouncetimestamp
+	timenow = time.time()
+		if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
+			buzz("short short short short")
+			print "shutbutt pressed, shutting down"
+			GPIO.cleanup()
+	debouncetimestamp = timenow
+
 #set GPIO interrupts
-GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram) 
+GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram)
+GPIO.add_event_detect(SHUTBUTT,GPIO.FALLING,callback=shutdownprogram) 
 		
 def buzz(patternofbuzz):
 	patternofbuzz = patternofbuzz.split()
@@ -361,8 +374,7 @@ while True:
 				startmain = True; time.sleep(2)
 			elif ircode[0]=="startshutdown":
 				print "Shutting down!"
-				buzz("short short short short")
-				#shutdown here!
+				shutdownprogram()
 			elif ircode[0]=="startcmpautocalib":
 				print "starting calibration script"
 				buzz("long long")
