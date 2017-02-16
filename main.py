@@ -329,7 +329,7 @@ def restartprogram(channel):
 	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
 		print "taking action on interrupt"
 		if startmain == True: #only restart program if main is actually running!
-			BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0; drivewheeels(0,0) #stop all
+			BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0; drivewheels(0,0) #stop all
 			buzz("short long")
 			GPIO.cleanup()
 			print "Stop pressed - Restarting program"
