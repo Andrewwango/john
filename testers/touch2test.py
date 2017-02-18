@@ -12,9 +12,9 @@ while True:
 	elif state==1:
 		print "1"
 	state2=GPIO.input(4)
- 	if state==0:
+ 	if state2==0:
 		print "222222222222222222222222222222222222222222222"
-	elif state==1:
+	elif state2==1:
 		print "2"
 		
 	time.sleep(0.2)
