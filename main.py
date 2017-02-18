@@ -18,8 +18,8 @@ LWHEEL = PORT_D    ;    IRIN     = 25 #yellow in (when sth close, 0)
 RWHEEL = PORT_A    ;    US2TRIG  = 24 #brown, out
 GRABBER= PORT_B    ;    US2ECHO  = 23 #green, in
 ARM    = PORT_C    ;    USNEWTRIG= 17 #out
-TOUCHR = PORT_1    ;    USNEWECHO= 22 #in
-TOUCHL = PORT_3    ;    BUZZOUT  = 7  #out
+TOUCHR = 11        ;    USNEWECHO= 22 #in
+TOUCHL = 4         ;    BUZZOUT  = 7  #out
 ''''''             ;    IRRCINT  = 8  #irrc interrupt pin
 ''''''             ;    SHUTBUTT = 9  #force shutdown button
 
@@ -48,10 +48,11 @@ BrickPi.SensorType[TOUCHL] = TYPE_SENSOR_TOUCH
 BrickPi.SensorType[TOUCHR] = TYPE_SENSOR_TOUCH
 BrickPiSetupSensors()
 
-GPIO.setup(IRIN     , GPIO.IN) ; GPIO.setup(BUZZOUT,   GPIO.OUT)
-GPIO.setup(US2ECHO  , GPIO.IN) ; GPIO.setup(US2TRIG,   GPIO.OUT)
-GPIO.setup(USNEWECHO, GPIO.IN) ; GPIO.setup(USNEWTRIG, GPIO.OUT)
-GPIO.setup(IRRCINT  , GPIO.IN) ; GPIO.setup(SHUTBUTT,  GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(IRIN     , GPIO.IN)  ; GPIO.setup(BUZZOUT , GPIO.OUT)
+GPIO.setup(USNEWECHO, GPIO.IN)  ; GPIO.setup(SHUTBUTT, GPIO.IN , pull_up_down=GPIO.PUD_UP)
+GPIO.setup(USNEWTRIG, GPIO.OUT) ; GPIO.setup(TOUCHL  , GPIO.IN , pull_up_down=GPIO.PUD_UP)
+GPIO.setup(US2ECHO  , GPIO.IN)  ; GPIO.setup(TOUCHR  , GPIO.IN , pull_up_down=GPIO.PUD_UP)
+GPIO.setup(US2TRIG  , GPIO.OUT) ; GPIO.setup(IRRCINT , GPIO.IN)
 
 ##PROGRAM VARS##
 turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
@@ -117,12 +118,9 @@ def takeusreading(trig, echo): #detect distance of a us
 
 def taketouchreadings():
 	#check if any touch sensor is pressed
-	result = BrickPiUpdateValues()
-	if not result:
-		if BrickPi.Sensor[TOUCHL]==1 or BrickPi.Sensor[TOUCHR]==1:
-			print "TOUCH"; return 1
-		else:
-			return 0
+	if GPIO.input(TOUCHL) or GPIO.input(TOUCHR) == 0: return 1
+	else: return 0 #look for falling edge
+
 def takeencoderreading(port): #read motor position
 	for i in range(3): #deal with encoder glitches
 		result = BrickPiUpdateValues()
@@ -246,7 +244,7 @@ def detectprocedure(alreadyturning):
 		drivewheels(0,0)
 		
 		#activate us2 pos
-		if alreadyturning == False: #im not turning (so i want to activate us2 pos)
+		if alreadyturning == False and temptouchreading==0: #im not turning (so i want to activate us2 pos)
 			print "sliding down bit by bit, activate"
 			movelimbENC(ARM, BRINGDOWNPOWER, 85)
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
@@ -256,7 +254,7 @@ def detectprocedure(alreadyturning):
 			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
 
 		#check higher us2 for big thing	
-		if takeusreading(US2TRIG, US2ECHO) > US2STANDARD:
+		if takeusreading(US2TRIG, US2ECHO) > US2STANDARD and temptouchreading==0:
 			#LITTER (low-lying object)
 			buzz("short short")
 			#pick up litter procedure
@@ -297,7 +295,7 @@ def detectprocedure(alreadyturning):
 				movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
 			
 		else:
-			print "WALL" #WALL
+			print "WALL" #WALL(either by us or touch)
 			buzz("long")
 			if alreadyturning == False: #im not turning already so i want to turn and deactivate at wall
 				turnprocedure()
