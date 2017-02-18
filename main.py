@@ -23,7 +23,7 @@ TOUCHL = 4         ;    BUZZOUT  = 7  #out
 ''''''             ;    IRRCINT  = 8  #irrc interrupt pin
 ''''''             ;    SHUTBUTT = 9  #force shutdown button
 
-XDEGREES = 80.0 #angle between robot path and path (in degs) FLOAT POINT
+XDEGREES = 60.0 #angle between robot path and path (in degs) FLOAT POINT
 USSTANDARD     = 30 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
 OPTLITTERRANGE = [19,27] #the opt us distance range from which it can pick up stuff
