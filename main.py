@@ -116,8 +116,10 @@ def takeusreading(trig, echo): #detect distance of a us
 
 def taketouchreadings():
 	#check if any touch sensor is pressed
-	if GPIO.input(TOUCHL) or GPIO.input(TOUCHR) == 0: return 1
-	else: return 0 #look for falling edge
+	if GPIO.input(TOUCHL) or GPIO.input(TOUCHR) == 0: #look for falling edge
+		print "touch returns 1"
+		return 1
+	else: return 0
 
 def takeencoderreading(port): #read motor position
 	for i in range(3): #deal with encoder glitches
