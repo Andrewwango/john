@@ -44,8 +44,6 @@ BRINGDOWNBRAKEPOWER = -5
 ##SETUP## motors, sensors, GPIO Pins
 BrickPi.MotorEnable[GRABBER] = 1 ; BrickPi.MotorEnable[ARM]    = 1
 BrickPi.MotorEnable[LWHEEL]  = 1 ; BrickPi.MotorEnable[RWHEEL] = 1
-BrickPi.SensorType[TOUCHL] = TYPE_SENSOR_TOUCH
-BrickPi.SensorType[TOUCHR] = TYPE_SENSOR_TOUCH
 BrickPiSetupSensors()
 
 GPIO.setup(IRIN     , GPIO.IN)  ; GPIO.setup(BUZZOUT , GPIO.OUT)
