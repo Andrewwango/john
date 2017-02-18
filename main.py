@@ -315,9 +315,11 @@ def detectprocedure(alreadyturning):
 					#turn until wall is no longer in sight (to get rid of stalling problem)(manual turn)
 					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
 					BrickPiUpdateValues()
-				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
-				BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
-
+				try:
+					movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
+					BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
+				except UnboundLocalError: pass
+				
 				time.sleep(0.2)
 								
 def restartprogram(channel):
