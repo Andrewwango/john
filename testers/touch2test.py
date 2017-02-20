@@ -1,11 +1,18 @@
 import time
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
+TOUCHL=4; TOUCHR=11
+GPIO.setup(TOUCHL, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(TOUCHR, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+def taketouchreadings():
+	#check if any touch sensor is pressed
+	print "touchreadings: ", GPIO.input(TOUCHL), GPIO.input(TOUCHR)
+	if GPIO.input(TOUCHL) or GPIO.input(TOUCHR) == 0: #look for falling edge
+		print "touch returns 1"
+		return 1
+	else: return 0
 
 while True:
-	print GPIO.input(11), GPIO.input(4)
-		
-	time.sleep(0.2)
+	print taketouchreadings()
+	time.sleep(0.3)
