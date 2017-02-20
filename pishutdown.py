@@ -1,5 +1,5 @@
 #!/usr/bin/env python2.7
-#this will be located in /home/pi as an executable .sh
+#a corresponding launcher .sh file is in /home/pi and launches this on boot.
 import os
 import RPi.GPIO as GPIO
 gpio.setmode(GPIO.BCM)
