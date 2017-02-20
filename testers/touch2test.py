@@ -7,8 +7,9 @@ GPIO.setup(TOUCHR, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def taketouchreadings():
 	#check if any touch sensor is pressed
-	state = GPIO.input(TOUCHL)+GPIO.input(TOUCHR)
-	if state > 0: #look for falling edge
+	state = GPIO.input(TOUCHL)
+	state2= GPIO.input(TOUCHR)
+	if state == 0 or state2 == 0: #look for falling edge
 		print "touch returns 1"
 		return 1
 	else: return 0
