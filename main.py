@@ -116,8 +116,8 @@ def takeusreading(trig, echo): #detect distance of a us
 
 def taketouchreadings():
 	#check if any touch sensor is pressed
-	print "touchreadings: ", GPIO.input(TOUCHL), GPIO.input(TOUCHR)
-	if GPIO.input(TOUCHL) or GPIO.input(TOUCHR) == 0: #look for falling edge
+	stateL = GPIO.input(TOUCHL); stateR= GPIO.input(TOUCHR)
+	if stateL == 0 or stateR == 0: #look for falling edge
 		print "touch returns 1"
 		return 1
 	else: return 0
