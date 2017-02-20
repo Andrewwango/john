@@ -9,6 +9,7 @@ def taketouchreadings():
 	#check if any touch sensor is pressed
 	state = GPIO.input(TOUCHL)
 	state2= GPIO.input(TOUCHR)
+	print state, state2
 	if state == 0 or state2 == 0: #look for falling edge
 		print "touch returns 1"
 		return 1
