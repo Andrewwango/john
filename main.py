@@ -344,6 +344,7 @@ def shutdownprogram(channel):
 		buzz("short short short short")
 		print "shutbutt pressed, shutting down"
 		GPIO.cleanup()
+		os.system('sudo shutdown -h now')
 	debouncetimestamp = timenow
 
 #set GPIO interrupts
@@ -376,6 +377,7 @@ while True:
 			elif ircode[0]=="startshutdown":
 				print "Shutting down!"
 				buzz("short short short short")
+				os.system('sudo shutdown -h now')
 			elif ircode[0]=="startcmpautocalib":
 				print "starting calibration script"
 				buzz("long long")
