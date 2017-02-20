@@ -21,7 +21,6 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #out
 TOUCHR = 11        ;    USNEWECHO= 22 #in
 TOUCHL = 4         ;    BUZZOUT  = 7  #out
 ''''''             ;    IRRCINT  = 8  #irrc interrupt pin
-''''''             ;    SHUTBUTT = 9  #force shutdown button
 
 XDEGREES = 70.0 #angle between robot path and path (in degs) FLOAT POINT
 USSTANDARD     = 30 #us sensor detection threshold
@@ -47,7 +46,7 @@ BrickPi.MotorEnable[LWHEEL]  = 1 ; BrickPi.MotorEnable[RWHEEL] = 1
 BrickPiSetupSensors()
 
 GPIO.setup(IRIN     , GPIO.IN)  ; GPIO.setup(BUZZOUT , GPIO.OUT)
-GPIO.setup(USNEWECHO, GPIO.IN)  ; GPIO.setup(SHUTBUTT, GPIO.IN , pull_up_down=GPIO.PUD_UP)
+GPIO.setup(USNEWECHO, GPIO.IN)
 GPIO.setup(USNEWTRIG, GPIO.OUT) ; GPIO.setup(TOUCHL  , GPIO.IN , pull_up_down=GPIO.PUD_UP)
 GPIO.setup(US2ECHO  , GPIO.IN)  ; GPIO.setup(TOUCHR  , GPIO.IN , pull_up_down=GPIO.PUD_UP)
 GPIO.setup(US2TRIG  , GPIO.OUT) ; GPIO.setup(IRRCINT , GPIO.IN)
@@ -337,19 +336,9 @@ def restartprogram(channel):
 			os.execl(sys.executable, sys.executable, *sys.argv)
 	debouncetimestamp = timenow
 
-def shutdownprogram(channel):
-	global debouncetimestamp
-	timenow = time.time()
-	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
-		buzz("short short short short")
-		print "shutbutt pressed, shutting down"
-		GPIO.cleanup()
-		os.system('sudo shutdown -h now')
-	debouncetimestamp = timenow
 
 #set GPIO interrupts
 GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram)
-GPIO.add_event_detect(SHUTBUTT,GPIO.FALLING,callback=shutdownprogram) 
 					
 ################
 ##MAIN PROGRAM##
