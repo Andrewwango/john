@@ -2,7 +2,7 @@
 #a corresponding launcher .sh file is in /home/pi and launches this on boot.
 import os
 import RPi.GPIO as GPIO
-gpio.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 
 SHUTBUTT = 9
 GPIO.setup(SHUTBUTT, GPIO.IN , pull_up_down=GPIO.PUD_UP)
