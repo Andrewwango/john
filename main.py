@@ -8,6 +8,12 @@ import time, math, lirc, sys, pygame, os, cmpautocalib
 from BrickPi import *
 from compassgpsutils import *
 import RPi.GPIO as GPIO
+
+#disable getty
+os.system("sudo systemctl stop serial-getty@ttyAMA0.service")
+os.system("sudo systemctl disable serial-getty@ttyAMA0.service")
+
+#initial setup
 GPIO.setmode(GPIO.BCM)
 BrickPiSetup()
 sockid = lirc.init("main",blocking=False)
