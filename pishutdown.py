@@ -11,6 +11,7 @@ GPIO.setup(SHUTBUTT, GPIO.IN , pull_up_down=GPIO.PUD_UP)
 GPIO.wait_for_edge(SHUTBUTT, GPIO.FALLING)
 
 #resetup in case it has been cleaned
+GPIO.cleanup()
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUZZOUT , GPIO.OUT)
 
