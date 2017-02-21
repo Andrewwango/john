@@ -7,9 +7,12 @@ GPIO.setmode(GPIO.BCM)
 SHUTBUTT = 9
 BUZZOUT = 7
 GPIO.setup(SHUTBUTT, GPIO.IN , pull_up_down=GPIO.PUD_UP)
-GPIO.setup(BUZZOUT , GPIO.OUT)
 
 GPIO.wait_for_edge(SHUTBUTT, GPIO.FALLING)
+
+#resetup in case it has been cleaned
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(BUZZOUT , GPIO.OUT)
 
 print "SHUTBUTT PRESSED, SHUTTING DOWN!!"
 for i in range(4):
