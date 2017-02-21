@@ -35,8 +35,8 @@ OPTLITTERRANGE = [19,27] #the opt us distance range from which it can pick up st
 STOPRANGE = 15.0 #the allowable range for turnbear
 
 #Motor Power Constants
-WHEELPOWER     = -255
-TURNPOWER      = 100 #pos = forwards (for ease of use but not technically correct)
+WHEELPOWER     = -200
+TURNPOWER      = 160 #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5  #"
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -150
