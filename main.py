@@ -328,7 +328,7 @@ def detectprocedure(alreadyturning):
 				
 				time.sleep(0.2)
 								
-def restartprogram(channel):
+def restartprogram(channel=0):
 	global debouncetimestamp
 	timenow = time.time()
 	#handle button being pressed when main is running - restart (essentially, stop)
@@ -377,6 +377,7 @@ while True:
 				print "starting calibration script"
 				buzz("long long")
 				cmpautocalib.maincalibprogram()
+				restartprogram()
 			elif ircode[0]=="bants":
 				buzz("long long short short long short short short long short short")
 			if fwdb > 360.0: fwdb -= 360.0
