@@ -377,7 +377,7 @@ while True:
 				print "starting calibration script"
 				buzz("long long")
 				cmpautocalib.maincalibprogram()
-				restartprogram()
+				os.execl(sys.executable, sys.executable, *sys.argv) #restart to reset all GPIO pins
 			elif ircode[0]=="bants":
 				buzz("long long short short long short short short long short short")
 			if fwdb > 360.0: fwdb -= 360.0
