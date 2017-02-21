@@ -9,8 +9,6 @@ scale = 0.92
 breaking = False
 
 BrickPiSetup()
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(BUZZOUT, GPIO.OUT) ; GPIO.setup(IRRCINT , GPIO.IN)
 BrickPi.MotorEnable[PORT_A]=1 ; BrickPi.MotorEnable[PORT_D]=1
 BrickPiSetupSensors()
 
@@ -21,8 +19,6 @@ address = 0x1e #i2c address
 def returnprogram(channel):
 	global breaking; breaking = True
 
-#set GPIO interrupt
-GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=returnprogram)	
 
 def buzz():
 	for i in range(2):
@@ -50,6 +46,12 @@ write_byte(2, 0b00000000) # Continuous sampling
 
 def maincalibprogram():
 	global breaking
+	
+	GPIO.cleanup()
+	GPIO.setmode(GPIO.BCM); GPIO.setup(BUZZOUT, GPIO.OUT) ; GPIO.setup(IRRCINT , GPIO.IN)
+	#set GPIO interrupt
+	GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=returnprogram) #in func so it doesn't disturb with main
+	
 	minx = 0; maxx = 0; miny = 0; maxy = 0
 	
 	for i in range(2):
@@ -92,6 +94,7 @@ def maincalibprogram():
 	
 	if breaking == True:
 		print "cmpautocalib interrupted, returning to main"
+		GPIO.cleanup()
 		return #leave program and return to main
 	
 	#process results
@@ -116,4 +119,4 @@ def maincalibprogram():
 	f = open('mainsettings.dat', 'w')
 	f.write(str(x_offset) + "\n" + str(y_offset) + "\n" + str(fwdb))
 	print "file written" #saved to pi directory
-	f.close(); buzz(); print "cmpautocalib completed"
+	f.close(); buzz(); GPIO.cleanup(); print "cmpautocalib completed"
