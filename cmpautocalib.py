@@ -3,14 +3,14 @@ from BrickPi import *
 import RPi.GPIO as GPIO
 
 SPEED=110 #pos acw first, cw 2nd
-scale = 0.92
 BUZZOUT  = 7 #buzzer pin
 IRRCINT  = 8  #irrc interrupt pin
+scale = 0.92
 breaking = False
 
 BrickPiSetup()
-GPIO.setmode(GPIO.BCM)        ; GPIO.setup(BUZZOUT, GPIO.OUT)
-GPIO.setup(IRRCINT , GPIO.IN)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(BUZZOUT, GPIO.OUT) ; GPIO.setup(IRRCINT , GPIO.IN)
 BrickPi.MotorEnable[PORT_A]=1 ; BrickPi.MotorEnable[PORT_D]=1
 BrickPiSetupSensors()
 
