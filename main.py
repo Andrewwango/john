@@ -29,7 +29,7 @@ TOUCHL = 4         ;    BUZZOUT  = 7  #out
 ''''''             ;    IRRCINT  = 8  #irrc interrupt pin
 
 XDEGREES = 70.0 #angle between robot path and path (in degs) FLOAT POINT
-USSTANDARD     = 37 #us sensor detection threshold
+USSTANDARD     = 41 #us sensor detection threshold
 US2STANDARD    = 70 #higher us(2) detection threshold
 OPTLITTERRANGE = [19,27] #the opt us distance range from which it can pick up stuff
 STOPRANGE = 15.0 #the allowable range for turnbear
