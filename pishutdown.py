@@ -5,15 +5,19 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 
 SHUTBUTT = 9
-INDICLED = 27
+BUZZOUT = 7
 GPIO.setup(SHUTBUTT, GPIO.IN , pull_up_down=GPIO.PUD_UP)
-GPIO.setup(INDICLED, GPIO.OUT)
+GPIO.setup(BUZZOUT , GPIO.OUT)
 
 GPIO.wait_for_edge(SHUTBUTT, GPIO.FALLING)
 
 print "SHUTBUTT PRESSED, SHUTTING DOWN!!"
-GPIO.output(INDICLED, True)
-time.sleep(0.5)
+for i in range(4):
+	GPIO.output(BUZZOUT, True)
+	time.sleep(0.1)
+	GPIO.output(BUZZOUT, False)
+	time.sleep(0.2)
+	
 
 GPIO.cleanup()
 os.system('sudo shutdown -h now')
