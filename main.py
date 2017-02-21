@@ -268,14 +268,14 @@ def detectprocedure(alreadyturning):
 			time.sleep(0.5)
 			
 			#if while turning, turn back a wee to correct offshoot (only when turning quite a lot ie turning quickly)
-			if alreadyturning == True and tempElapsedTurningEnc >= 100:
+			if alreadyturning == True and tempElapsedTurningEnc >= 50:
 				#check which direction the normal turning is
 				if turnycount%2 == 1: #odd=RIGHT (opposite to before)
 					wheel1 = LWHEEL; wheel2 = RWHEEL
 				else:
 					wheel1 = RWHEEL; wheel2 = LWHEEL
 				#use outside wheel to encode (although it doesn't matter)
-				movelimbENC(wheel1, -TURNPOWER, (int(tempElapsedTurningEnc/50)),wheel2, TURNPOWER)#fine tune this
+				movelimbENC(wheel1, -TURNPOWER, (int(tempElapsedTurningEnc/30)),wheel2, TURNPOWER)#fine tune this
 				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake			
 				time.sleep(0.2)
 			
