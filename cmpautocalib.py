@@ -47,9 +47,9 @@ write_byte(2, 0b00000000) # Continuous sampling
 def maincalibprogram():
 	global breaking
 	
+	#interrupt pin set here so it doesn't interfere with main's IRRCINT
 	GPIO.cleanup()
 	GPIO.setmode(GPIO.BCM); GPIO.setup(BUZZOUT, GPIO.OUT) ; GPIO.setup(IRRCINT , GPIO.IN)
-	#set GPIO interrupt
 	GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=returnprogram) #in func so it doesn't disturb with main
 	
 	minx = 0; maxx = 0; miny = 0; maxy = 0
