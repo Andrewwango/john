@@ -5,15 +5,24 @@ import RPi.GPIO as GPIO
 SPEED=110 #pos acw first, cw 2nd
 scale = 0.92
 BUZZOUT  = 7 #buzzer pin
+IRRCINT  = 8  #irrc interrupt pin
+breaking = False
 
 BrickPiSetup()
 GPIO.setmode(GPIO.BCM)        ; GPIO.setup(BUZZOUT, GPIO.OUT)
+GPIO.setup(IRRCINT , GPIO.IN)
 BrickPi.MotorEnable[PORT_A]=1 ; BrickPi.MotorEnable[PORT_D]=1
 BrickPiSetupSensors()
 
 #setup i2c
 bus = smbus.SMBus(1)
 address = 0x1e #i2c address
+
+def returnprogram(channel):
+	global breaking; breaking = True
+
+#set GPIO interrupt
+GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=returnprogram)	
 
 def buzz():
 	for i in range(2):
@@ -40,10 +49,13 @@ write_byte(1, 0b00100000) # 1.3 gain LSb / Gauss 1090 (default)
 write_byte(2, 0b00000000) # Continuous sampling
 
 def maincalibprogram():
+	global breaking
 	minx = 0; maxx = 0; miny = 0; maxy = 0
 	
 	for i in range(2):
 		initialr=0;encr=0
+		
+		if breaking == True: break
 
 		while True: #make sure we get an encoder reading! (break when we do)
 			result = BrickPiUpdateValues()
@@ -53,8 +65,10 @@ def maincalibprogram():
 
 		if i==0: BrickPi.MotorSpeed[PORT_A]=-SPEED; BrickPi.MotorSpeed[PORT_D]= SPEED 
 		else:    BrickPi.MotorSpeed[PORT_A]= SPEED; BrickPi.MotorSpeed[PORT_D]=-SPEED #turn back
-
+		
 		while True:
+			if breaking == True: break
+			
 			result = BrickPiUpdateValues()
 			if not result :
 				encr = BrickPi.Encoder[PORT_A]-initialr
@@ -75,7 +89,11 @@ def maincalibprogram():
 
 		BrickPi.MotorSpeed[PORT_A]=0; BrickPi.MotorSpeed[PORT_D]=0
 		time.sleep(0.4)
-
+	
+	if breaking == True:
+		print "cmpautocalib interrupted, returning to main"
+		return #leave program and return to main
+	
 	#process results
 	x_offset = (maxx + minx) / 2
 	y_offset = (maxy + miny) / 2
