@@ -94,7 +94,7 @@ def maincalibprogram():
 	
 	if breaking == True:
 		print "cmpautocalib interrupted, returning to main"
-		GPIO.cleanup()
+		buzz();	GPIO.cleanup()
 		return #leave program and return to main
 	
 	#process results
