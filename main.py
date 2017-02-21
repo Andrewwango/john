@@ -4,14 +4,14 @@
 #BrickPi: github.com/DexterInd/BrickPi_Python
 #remember to ./stopev.sh (disable getty via systemctl) on boot!
 #import relevant modules
-import time, math, lirc, sys, pygame, os, cmpautocalib
+import time, math, lirc, sys, pygame, os, cmpautocalib, subprocess
 from BrickPi import *
 from compassgpsutils import *
 import RPi.GPIO as GPIO
 
 #disable getty
-os.system("sudo systemctl stop serial-getty@ttyAMA0.service")
-os.system("sudo systemctl disable serial-getty@ttyAMA0.service")
+subprocess.call(["sudo", "systemctl", "stop",    "serial-getty@ttyAMA0.service"]) 
+subprocess.call(["sudo", "systemctl", "disable", "serial-getty@ttyAMA0.service"])
 
 #initial setup
 GPIO.setmode(GPIO.BCM)
