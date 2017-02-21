@@ -10,8 +10,8 @@ from compassgpsutils import *
 import RPi.GPIO as GPIO
 
 #disable getty
-subprocess.call(["sudo", "systemctl", "stop",    "serial-getty@ttyAMA0.service"]) 
-subprocess.call(["sudo", "systemctl", "disable", "serial-getty@ttyAMA0.service"])
+#subprocess.call(["sudo", "systemctl", "stop",    "serial-getty@ttyAMA0.service"]) 
+#subprocess.call(["sudo", "systemctl", "disable", "serial-getty@ttyAMA0.service"])
 
 #initial setup
 GPIO.setmode(GPIO.BCM)
