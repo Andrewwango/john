@@ -148,7 +148,7 @@ def createturnbears():
 		if turnbears[i] < 0  : turnbears[i] += 360
 	print turnbears; return turnbears
 
-def grabprocedure(): #picking procedure
+def pickprocedure(): #picking procedure
 	print "bringing down" #get grabber into pos
 	movelimbLENG(ARM, BRINGDOWNPOWER, 0.6)
 
@@ -290,7 +290,7 @@ def detectprocedure(alreadyturning):
 				movelimbENC(LWHEEL, WHEELPOWER, 160, RWHEEL, WHEELPOWER)
 				shoobied='near'
 			
-			grabprocedure()
+			pickprocedure()
 			
 			#move back if shoobied before
 			if shoobied=='away':
