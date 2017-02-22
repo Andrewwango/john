@@ -33,7 +33,7 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 
 #Constants
 XDEGREES       = 80.0 #angle between robot path and path (in degs)(FLOAT)
-USSTANDARD     = 36   #low us(new) sensor detection threshold
+USSTANDARD     = 32   #low us(new) sensor detection threshold
 US2STANDARD    = 70   #high us(2) detection threshold
 OPTLITTERRANGE = [19,27]#the opt us distance range from which it can pick up stuff
 STOPRANGE      = 15.0 #the allowable range for turnbear
@@ -342,6 +342,8 @@ GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram) #stop progr
 ################
 ##MAIN PROGRAM##
 ################
+buzz("short short"); print "I'm ready to go!"
+
 startmain = False
 while True:
 	try: #handle ctrl-c to ensure clean exit
@@ -394,8 +396,7 @@ while True:
 			turnbears = createturnbears()
 			
 			#bring arm back up and open grabber in case it's not
-			movelimbLENG(ARM, SLIDEUPPOWER, 0.3)
-			movelimbLENG(GRABBER, OPENPOWER, 0.5)
+			movelimbLENG(ARM, SLIDEUPPOWER, 0.3, GRABBER, OPENPOWER)
 
 			#initial turn from forwards
 			turnprocedure()
