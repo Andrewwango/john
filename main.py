@@ -70,7 +70,7 @@ shoobied = 'no'
 debouncetimestamp = time.time()
 
 #Extract FWDB (forward bearing) from settings file
-settingsfile = open('mainsettings.dat','r')
+settingsfile = open('/home/pi/mainsettings.dat','r')
 origfwdb = float(settingsfile.read().split('\n')[2])
 settingsfile.close()
 print 'origfwdb ', origfwdb
