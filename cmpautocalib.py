@@ -2,7 +2,7 @@ import time, math, smbus
 from BrickPi import *
 import RPi.GPIO as GPIO
 
-SPEED=200 #pos acw first, cw 2nd
+SPEED=180 #pos acw first, cw 2nd
 BUZZOUT  = 7 #buzzer pin
 IRRCINT  = 8  #irrc interrupt pin
 scale = 0.92
