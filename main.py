@@ -342,7 +342,7 @@ GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram) #stop progr
 ################
 ##MAIN PROGRAM##
 ################
-buzz("short short"); print "I'm ready to go!"
+buzz("short"); print "I'm ready to go!"
 
 startmain = False
 while True:
