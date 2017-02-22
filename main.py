@@ -32,7 +32,7 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 ''''''             ;    TOUCHR   = 4  #green, in - touch sensor
 
 #Constants
-XDEGREES       = 70.0 #angle between robot path and path (in degs)(FLOAT)
+XDEGREES       = 80.0 #angle between robot path and path (in degs)(FLOAT)
 USSTANDARD     = 36   #low us(new) sensor detection threshold
 US2STANDARD    = 70   #high us(2) detection threshold
 OPTLITTERRANGE = [19,27]#the opt us distance range from which it can pick up stuff
