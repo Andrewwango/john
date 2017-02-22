@@ -14,6 +14,9 @@ from BrickPi import *
 from compassgpsutils import *
 import RPi.GPIO as GPIO
 
+#disable getty
+os.system("sudo ./stopev.sh")
+
 #Initial setup
 GPIO.setmode(GPIO.BCM)                   #set GPIO numbering
 BrickPiSetup()                           #setup BrickPi interface
@@ -379,7 +382,7 @@ while True:
 			elif ircode[0] == "startstopev":       #pressed 7
 				#stop getty (if it didn't stop at boot)
 				print "deactivating getty" ; buzz("long short")
-				os.system("./stopev.sh") ; print "restarting"
+				os.system("sudo ./stopev.sh") ; print "restarting"
 				GPIO.cleanup(); os.execl(sys.executable, sys.executable, *sys.argv)
 			elif ircode[0] == "bants":             #pressed PLAY
 				buzz("long long short short long short short short long short short")
