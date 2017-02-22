@@ -92,9 +92,9 @@ def buzz(patternofbuzz): #activate buzzer
 		
 def takeusreading(trig, echo): #take reading from ultrasonic sensor
 	GPIO.output(trig, False) #switch everything off
-	#take 5 readings then find average
+	#take 4 readings then find average
 	uslist=[]
-	for i in range(3):
+	for i in range(4):
 		#send out signal
 		GPIO.output(trig, False); time.sleep(0.001)
 		GPIO.output(trig, True);  time.sleep(0.001)
@@ -110,7 +110,7 @@ def takeusreading(trig, echo): #take reading from ultrasonic sensor
 		distance = duration * 340 * 100 #cm from speed of sound
 		uslist += [int(distance)]
 		time.sleep(0.01)
-	uslist.sort(); usreading = uslist[1] #median (get rid of anomalies)
+	uslist.sort(); usreading = uslist[2] #median (get rid of anomalies)
 	GPIO.output(trig, False)
 	print "US reading is ", str(usreading), uslist
 	return usreading
