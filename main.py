@@ -53,7 +53,12 @@ BRINGDOWNBRAKEPOWER = -5
 ##SETUP## motors, sensors, GPIO Pins
 BrickPi.MotorEnable[GRABBER] = 1 ; BrickPi.MotorEnable[ARM]    = 1
 BrickPi.MotorEnable[LWHEEL]  = 1 ; BrickPi.MotorEnable[RWHEEL] = 1
-BrickPiSetupSensors()
+try: #catch error if getty wasn't disabled on boot
+	BrickPiSetupSensors()
+except SerialException:
+	os.system("sudo sh /home/pi/stopev.sh")
+	os.execl(sys.executable, sys.executable, *sys.argv) #reboot
+	
 
 GPIO.setup(IRIN     , GPIO.IN)  ; GPIO.setup(BUZZOUT , GPIO.OUT)
 GPIO.setup(USNEWECHO, GPIO.IN)
