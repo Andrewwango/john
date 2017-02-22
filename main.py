@@ -352,29 +352,34 @@ while True:
 		if ircode:
 			fwdb=0
 			#buttons to start main program in various directions
-			if ircode[0] == "startmainfwdleft":  #pressed 1
+			if ircode[0]  ==  "startmainfwdleft":  #pressed 1
 				turnycount = 1 ; fwdb = origfwdb; buzz("short short")
 				startmain = True; time.sleep(2)
-			elif ircode[0]=="startmainfwdright": #pressed 2
+			elif ircode[0] == "startmainfwdright": #pressed 2
 				turnycount = 0 ; fwdb = origfwdb; buzz("short short")
 				startmain = True; time.sleep(2)
-			elif ircode[0]=="startmainbwdleft":  #pressed 4
+			elif ircode[0] == "startmainbwdleft":  #pressed 4
 				turnycount = 1 ; fwdb = origfwdb + 180.0 ; buzz("short short")
 				startmain = True; time.sleep(2)
-			elif ircode[0]=="startmainbwdright": #pressed 5
+			elif ircode[0] == "startmainbwdright": #pressed 5
 				turnycount = 0 ; fwdb = origfwdb + 180.0 ; buzz("short short")
 				startmain = True; time.sleep(2)
 			
 			#buttons to handle other things
-			elif ircode[0]=="startshutdown":     #pressed 0
+			elif ircode[0] == "startshutdown":     #pressed 0
 				print "Shutting down!"; buzz("short short short short")
 				os.system('sudo shutdown -h now')
-			elif ircode[0]=="startcmpautocalib": #pressed SETUP
+			elif ircode[0] == "startcmpautocalib": #pressed SETUP
 				#start calibration procedure of compass
 				print "starting calibration script"; buzz("long long")
 				cmpautocalib.maincalibprogram()
 				os.execl(sys.executable, sys.executable, *sys.argv) #restart to reset all GPIO pins
-			elif ircode[0]=="bants":             #pressed PLAY
+			elif ircode[0] == "startstopev":       #pressed 7
+				#stop getty (if it didn't stop at boot)
+				print "deactivating getty"
+				os.system("./stopev.sh") ; print "restarting"
+				os.execl(sys.executable, sys.executable, *sys.argv)
+			elif ircode[0] == "bants":             #pressed PLAY
 				buzz("long long short short long short short short long short short")
 			
 			if fwdb > 360.0: fwdb -= 360.0 #correction
