@@ -376,9 +376,9 @@ while True:
 				os.execl(sys.executable, sys.executable, *sys.argv) #restart to reset all GPIO pins
 			elif ircode[0] == "startstopev":       #pressed 7
 				#stop getty (if it didn't stop at boot)
-				print "deactivating getty"
+				print "deactivating getty" ; buzz("long short")
 				os.system("./stopev.sh") ; print "restarting"
-				os.execl(sys.executable, sys.executable, *sys.argv)
+				GPIO.cleanup(); os.execl(sys.executable, sys.executable, *sys.argv)
 			elif ircode[0] == "bants":             #pressed PLAY
 				buzz("long long short short long short short short long short short")
 			
