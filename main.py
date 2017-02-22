@@ -40,7 +40,7 @@ STOPRANGE      = 15.0 #the allowable range for turnbear
 
 #Motor Power Constants
 WHEELPOWER     = -180 #driving power
-TURNPOWER      = 160  #pos = forwards (for ease of use but not technically correct)
+TURNPOWER      = 200  #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5   #"
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -150
