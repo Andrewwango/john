@@ -14,9 +14,6 @@ from BrickPi import *
 from compassgpsutils import *
 import RPi.GPIO as GPIO
 
-#disable getty
-os.system("sudo ./stopev.sh")
-
 #Initial setup
 GPIO.setmode(GPIO.BCM)                   #set GPIO numbering
 BrickPiSetup()                           #setup BrickPi interface
