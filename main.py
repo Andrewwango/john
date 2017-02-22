@@ -381,6 +381,10 @@ while True:
 				print "deactivating getty" ; buzz("long short")
 				os.system("sudo ./stopev.sh") ; print "restarting"
 				GPIO.cleanup(); os.execl(sys.executable, sys.executable, *sys.argv)
+			elif ircode[0] == "stopmainpy":        #pressed 9
+				#stop main.py program (for diagnostics)
+				print "stopping main"; buzz("long long long")
+				GPIO.cleanup(); sys.exit()
 			elif ircode[0] == "bants":             #pressed PLAY
 				buzz("long long short short long short short short long short short")
 			
