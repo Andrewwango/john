@@ -55,7 +55,7 @@ BrickPi.MotorEnable[GRABBER] = 1 ; BrickPi.MotorEnable[ARM]    = 1
 BrickPi.MotorEnable[LWHEEL]  = 1 ; BrickPi.MotorEnable[RWHEEL] = 1
 try: #catch error if getty wasn't disabled on boot
 	BrickPiSetupSensors()
-except SerialException:
+except OSError:
 	os.system("sudo sh /home/pi/stopev.sh")
 	os.execl(sys.executable, sys.executable, *sys.argv) #reboot
 	
