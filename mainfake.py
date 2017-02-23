@@ -69,6 +69,7 @@ tempElapsedTurningEnc = 0
 turnbears = []
 shoobied = 'no'
 debouncetimestamp = time.time()
+startchangedir = False
 
 #Extract FWDB (forward bearing) from settings file
 settingsfile = open('/home/pi/mainsettings.dat','r')
@@ -320,7 +321,21 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 				except UnboundLocalError: pass #errors are annoying
 				
 				time.sleep(0.2)
-								
+
+def interrupt(channel=0): #debounce interrupt, restart program
+	global debouncetimestamp; global startchangedir
+	timenow = time.time()
+	
+	#handle button being pressed when main is running - restart (essentially, stop)
+	if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
+		print "taking action on interrupt"
+		startchangedir=True
+	debouncetimestamp = timenow
+
+#set GPIO interrupts
+GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=interrupt) #interrupt when button pressed!
+
+							
 
 ################
 ##MAIN PROGRAM##
@@ -366,30 +381,27 @@ while True:
 					#loop back and carry on
 				
 				#infrared remote control handling loop
-				ircode = lirc.nextcode()
-				print ircode
-				if ircode:
-					print "ircode present"
-					if ircode[0]  ==  "changedir":  #pressed ENTER
-						drivewheels(0,0) #stop
-						buzz("long long long"); print "CHANGE DIR"
-						#CHANGE DIR PROCEDURE
-						NEWPATHOFFSET = 50
-						
-						#turn to face forwards
-						if turnycount%2 == 1: #odd=left
-							wheel1 = RWHEEL; wheel2 = LWHEEL
-						else: #right
-							wheel1 = LWHEEL; wheel2 = RWHEEL
-						movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
-						
-						origfwdb += NEWPATHOFFSET
-						
-						movelimbLENG(LWHEEL, DRIVEPOWER, 1, RWHEEL, DRIVEPOWER) #force drive forward
-						wheel1 = LWHEEL; wheel2 = RWHEEL #turning right
-						movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
-						time.sleep(1)
-						break #get out of chow mein loop!
+
+				if startchangedir == True:  #pressed a button!
+					drivewheels(0,0) #stop
+					buzz("long long long"); print "CHANGE DIR"
+					#CHANGE DIR PROCEDURE
+					NEWPATHOFFSET = 50
+					
+					#turn to face forwards
+					if turnycount%2 == 1: #odd=left
+						wheel1 = RWHEEL; wheel2 = LWHEEL
+					else: #right
+						wheel1 = LWHEEL; wheel2 = RWHEEL
+					movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
+					
+					origfwdb += NEWPATHOFFSET
+					
+					movelimbLENG(LWHEEL, DRIVEPOWER, 1, RWHEEL, DRIVEPOWER) #force drive forward
+					wheel1 = LWHEEL; wheel2 = RWHEEL #turning right
+					movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
+					time.sleep(1); startchangedir = False
+					break #get out of chow mein loop!
 			
 	
 			except KeyboardInterrupt: #ensure clean exit
