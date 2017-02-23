@@ -386,7 +386,7 @@ while True:
 					drivewheels(0,0) #stop
 					buzz("long long long"); print "CHANGE DIR"
 					#CHANGE DIR PROCEDURE
-					NEWPATHOFFSET = 50
+					NEWPATHOFFSET =20
 					
 					#turn to face forwards
 					if turnycount%2 == 1: #odd=left
