@@ -373,7 +373,16 @@ while True:
 						buzz("long long long"); print "CHANGE DIR"
 						#CHANGE DIR PROCEDURE
 						NEWPATHOFFSET = 50
+						
+						#turn to face forwards
+						if turnycount%2 == 1: #odd=left
+							wheel1 = RWHEEL; wheel2 = LWHEEL
+						else: #right
+							wheel1 = LWHEEL; wheel2 = RWHEEL
+						movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
+						
 						origfwdb += NEWPATHOFFSET
+						
 						movelimbLENG(LWHEEL, DRIVEPOWER, 1, RWHEEL, DRIVEPOWER) #force drive forward
 						wheel1 = LWHEEL; wheel2 = RWHEEL #turning right
 						movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
