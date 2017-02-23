@@ -397,7 +397,7 @@ while True:
 					
 					origfwdb += NEWPATHOFFSET
 					
-					movelimbLENG(LWHEEL, DRIVEPOWER, 1, RWHEEL, DRIVEPOWER) #force drive forward
+					movelimbLENG(LWHEEL, WHEELPOWER, 1, RWHEEL, WHEELPOWER) #force drive forward
 					wheel1 = LWHEEL; wheel2 = RWHEEL #turning right
 					movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
 					time.sleep(1); startchangedir = False
