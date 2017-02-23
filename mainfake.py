@@ -4,6 +4,10 @@
 ###################################################
 #FAKEVIDEO#FAKEVIDEO#FAKEVIDEO#FAKEVIDEO#FAKEVIDEO#FAKEVIDEO#FAKEVIDEO#FAKEVIDEO#FAKEVIDEO#FAKEVIDEO#
 
+XDEGREES = 70.0
+NEWPATHOFFSET =20
+GOFORWARDSTIME = 1
+
 #Import relevant modules
 import time, math, lirc, sys, pygame, os, cmpautocalib
 from BrickPi import *
@@ -28,7 +32,7 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 ''''''             ;    TOUCHR   = 4  #green, in - touch sensor
 
 #Constants
-XDEGREES       = 70.0 #angle between robot path and path (in degs)(FLOAT)
+ #angle between robot path and path (in degs)(FLOAT)
 USSTANDARD     = 32   #low us(new) sensor detection threshold
 US2STANDARD    = 70   #high us(2) detection threshold
 OPTLITTERRANGE = [19,27]#the opt us distance range from which it can pick up stuff
@@ -386,8 +390,6 @@ while True:
 					drivewheels(0,0) #stop
 					buzz("long long long"); print "CHANGE DIR"
 					#CHANGE DIR PROCEDURE
-					NEWPATHOFFSET =20
-					
 					#turn to face forwards
 					if turnycount%2 == 1: #odd=left
 						wheel1 = RWHEEL; wheel2 = LWHEEL
@@ -397,7 +399,7 @@ while True:
 					
 					origfwdb += NEWPATHOFFSET
 					
-					movelimbLENG(LWHEEL, WHEELPOWER, 1, RWHEEL, WHEELPOWER) #force drive forward
+					movelimbLENG(LWHEEL, WHEELPOWER, GOFORWARDSTIME, RWHEEL, WHEELPOWER) #force drive forward
 					wheel1 = LWHEEL; wheel2 = RWHEEL #turning right
 					movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
 					time.sleep(1); startchangedir = False
