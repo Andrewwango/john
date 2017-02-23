@@ -367,7 +367,7 @@ while True:
 				
 				#infrared remote control handling loop
 				ircode = lirc.nextcode()
-				print "got new ircode"
+				print ircode
 				if ircode:
 					print "ircode present"
 					if ircode[0]  ==  "changedir":  #pressed ENTER
