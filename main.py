@@ -34,7 +34,7 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 #Constants
 XDEGREES       = 80.0 #angle between robot path and path (in degs)(FLOAT)
 USSTANDARD     = 32   #low us(new) sensor detection threshold
-US2STANDARD    = 70   #high us(2) detection threshold
+US2STANDARD    = 50   #high us(2) detection threshold
 OPTLITTERRANGE = [19,27]#the opt us distance range from which it can pick up stuff
 STOPRANGE      = 15.0 #the allowable range for turnbear
 
@@ -46,7 +46,7 @@ SHOOBYPOWER    = -100
 GRABBERPOWER   = -150
 OPENPOWER      = 70
 LIFTPOWER      = -160
-SLIDEUPPOWER   = -70  #deactivating arm
+SLIDEUPPOWER   = -100  #deactivating arm
 BRINGDOWNPOWER = 170
 BRINGDOWNBRAKEPOWER = -5
 
@@ -304,7 +304,7 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 			
 				#bring us2 back up (deactivate)
 				print "sliding up, deactivate"
-				movelimbLENG(ARM, SLIDEUPPOWER, 0.3)
+				movelimbLENG(ARM, SLIDEUPPOWER, 0.6)
 				#loop back and carry on
 			
 			elif alreadyturning == True: #I am already turning so I want to get away from this goddamn wall
