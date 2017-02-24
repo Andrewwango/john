@@ -280,8 +280,8 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 				#carry on turning a bit more until it's not in sight
 				turnwhilecondition("turnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD)
 				#shift back - zoning in
-				if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, 10, RWHEEL, TURNPOWER)
-				else:                 movelimbENC(RWHEEL, -TURNPOWER, 10, LWHEEL, TURNPOWER)				
+				if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, 30, RWHEEL, TURNPOWER)
+				else:                 movelimbENC(RWHEEL, -TURNPOWER, 30, LWHEEL, TURNPOWER)				
 			
 			#if not turning, turn left till nothing there, turn right till nothing there, then shift left a wee.
 			#this zones in on the litter, wherever it is.
@@ -291,8 +291,8 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 				#turn back in the other direction, until it's out of sight
 				turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD)
 				#shift a bit back; this centres John on the litter.
-				if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, 10, RWHEEL, TURNPOWER)
-				else:                 movelimbENC(RWHEEL, -TURNPOWER, 10, LWHEEL, TURNPOWER)					
+				if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, 30, RWHEEL, TURNPOWER)
+				else:                 movelimbENC(RWHEEL, -TURNPOWER, 30, LWHEEL, TURNPOWER)					
 			
 			#shooby closer/further if litter is not in optimum range to pick up
 			shoobied = 'no'
