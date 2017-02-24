@@ -69,8 +69,6 @@ GPIO.setup(US2TRIG  , GPIO.OUT) ; GPIO.setup(IRRCINT , GPIO.IN)
 
 ##PROGRAM VARS##
 turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
-totElapsedTurningEnc  = 0
-tempElapsedTurningEnc = 0
 turnbears = []
 shoobied = 'no'
 debouncetimestamp = time.time()
@@ -199,7 +197,6 @@ def movelimbENC(limb, speed, deg, limb2=None, speed2=None, detection=False, comp
 	#this turns a motor until motor reaches certain encoder position OR John faces certain direction
 	#deg is the change in: encoder degrees (scalar) OR compass deg if compass=True
 	#for encoder, positive speed is positive encoder increase
-	global totElapsedTurningEnc
 	startpos = takeencoderreading(limb)
 	#set directions
 	if   speed > 0: modifier=1
@@ -225,7 +222,6 @@ def movelimbENC(limb, speed, deg, limb2=None, speed2=None, detection=False, comp
 			
 			if detection==True: #litter detection while turning
 				if modifiedreading >= 120: #turned enough so safe to start measuring for litter
-					totElapsedTurningEnc = modifiedreading
 					detectprocedure(True)
 	
 	#stop
@@ -254,7 +250,6 @@ def turnwhilecondition(turnbackornot, trig, echo, op, val):
 	time.sleep(0.4)
 		
 def detectprocedure(alreadyturning): #DETECTION PROCEDURE
-	global tempElapsedTurningEnc
 	
 	#check LOW US or touch for object
 	tempreading      = takeusreading(USNEWTRIG,USNEWECHO)
@@ -271,9 +266,6 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 			time.sleep(0.7)
 		
-		if alreadyturning==True:
-			tempElapsedTurningEnc = totElapsedTurningEnc - tempElapsedTurningEnc
-
 		#check HIGH US(2) for big thing	
 		if takeusreading(US2TRIG, US2ECHO) > US2STANDARD and temptouchreading==0:
 			#Nothing detected -> low lying object -> LITTER
