@@ -44,7 +44,7 @@ WHEELPOWER     = -170 #driving power
 TURNPOWER      = 160  #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5   #"
 SHOOBYPOWER    = -100
-GRABBERPOWER   = -150
+GRABBERPOWER   = -170
 OPENPOWER      = 70
 LIFTPOWER      = -160
 SLIDEUPPOWER   = -100  #deactivating arm
@@ -149,7 +149,7 @@ def pickprocedure(): #LITTER PICKING PROCEDURE
 	movelimbLENG(ARM, BRINGDOWNPOWER, 0.6)
 
 	#preliminary grab
-	movelimbLENG(GRABBER, GRABBERPOWER, 0.5, ARM, BRINGDOWNPOWER)
+	movelimbLENG(GRABBER, GRABBERPOWER, 0.6, ARM, BRINGDOWNPOWER)
 
 	print "lifting" #bring litter up
 	movelimbLENG(ARM, LIFTPOWER, 0.6, GRABBER, GRABBERPOWER) #grabber grips as well
