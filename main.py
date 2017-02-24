@@ -290,7 +290,10 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 				#turn in a direction, until it's out of sight
 				print "Turning direction until no longer in sight"
 				turnwhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD)
-				#turn back in the other direction, until it's out of sight
+				#turn back in the other direction until it's in sight again
+				print "Turning other direction until in sight again"
+				turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, ">", USSTANDARD)
+				#carry on, until it's out of sight
 				print "Turning other direction until no longer in sight"
 				turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD)
 				#shift a bit back; this centres John on the litter.
