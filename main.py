@@ -233,7 +233,26 @@ def movelimbENC(limb, speed, deg, limb2=None, speed2=None, detection=False, comp
 	if limb2 != None:
 		BrickPi.MotorSpeed[limb2] = 0
 
+def turnwhilecondition(turnbackornot, trig, echo, op, val):
+	if turnbackornot == "turnback": b = 1
+	else: b = 0
+	#set wheel directions
+	if turnycount%2 == b: #direction is inputted by user
+		wheel1 = LWHEEL; wheel2 = RWHEEL
+	else:
+		wheel1 = RWHEEL; wheel2 = LWHEEL
 
+	while eval("takeusreading(trig, echo)" + op + "val"):
+		#turn until condition is met
+		BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
+		BrickPiUpdateValues()
+
+	try:
+		movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
+		drivewheels(0,0) #stop
+	except UnboundLocalError: pass #errors are annoying
+	time.sleep(0.4)
+		
 def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 	global tempElapsedTurningEnc
 	
@@ -242,9 +261,9 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 	temptouchreading = taketouchreadings()
 	if tempreading < USSTANDARD or temptouchreading == 1:
 		#detected something!
-		print "object detected"; buzz("long")
 		drivewheels(0,0) #stop
-		
+		print "object detected"; buzz("long")
+
 		#activate HIGH US(2) pos
 		if alreadyturning == False and temptouchreading==0: #I'm not turning (so I want to activate us2 pos)
 			print "sliding down bit by bit, activate"
@@ -258,29 +277,25 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 		#check HIGH US(2) for big thing	
 		if takeusreading(US2TRIG, US2ECHO) > US2STANDARD and temptouchreading==0:
 			#Nothing detected -> low lying object -> LITTER
-			buzz("short short"); print "low-lying object detected"; time.sleep(0.5)
+			buzz("short"); print "low-lying object detected"; time.sleep(0.5)
 			
-			#Detection correction procedures
+			#DETECTION CORRECTION PROCEDURES
 			#if while turning, turn back a wee until it's in sight!
 			##(if this is not enough, turn back until it's in sigh then not, then turn back)
 			if alreadyturning == True:
-				#check which direction the normal turning is, and turn opposite to that to correct it
-				if turnycount%2 == 1: #odd=RIGHT (opposite to before)
-					wheel1 = LWHEEL; wheel2 = RWHEEL
-				else:
-					wheel1 = RWHEEL; wheel2 = LWHEEL
-					
-				while takeusreading(USNEWTRIG, USNEWECHO) > USSTANDARD:
-					#turn until we see the litter again
-					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
-					BrickPiUpdateValues()
-				
-				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
-				drivewheels(0,0)
+				#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
+				turnwhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD)
 			
 			#if not turning, turn left till nothing there, turn right till nothing there, then shift left a wee.
+			#this zones in on the litter, wherever it is.
 			else:
-				#use above code (function it it because it's quite common!)
+				#turn in a direction, until it's out of sight
+				turnwhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD)
+				#turn back in the other direction, until it's out of sight
+				turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD)
+				#shift a bit back; this centres John on the litter.
+				if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, 10, RWHEEL, TURNPOWER)
+				else:                 movelimbENC(RWHEEL, -TURNPOWER, 10, LWHEEL, TURNPOWER)					
 			
 			#shooby closer/further if litter is not in optimum range to pick up
 			shoobied = 'no'
@@ -323,20 +338,8 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 			
 			elif alreadyturning == True: #I am already turning so I want to get away from this goddamn wall
 				print "turning away from goddamn wall"
-				if turnycount%2 == 1: #odd=LEFT
-					wheel1 = RWHEEL; wheel2 = LWHEEL
-				else:
-					wheel1 = LWHEEL; wheel2 = RWHEEL
-				while takeusreading(US2TRIG, US2ECHO) <= US2STANDARD:
-					#turn until wall is no longer in sight (to get rid of stalling problem)(screw detection)
-					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
-					BrickPiUpdateValues()
-				try:
-					movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
-					drivewheels(0,0)
-				except UnboundLocalError: pass #errors are annoying
-				
-				time.sleep(0.2)
+				#turn until wall is no longer in sight (to get rid of stalling problem)(screw detection)
+				turnwhilecondition("notturnback", US2TRIG, US2ECHO, "<=", US2STANDARD)
 								
 def restartprogram(channel=0): #debounce interrupt, restart program
 	global debouncetimestamp
