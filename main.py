@@ -36,7 +36,7 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 XDEGREES       = 80.0 #angle between robot path and path (in degs)(FLOAT)
 USSTANDARD     = 37   #low us(new) sensor detection threshold
 US2STANDARD    = 50   #high us(2) detection threshold
-OPTLITTERRANGE = [19,30]#the opt us distance range from which it can pick up stuff
+OPTLITTERRANGE = [19,28]#the opt us distance range from which it can pick up stuff
 STOPRANGE      = 15.0 #the allowable range for turnbear
 
 #Motor Power Constants
