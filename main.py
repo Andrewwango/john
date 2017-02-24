@@ -288,10 +288,13 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 			#this zones in on the litter, wherever it is.
 			else:
 				#turn in a direction, until it's out of sight
+				print "Turning direction until no longer in sight"
 				turnwhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD)
 				#turn back in the other direction, until it's out of sight
+				print "Turning other direction until no longer in sight"
 				turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD)
 				#shift a bit back; this centres John on the litter.
+				print "shift"
 				if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, SHIFTENC, RWHEEL, TURNPOWER)
 				else:                 movelimbENC(RWHEEL, -TURNPOWER, SHIFTENC, LWHEEL, TURNPOWER)					
 			
