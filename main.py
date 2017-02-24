@@ -278,10 +278,10 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 				#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
 				turnwhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD)
 				#carry on turning a bit more until it's not in sight
-				turnwhilecondition("turnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD)
+			#	turnwhilecondition("turnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD)
 				#shift back - zoning in
-				if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, 50, RWHEEL, TURNPOWER)
-				else:                 movelimbENC(RWHEEL, -TURNPOWER, 50, LWHEEL, TURNPOWER)				
+			#	if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, 50, RWHEEL, TURNPOWER)
+			#	else:                 movelimbENC(RWHEEL, -TURNPOWER, 50, LWHEEL, TURNPOWER)				
 			
 			#if not turning, turn left till nothing there, turn right till nothing there, then shift left a wee.
 			#this zones in on the litter, wherever it is.
