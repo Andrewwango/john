@@ -262,7 +262,7 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 		#activate HIGH US(2) pos
 		if alreadyturning == False and temptouchreading==0: #I'm not turning (so I want to activate us2 pos)
 			print "sliding down bit by bit, activate"
-			movelimbENC(ARM, BRINGDOWNPOWER, 75)
+			movelimbENC(ARM, BRINGDOWNPOWER, 65)
 			movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 			time.sleep(0.7)
 		
