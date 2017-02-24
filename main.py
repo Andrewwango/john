@@ -375,16 +375,16 @@ while True:
 			#buttons to start main program in various directions
 			if ircode[0]  ==  "startmainfwdleft":  #pressed 1
 				turnycount = 1 ; fwdb = origfwdb; buzz("short short")
-				startmain = True; time.sleep(2)
+				startmain = True; time.sleep(0.3)
 			elif ircode[0] == "startmainfwdright": #pressed 2
 				turnycount = 0 ; fwdb = origfwdb; buzz("short short")
-				startmain = True; time.sleep(2)
+				startmain = True; time.sleep(0.3)
 			elif ircode[0] == "startmainbwdleft":  #pressed 4
 				turnycount = 1 ; fwdb = origfwdb + 180.0 ; buzz("short short")
-				startmain = True; time.sleep(2)
+				startmain = True; time.sleep(0.3)
 			elif ircode[0] == "startmainbwdright": #pressed 5
 				turnycount = 0 ; fwdb = origfwdb + 180.0 ; buzz("short short")
-				startmain = True; time.sleep(2)
+				startmain = True; time.sleep(0.3)
 			
 			#buttons to handle other things
 			elif ircode[0] == "startshutdown":     #pressed 0
