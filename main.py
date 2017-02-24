@@ -37,7 +37,8 @@ XDEGREES       = 80.0 #angle between robot path and path (in degs)(FLOAT)
 USSTANDARD     = 37   #low us(new) sensor detection threshold
 US2STANDARD    = 50   #high us(2) detection threshold
 OPTLITTERRANGE = [19,28]#the opt us distance range from which it can pick up stuff
-STOPRANGE      = 15.0 #the allowable range for turnbear
+STOPRANGE      = 15.0 #the allowable range for turnbear (compass)
+SHIFTENC       = 70
 
 #Motor Power Constants
 WHEELPOWER     = -170 #driving power
@@ -291,8 +292,8 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 				#turn back in the other direction, until it's out of sight
 				turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD)
 				#shift a bit back; this centres John on the litter.
-				if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, 50, RWHEEL, TURNPOWER)
-				else:                 movelimbENC(RWHEEL, -TURNPOWER, 50, LWHEEL, TURNPOWER)					
+				if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, SHIFTENC, RWHEEL, TURNPOWER)
+				else:                 movelimbENC(RWHEEL, -TURNPOWER, SHIFTENC, LWHEEL, TURNPOWER)					
 			
 			#shooby closer/further if litter is not in optimum range to pick up
 			shoobied = 'no'
