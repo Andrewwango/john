@@ -2,11 +2,12 @@
 ###################################################
 #//JOHN (fully automated roadside litter picker)//#
 #                    //main.py//                  #
-#         //Started 29.05.16//v12//21.02.17       #
+#         //Started 29.05.16//v14//21.02.17       #
 #                //ANDREW WANG//                  #
 #            //All Rights Reserved//              #
 # //BrickPi: github.com/DexterInd/BrickPi_Python//#
 ###################################################
+#v14 makes new detection correction.
 
 #Import relevant modules
 import time, math, lirc, sys, pygame, os, cmpautocalib
@@ -259,18 +260,27 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 			#Nothing detected -> low lying object -> LITTER
 			buzz("short short"); print "low-lying object detected"; time.sleep(0.5)
 			
-			#if while turning, turn back a wee to correct offshoot (only when turning quite a lot ie turning quickly)
-			if alreadyturning == True and tempElapsedTurningEnc >= 50:
-				#check which direction the normal turning is
+			#Detection correction procedures
+			#if while turning, turn back a wee until it's in sight!
+			##(if this is not enough, turn back until it's in sigh then not, then turn back)
+			if alreadyturning == True:
+				#check which direction the normal turning is, and turn opposite to that to correct it
 				if turnycount%2 == 1: #odd=RIGHT (opposite to before)
 					wheel1 = LWHEEL; wheel2 = RWHEEL
 				else:
 					wheel1 = RWHEEL; wheel2 = LWHEEL
 					
-				#use outside wheel to encode (although it doesn't matter)
-				movelimbENC(wheel1, -TURNPOWER, (int(tempElapsedTurningEnc/10)),wheel2, TURNPOWER)#fine tune this
-				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake			
-				time.sleep(0.2)
+				while takeusreading(USNEWTRIG, USNEWECHO) > USSTANDARD:
+					#turn until we see the litter again
+					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
+					BrickPiUpdateValues()
+				
+				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
+				drivewheels(0,0)
+			
+			#if not turning, turn left till nothing there, turn right till nothing there, then shift left a wee.
+			else:
+				#use above code (function it it because it's quite common!)
 			
 			#shooby closer/further if litter is not in optimum range to pick up
 			shoobied = 'no'
@@ -293,7 +303,11 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 			elif shoobied=='near':
 				print "shoobying AWAY back to original pos"
 				movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
-		
+			
+			#turn back to correct turnbear
+			if alreadyturning == False:
+				pass
+				#is this necessary??
 		
 		else:
 			#Something detected -> tall object -> WALL
@@ -309,18 +323,17 @@ def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 			
 			elif alreadyturning == True: #I am already turning so I want to get away from this goddamn wall
 				print "turning away from goddamn wall"
+				if turnycount%2 == 1: #odd=LEFT
+					wheel1 = RWHEEL; wheel2 = LWHEEL
+				else:
+					wheel1 = LWHEEL; wheel2 = RWHEEL
 				while takeusreading(US2TRIG, US2ECHO) <= US2STANDARD:
-					if turnycount%2 == 1: #odd=LEFT
-						wheel1 = RWHEEL; wheel2 = LWHEEL
-					else:
-						wheel1 = LWHEEL; wheel2 = RWHEEL
-
 					#turn until wall is no longer in sight (to get rid of stalling problem)(screw detection)
 					BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
 					BrickPiUpdateValues()
 				try:
 					movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
-					BrickPi.MotorSpeed[wheel1] = 0; BrickPi.MotorSpeed[wheel2] = 0
+					drivewheels(0,0)
 				except UnboundLocalError: pass #errors are annoying
 				
 				time.sleep(0.2)
