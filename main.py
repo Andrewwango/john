@@ -34,7 +34,7 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 
 #Constants
 XDEGREES       = 80.0 #angle between robot path and path (in degs)(FLOAT)
-USSTANDARD     = 37   #low us(new) sensor detection threshold
+USSTANDARD     = 30   #low us(new) sensor detection threshold
 US2STANDARD    = 50   #high us(2) detection threshold
 OPTLITTERRANGE = [19,28]#the opt us distance range from which it can pick up stuff
 STOPRANGE      = 15.0 #the allowable range for turnbear (compass)
@@ -238,7 +238,7 @@ try:
 		if limb2 != None:
 			BrickPi.MotorSpeed[limb2] = 0
 
-	def turnwhilecondition(turnbackornot, trig, echo, op, val):
+	def turnwhilecondition(turnbackornot, trig, echo, op, val, wallprevention=False):
 		if turnbackornot == "turnback": b = 1
 		else: b = 0
 		#set wheel directions
@@ -248,6 +248,11 @@ try:
 			wheel1 = RWHEEL; wheel2 = LWHEEL
 
 		while eval("takeusreading(trig, echo)" + op + "val"):
+			if wallprevention == True:
+				#just stop turning when there's a wall no matter what, if necessary
+				if takeusreading(US2TRIG, US2ECHO) < US2STANDARD:
+					break
+			
 			#turn until condition is met
 			BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
 			BrickPiUpdateValues()
@@ -297,13 +302,13 @@ try:
 				else:
 					#turn in a direction, until it's out of sight
 					print "Turning direction until no longer in sight"
-					turnwhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD)
+					turnwhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, wallprevention=True)
 					#turn back in the other direction until it's in sight again
 					print "Turning other direction until in sight again"
 					turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, ">", USSTANDARD)
 					#carry on, until it's out of sight
 					print "Turning other direction until no longer in sight"
-					turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD)
+					turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD, wallprevention=True)
 					#shift a bit back; this centres John on the litter.
 					print "shift"
 					if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, SHIFTENC, RWHEEL, TURNPOWER)
