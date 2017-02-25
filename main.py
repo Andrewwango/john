@@ -467,7 +467,7 @@ try:
 					turnprocedure()
 					#loop back and carry on
 
-except KeyboardInterrupt: #ensure clean exit
+except (KeyboardInterrupt, SystemExit): #ensure clean exit
 	GPIO.cleanup()
 	raise
 except: #any other error, restart!
