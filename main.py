@@ -74,6 +74,7 @@ GPIO.setup(US2TRIG  , GPIO.OUT) ; GPIO.setup(IRRCINT , GPIO.IN)
 ##PROGRAM VARS##
 turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
 turnbears = []
+targBear = 0
 shoobied = 'no'
 debouncetimestamp = time.time()
 
@@ -168,7 +169,7 @@ try:
 		movelimbLENG(GRABBER, OPENPOWER, 0.5); time.sleep(0.5)	
 
 	def turnprocedure(): #TURNING PROCEDURE
-		global turnycount; global turnbears
+		global turnycount; global turnbears; global targBear
 		time.sleep(0.5)
 
 		#setup wheels depending on direction to turn
@@ -258,10 +259,8 @@ try:
 			BrickPi.MotorSpeed[wheel1] = -power; BrickPi.MotorSpeed[wheel2] = power
 			BrickPiUpdateValues()
 
-		try:
-			movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
-			drivewheels(0,0) #stop
-		except UnboundLocalError: pass #errors are annoying
+		movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
+		drivewheels(0,0) #stop
 		time.sleep(0.4)
 
 	def detectprocedure(alreadyturning): #DETECTION PROCEDURE
@@ -341,10 +340,17 @@ try:
 					print "shoobying AWAY back to original pos"
 					movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
 
-				#turn back to correct turnbear
-				if alreadyturning == False:
-					pass
-					#is this necessary??
+				#turn back to original turnbear
+				adjust = targBear - takebearing()
+				#check which direction to turn back (depending on sign of adjust, or if it's wrapping)
+				if adjust < 0 or adjust > 180: #turn left
+					wheel1 = RWHEEL; wheel2 = LWHEEL
+				if adjust > 0 or adjust < 180: #turn right
+					wheel1 = LWHEEL; wheel2 = RWHEEL
+				print "turning back to original bear"
+				movelimbENC(wheel1, -TURNPOWER, targBear, wheel2, TURNPOWER, compass=True)
+				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
+
 
 			else:
 				#Something detected -> tall object -> WALL
