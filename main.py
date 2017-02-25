@@ -320,6 +320,7 @@ try:
 
 				#shooby closer/further if litter is not in optimum range to pick up
 				shoobied = 'no'
+				tempreading = takeusreading(USNEWTRIG, USNEWECHO)
 				if tempreading <= OPTLITTERRANGE[0]: #too close
 					print "too close, shoobying AWAY"
 					movelimbENC(LWHEEL, -WHEELPOWER, 160, RWHEEL, -WHEELPOWER)
