@@ -41,7 +41,7 @@ STOPRANGE      = 15.0 #the allowable range for turnbear (compass)
 SHIFTENC       = 70
 
 #Motor Power Constants
-WHEELPOWER     = -170 #driving power
+WHEELPOWER     = -200 #driving power
 TURNPOWER      = 160  #pos = forwards (for ease of use but not technically correct)
 BRAKEPOWER     = -5   #"
 SHOOBYPOWER    = -100
