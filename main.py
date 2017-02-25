@@ -379,86 +379,84 @@ try:
 
 	startmain = False
 	while True:
-		try: #handle ctrl-c to ensure clean exit
-			clock.tick(10) #make sure constant FPS so John doesn't blow up
+		clock.tick(10) #make sure constant FPS so John doesn't blow up
 
-			#infrared remote control handling loop
-			ircode = lirc.nextcode()
-			if ircode:
-				fwdb=0
-				#buttons to start main program in various directions
-				if ircode[0]  ==  "startmainfwdleft":  #pressed 1
-					turnycount = 1 ; fwdb = origfwdb; buzz("short short")
-					startmain = True; time.sleep(0.3)
-				elif ircode[0] == "startmainfwdright": #pressed 2
-					turnycount = 0 ; fwdb = origfwdb; buzz("short short")
-					startmain = True; time.sleep(0.3)
-				elif ircode[0] == "startmainbwdleft":  #pressed 4
-					turnycount = 1 ; fwdb = origfwdb + 180.0 ; buzz("short short")
-					startmain = True; time.sleep(0.3)
-				elif ircode[0] == "startmainbwdright": #pressed 5
-					turnycount = 0 ; fwdb = origfwdb + 180.0 ; buzz("short short")
-					startmain = True; time.sleep(0.3)
+		#infrared remote control handling loop
+		ircode = lirc.nextcode()
+		if ircode:
+			fwdb=0
+			#buttons to start main program in various directions
+			if ircode[0]  ==  "startmainfwdleft":  #pressed 1
+				turnycount = 1 ; fwdb = origfwdb; buzz("short short")
+				startmain = True; time.sleep(0.3)
+			elif ircode[0] == "startmainfwdright": #pressed 2
+				turnycount = 0 ; fwdb = origfwdb; buzz("short short")
+				startmain = True; time.sleep(0.3)
+			elif ircode[0] == "startmainbwdleft":  #pressed 4
+				turnycount = 1 ; fwdb = origfwdb + 180.0 ; buzz("short short")
+				startmain = True; time.sleep(0.3)
+			elif ircode[0] == "startmainbwdright": #pressed 5
+				turnycount = 0 ; fwdb = origfwdb + 180.0 ; buzz("short short")
+				startmain = True; time.sleep(0.3)
 
-				#buttons to handle other things
-				elif ircode[0] == "startshutdown":     #pressed 0
-					print "Shutting down!"; buzz("short short short short")
-					os.system('sudo shutdown -h now')
-				elif ircode[0] == "startcmpautocalib": #pressed SETUP
-					#start calibration procedure of compass
-					print "starting calibration script"; buzz("long long")
-					cmpautocalib.maincalibprogram()
-					restart() #restart to reset all GPIO pins
-				elif ircode[0] == "startstopev":       #pressed 7
-					#stop getty (if it didn't stop at boot)
-					print "deactivating getty" ; buzz("long short")
-					os.system("sudo ./stopev.sh") ; print "restarting"
-					GPIO.cleanup(); restart()
-				elif ircode[0] == "stopmainpy":        #pressed 9
-					#stop main.py program (for diagnostics)
-					print "stopping main"; buzz("long long long")
-					GPIO.cleanup(); sys.exit()
-				elif ircode[0] == "bants":             #pressed PLAY
-					buzz("long long short short long short short short long short short")
+			#buttons to handle other things
+			elif ircode[0] == "startshutdown":     #pressed 0
+				print "Shutting down!"; buzz("short short short short")
+				os.system('sudo shutdown -h now')
+			elif ircode[0] == "startcmpautocalib": #pressed SETUP
+				#start calibration procedure of compass
+				print "starting calibration script"; buzz("long long")
+				cmpautocalib.maincalibprogram()
+				restart() #restart to reset all GPIO pins
+			elif ircode[0] == "startstopev":       #pressed 7
+				#stop getty (if it didn't stop at boot)
+				print "deactivating getty" ; buzz("long short")
+				os.system("sudo ./stopev.sh") ; print "restarting"
+				GPIO.cleanup(); restart()
+			elif ircode[0] == "stopmainpy":        #pressed 9
+				#stop main.py program (for diagnostics)
+				print "stopping main"; buzz("long long long")
+				GPIO.cleanup(); sys.exit()
+			elif ircode[0] == "bants":             #pressed PLAY
+				buzz("long long short short long short short short long short short")
 
-				if fwdb > 360.0: fwdb -= 360.0 #correction
-				print turnycount, fwdb
-
+			if fwdb > 360.0: fwdb -= 360.0 #correction
+			print turnycount, fwdb
 
 
-			if startmain == True:
 
-				print "main has started"
-				#initial stuff
-				turnbears = createturnbears()
+		if startmain == True:
 
-				#bring arm back up and open grabber in case it's not
-				movelimbLENG(ARM, SLIDEUPPOWER, 0.3, GRABBER, OPENPOWER)
+			print "main has started"
+			#initial stuff
+			turnbears = createturnbears()
 
-				#initial turn from forwards
-				turnprocedure()
+			#bring arm back up and open grabber in case it's not
+			movelimbLENG(ARM, SLIDEUPPOWER, 0.3, GRABBER, OPENPOWER)
 
-				#MAIN MAIN CHOW MEIN LOOP
-				while True:
-					try:
-						#stop actions
-						BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
+			#initial turn from forwards
+			turnprocedure()
 
-						#drive
-						drivewheels(WHEELPOWER, WHEELPOWER)
+			#MAIN MAIN CHOW MEIN LOOP
+			while True:
+				#stop actions
+				BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
 
-						#search for object
-						detectprocedure(False)
+				#drive
+				drivewheels(WHEELPOWER, WHEELPOWER)
 
-						#check IR sensor for cliff
-						if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
-							print "CLIFF"
-							#reverse!
-							movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER)
+				#search for object
+				detectprocedure(False)
 
-							buzz("long")
-							turnprocedure()
-							#loop back and carry on
+				#check IR sensor for cliff
+				if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
+					print "CLIFF"
+					#reverse!
+					movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER)
+
+					buzz("long")
+					turnprocedure()
+					#loop back and carry on
 
 except KeyboardInterrupt: #ensure clean exit
 	GPIO.cleanup()
