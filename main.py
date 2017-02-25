@@ -310,9 +310,12 @@ try:
 					print "Turning other direction until no longer in sight"
 					turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD, wallprevention=True)
 					#shift a bit back; this centres John on the litter.
-					print "shift"
-					if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, SHIFTENC, RWHEEL, TURNPOWER)
-					else:                 movelimbENC(RWHEEL, -TURNPOWER, SHIFTENC, LWHEEL, TURNPOWER)					
+					#print "shift"
+					#if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, SHIFTENC, RWHEEL, TURNPOWER)
+					#else:                 movelimbENC(RWHEEL, -TURNPOWER, SHIFTENC, LWHEEL, TURNPOWER)
+					#turn in original direction until it's in sight - now it's definitely in sight.
+					print "Turning in orginial direction to centre"
+					turnwhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD)
 
 				#shooby closer/further if litter is not in optimum range to pick up
 				shoobied = 'no'
