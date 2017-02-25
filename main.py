@@ -38,7 +38,7 @@ USSTANDARD     = 30   #low us(new) sensor detection threshold
 US2STANDARD    = 50   #high us(2) detection threshold
 OPTLITTERRANGE = [19,28]#the opt us distance range from which it can pick up stuff
 STOPRANGE      = 15.0 #the allowable range for turnbear (compass)
-SHIFTENC       = 70
+SHIFTENC       = 30
 
 #Motor Power Constants
 WHEELPOWER     = -200 #driving power
