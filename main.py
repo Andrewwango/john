@@ -43,6 +43,7 @@ SHIFTENC       = 30
 #Motor Power Constants
 WHEELPOWER     = -200 #driving power
 TURNPOWER      = 160  #pos = forwards (for ease of use but not technically correct)
+SHIFTPOWER     = 140  #'
 BRAKEPOWER     = -5   #"
 SHOOBYPOWER    = -100
 GRABBERPOWER   = -170
@@ -238,7 +239,7 @@ try:
 		if limb2 != None:
 			BrickPi.MotorSpeed[limb2] = 0
 
-	def turnwhilecondition(turnbackornot, trig, echo, op, val, wallprevention=False):
+	def turnwhilecondition(turnbackornot, trig, echo, op, val, power, wallprevention=False):
 		if turnbackornot == "turnback": b = 1
 		else: b = 0
 		#set wheel directions
@@ -254,7 +255,7 @@ try:
 					break
 			
 			#turn until condition is met
-			BrickPi.MotorSpeed[wheel1] = -TURNPOWER; BrickPi.MotorSpeed[wheel2] = TURNPOWER
+			BrickPi.MotorSpeed[wheel1] = -power; BrickPi.MotorSpeed[wheel2] = power
 			BrickPiUpdateValues()
 
 		try:
@@ -290,7 +291,7 @@ try:
 				##(if this is not enough, turn back until it's in sigh then not, then turn back)
 				if alreadyturning == True:
 					#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
-					turnwhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD)
+					turnwhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER)
 					#carry on turning a bit more until it's not in sight
 				#	turnwhilecondition("turnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD)
 					#shift back - zoning in
@@ -302,20 +303,20 @@ try:
 				else:
 					#turn in a direction, until it's out of sight
 					print "Turning direction until no longer in sight"
-					turnwhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, wallprevention=True)
+					turnwhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention=True)
 					#turn back in the other direction until it's in sight again
 					print "Turning other direction until in sight again"
-					turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, ">", USSTANDARD)
+					turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER)
 					#carry on, until it's out of sight
 					print "Turning other direction until no longer in sight"
-					turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD, wallprevention=True)
+					turnwhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention=True)
 					#shift a bit back; this centres John on the litter.
 					#print "shift"
 					#if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, SHIFTENC, RWHEEL, TURNPOWER)
 					#else:                 movelimbENC(RWHEEL, -TURNPOWER, SHIFTENC, LWHEEL, TURNPOWER)
 					#turn in original direction until it's in sight - now it's definitely in sight.
 					print "Turning in orginial direction to centre"
-					turnwhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD)
+					turnwhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER)
 
 				#shooby closer/further if litter is not in optimum range to pick up
 				shoobied = 'no'
@@ -359,7 +360,7 @@ try:
 				elif alreadyturning == True: #I am already turning so I want to get away from this goddamn wall
 					print "turning away from goddamn wall"
 					#turn until wall is no longer in sight (to get rid of stalling problem)(screw detection)
-					turnwhilecondition("notturnback", US2TRIG, US2ECHO, "<=", US2STANDARD)
+					turnwhilecondition("notturnback", US2TRIG, US2ECHO, "<=", US2STANDARD, TURNPOWER)
 
 	def restartprogram(channel=0): #debounce interrupt, restart program
 		global debouncetimestamp
