@@ -428,7 +428,29 @@ try:
 			elif ircode[0] == "startmainbwdright": #pressed 5
 				turnycount = 0 ; fwdb = origfwdb + 180 ; buzz("short short")
 				startmain = True; time.sleep(0.3)
-
+			
+			#buttons to handle batterysaving changes
+			elif ircode[0] in ["batterysavingoff", "batterysavingon", "batterysavingsuper"]:
+				if   ircode[0] == "batterysavingoff"  : newbatterysaving = 0
+				elif ircode[0] == "batterysavingon"   : newbatterysaving = 1
+				elif ircode[0] == "batterysavingsuper": newbatterysaving = 2
+				
+				#read and modify current data
+				settingsfile = open('/home/pi/mainsettings.dat','r')
+				currentdata = settingsfile.read().split('\n')
+				currentdata.pop(-1); currentdata.append(newbatterysaving)
+				settingsfile.close()
+				
+				#write new data
+				settingsfile = open('/home/pi/mainsettings.dat','w')
+				datatowrite = ""
+				for piece in currentdata:
+					datatowrite = datatowrite + "\n" + str(piece)
+				datatowrite = datatowrite.strip("\n")
+				settingsfile.write(datatowrite)
+				print "added newbatterysaving", newbatterysaving
+				settingsfile.close(); GPIO.cleanup(); restart()
+			
 			#buttons to handle other things
 			elif ircode[0] == "startshutdown":     #pressed 0
 				print "Shutting down!"; buzz("short short short short")
@@ -443,7 +465,7 @@ try:
 				print "deactivating getty" ; buzz("long short")
 				os.system("sudo ./stopev.sh") ; print "restarting"
 				GPIO.cleanup(); restart()
-			elif ircode[0] == "stopmainpy":        #pressed 9
+			elif ircode[0] == "stopmainpy":        #pressed 8
 				#stop main.py program (for diagnostics)
 				print "stopping main"; buzz("long long long")
 				GPIO.cleanup(); sys.exit()
