@@ -356,15 +356,16 @@ try:
 					movelimbENC(LWHEEL, -WHEELPOWER, shoobiedenc, RWHEEL, -WHEELPOWER)
 
 				#turn back to original turnbear
-				adjust = targBear - takebearing()
-				#check which direction to turn back (depending on sign of adjust, or if it's wrapping)
-				if adjust < 0 or adjust > 180: #turn left
-					wheel1 = LWHEEL; wheel2 = RWHEEL
-				if adjust > 0 or adjust < 180: #turn right
-					wheel1 = RWHEEL; wheel2 = LWHEEL
-				print "turning back to original bear"
-				movelimbENC(wheel1, -TURNPOWER, targBear, wheel2, TURNPOWER, compass=True)
-				movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
+				if alreadyturning == False:
+					adjust = targBear - takebearing()
+					#check which direction to turn back (depending on sign of adjust, or if it's wrapping)
+					if adjust < 0 or adjust > 180: #turn left
+						wheel1 = RWHEEL; wheel2 = LWHEEL
+					if adjust > 0 or adjust < 180: #turn right
+						wheel1 = LWHEEL; wheel2 = RWHEEL
+					print "turning back to original bear"
+					movelimbENC(wheel1, -TURNPOWER, targBear, wheel2, TURNPOWER, compass=True)
+					movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
 
 
 			else:
