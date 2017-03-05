@@ -302,8 +302,11 @@ try:
 				##(if this is not enough, turn back until it's in sight then not, then turn back)
 				if alreadyturning == True:
 					#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
+					print "turn back until in sight"
 					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER)
+					print "turn not back until out of sight"
 					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER)
+					print "turn back until in sight"
 					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER)
 
 				#if not turning, turn direction A until out of sight, turn away in dir B until in sight,
