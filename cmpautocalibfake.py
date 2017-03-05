@@ -1,6 +1,3 @@
-#########FOR MAIN FAKE#################
-####added maincalibprogram() to bottom
-
 import time, math, smbus
 from BrickPi import *
 import RPi.GPIO as GPIO
@@ -21,6 +18,7 @@ address = 0x1e #i2c address
 
 def returnprogram(channel):
 	global breaking; breaking = True
+
 
 def buzz():
 	for i in range(2):
@@ -115,13 +113,12 @@ def maincalibprogram():
 	fwdb = math.atan2(y_out, x_out) 
 	if (fwdb < 0):
 		fwdb += 2 * math.pi
-	fwdb = math.degrees(fwdb)
+	fwdb = int(math.degrees(fwdb))
 	print "fwdb: ", fwdb
 
 	f = open('mainsettings.dat', 'w')
-	f.write(str(x_offset) + "\n" + str(y_offset) + "\n" + str(fwdb))
+	f.write(str(x_offset) + "\n" + str(y_offset) + "\n" + str(fwdb) + "\n" + "0")
 	print "file written" #saved to pi directory
 	f.close(); buzz(); GPIO.cleanup(); print "cmpautocalib completed"
-
 
 maincalibprogram()
