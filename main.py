@@ -117,7 +117,7 @@ try:
 		GPIO.output(trig, False) #switch everything off
 		#take 4 readings then find average
 		uslist=[]
-		for i in range(4):
+		for i in range(3):
 			#send out signal
 			GPIO.output(trig, False); time.sleep(0.001)
 			GPIO.output(trig, True);  time.sleep(0.001)
@@ -133,7 +133,7 @@ try:
 			distance = duration * 340 * 100 #cm from speed of sound
 			uslist += [int(distance)]
 			time.sleep(0.01)
-		uslist.sort(); usreading = uslist[2] #median (get rid of anomalies)
+		uslist.sort(); usreading = uslist[1] #median (get rid of anomalies)
 		GPIO.output(trig, False)
 		print "US reading is ", str(usreading), uslist
 		return usreading
@@ -490,7 +490,7 @@ try:
 			#MAIN MAIN CHOW MEIN LOOP
 			while True:
 				#stop actions
-				BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
+				#BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
 
 				#drive
 				drivewheels(WHEELPOWER, WHEELPOWER)
