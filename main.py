@@ -336,12 +336,12 @@ try:
 				if tempreading <= OPTLITTERRANGE[0]: #too close
 					print "too close, shoobying AWAY"
 					movewhilecondition("backwards", USNEWTRIG, USNEWECHO, "<", OPTLITTERRANGE[0], WHEELPOWER)
-					shoobiedenc = abs(takeencoderreading(limb) - startpos) #so we know where we've gone
+					shoobiedenc = abs(takeencoderreading(LWHEEL) - startpos) #so we know where we've gone
 					shoobied='away'
 				elif tempreading >= OPTLITTERRANGE[1]: #too far
 					print "too far, shoobying NEAR"
 					movewhilecondition("forwards",  USNEWTRIG, USNEWECHO, ">", OPTLITTERRANGE[1], WHEELPOWER)
-					shoobiedenc = abs(takeencoderreading(limb) - startpos)
+					shoobiedenc = abs(takeencoderreading(LWHEEL) - startpos)
 					shoobied='near'
 
 				#PICK UP THE BLOODY LITTER
