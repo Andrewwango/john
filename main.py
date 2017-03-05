@@ -33,11 +33,11 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 ''''''             ;    TOUCHR   = 4  #green, in - touch sensor
 
 #Constants
-XDEGREES       = 90.0 #angle between robot path and path (in degs)(FLOAT)
+XDEGREES       = 90   #angle between robot path and path (in degs)(INT)
 USSTANDARD     = 30   #low us(new) sensor detection threshold
 US2STANDARD    = 50   #high us(2) detection threshold
 OPTLITTERRANGE = [19,28]#the opt us distance range from which it can pick up stuff
-STOPRANGE      = 15.0 #the allowable range for turnbear (compass)
+STOPRANGE      = 15   #the allowable range for turnbear (compass)
 SHIFTENC       = 30
 
 #Motor Power Constants
@@ -80,7 +80,7 @@ debouncetimestamp = time.time()
 
 #Extract FWDB (forward bearing) from settings file
 settingsfile = open('/home/pi/mainsettings.dat','r')
-origfwdb = float(settingsfile.read().split('\n')[2])
+origfwdb = int(settingsfile.read().split('\n')[2])
 settingsfile.close()
 print 'origfwdb ', origfwdb
 
@@ -95,7 +95,6 @@ print "SETUP FINISHED"
 #############
 
 try:
-	
 	def buzz(patternofbuzz): #activate buzzer
 		patternofbuzz = patternofbuzz.split()
 		for i in range(len(patternofbuzz)):
@@ -300,8 +299,8 @@ try:
 				#	if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, 50, RWHEEL, TURNPOWER)
 				#	else:                 movelimbENC(RWHEEL, -TURNPOWER, 50, LWHEEL, TURNPOWER)				
 
-				#if not turning, turn left till nothing there, turn right till nothing there, then shift left a wee.
-				#this zones in on the litter, wherever it is.
+				#if not turning, turn direction A until out of sight, turn away in dir B until in sight,
+				#then carry on in B until out of sight, then back in A until in sight again (this centres it!)
 				else:
 					#turn in a direction, until it's out of sight
 					print "Turning direction until no longer in sight"
@@ -415,10 +414,10 @@ try:
 				turnycount = 0 ; fwdb = origfwdb; buzz("short short")
 				startmain = True; time.sleep(0.3)
 			elif ircode[0] == "startmainbwdleft":  #pressed 4
-				turnycount = 1 ; fwdb = origfwdb + 180.0 ; buzz("short short")
+				turnycount = 1 ; fwdb = origfwdb + 180 ; buzz("short short")
 				startmain = True; time.sleep(0.3)
 			elif ircode[0] == "startmainbwdright": #pressed 5
-				turnycount = 0 ; fwdb = origfwdb + 180.0 ; buzz("short short")
+				turnycount = 0 ; fwdb = origfwdb + 180 ; buzz("short short")
 				startmain = True; time.sleep(0.3)
 
 			#buttons to handle other things
@@ -442,7 +441,7 @@ try:
 			elif ircode[0] == "bants":             #pressed PLAY
 				buzz("long long short short long short short short long short short")
 
-			if fwdb > 360.0: fwdb -= 360.0 #correction
+			if fwdb > 360: fwdb -= 360 #correction
 			print turnycount, fwdb
 
 
