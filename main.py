@@ -437,7 +437,7 @@ try:
 				
 				#read and modify current data
 				settingsfile = open('/home/pi/mainsettings.dat','r')
-				currentdata = settingsfile.read().split('\n')
+				currentdata = settingsfile.read().strip('\n').split('\n')
 				currentdata.pop(-1); currentdata.append(newbatterysaving)
 				settingsfile.close()
 				
@@ -449,7 +449,7 @@ try:
 				datatowrite = datatowrite.strip("\n")
 				settingsfile.write(datatowrite)
 				print "added newbatterysaving", newbatterysaving
-				settingsfile.close(); GPIO.cleanup(); restart()
+				settingsfile.close(); buzz("short"); GPIO.cleanup(); restart()
 			
 			#buttons to handle other things
 			elif ircode[0] == "startshutdown":     #pressed 0
