@@ -303,11 +303,8 @@ try:
 				if alreadyturning == True:
 					#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
 					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER)
-					#carry on turning a bit more until it's not in sight
-				#	movewhilecondition("turnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD)
-					#shift back - zoning in
-				#	if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, 50, RWHEEL, TURNPOWER)
-				#	else:                 movelimbENC(RWHEEL, -TURNPOWER, 50, LWHEEL, TURNPOWER)				
+					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER)
+					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER)
 
 				#if not turning, turn direction A until out of sight, turn away in dir B until in sight,
 				#then carry on in B until out of sight, then back in A until in sight again (this centres it!)
