@@ -40,18 +40,33 @@ OPTLITTERRANGE = [19,28]#the opt us distance range from which it can pick up stu
 STOPRANGE      = 15   #the allowable range for turnbear (compass)
 SHIFTENC       = 30
 
+#Extract FWDB (forward bearing) and BATTERYSAVING data from settings file
+settingsfile = open('/home/pi/mainsettings.dat','r')
+settingsdata = settingsfile.read().split('\n')
+origfwdb = int(settingsdata[2]) #origfwdb may be modified for fwdb if going backwards, for example
+batterysaving = int(settingsdata[3])
+settingsfile.close()
+print 'origfwdb ', origfwdb
+print 'batterysaving ', batterysaving
+
 #Motor Power Constants
-WHEELPOWER     = -200 #driving power
-TURNPOWER      = 160  #pos = forwards (for ease of use but not technically correct)
-SHIFTPOWER     = 140  #'
-BRAKEPOWER     = -5   #"
-SHOOBYPOWER    = -100
-GRABBERPOWER   = -170
-OPENPOWER      = 70
-LIFTPOWER      = -200
-SLIDEUPPOWER   = -100  #deactivating arm
-BRINGDOWNPOWER = 170
+if batterysaving   == 0: extrajuice = 0
+elif batterysaving == 1: extrajuice = 20
+elif batterysaving == 2: extrajuice = 50
+#make sure nothing goes over 255 - highest extrajuice!
+WHEELPOWER     = -(190 + extrajuice) #driving power
+TURNPOWER      =   160 + extrajuice  #pos = forwards (for ease of use but not technically correct)
+SHIFTPOWER     =   140 + extrajuice  #'
+BRAKEPOWER     =   -5                #"
+SHOOBYPOWER    = -(100 + extrajuice)
+GRABBERPOWER   = -(170 + extrajuice)
+OPENPOWER      =   70  + extrajuice
+LIFTPOWER      = -(200 + extrajuice)
+SLIDEUPPOWER   = -(100 + extrajuice) #deactivating arm
+BRINGDOWNPOWER =   170 + extrajuice
 BRINGDOWNBRAKEPOWER = -5
+
+	
 
 ##SETUP## motors, sensors, GPIO Pins
 BrickPi.MotorEnable[GRABBER] = 1 ; BrickPi.MotorEnable[ARM]    = 1
@@ -77,12 +92,6 @@ turnbears = []
 targBear = 0
 shoobied = 'no'
 debouncetimestamp = time.time()
-
-#Extract FWDB (forward bearing) from settings file
-settingsfile = open('/home/pi/mainsettings.dat','r')
-origfwdb = int(settingsfile.read().split('\n')[2])
-settingsfile.close()
-print 'origfwdb ', origfwdb
 
 #Setup logging
 logging.basicConfig(filename='/home/pi/errorlogs.dat', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
@@ -480,8 +489,8 @@ try:
 					#loop back and carry on
 
 except (KeyboardInterrupt, SystemExit): #ensure clean exit
-	GPIO.cleanup()
-	raise
+	logging.exception('KeyboardInterrupt or SystemExit'); print "KeyboardInterrupt or SystemExit"
+	GPIO.cleanup(); raise
 except: #any other error, restart!
 	logging.exception('Found error in main!'); print "Found error in main!"
-	GPIO.cleanup; restart()
+	GPIO.cleanup(); restart()
