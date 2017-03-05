@@ -304,8 +304,8 @@ try:
 					#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
 					print "turn back until in sight"
 					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER)
-					print "turn not back until in sight"
-					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER)
+					#print "turn not back until in sight"
+					#movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER)
 					#print "turn not back until out of sight"
 					#movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER)
 					#print "turn back until in sight"
