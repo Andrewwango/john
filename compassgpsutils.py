@@ -46,7 +46,7 @@ def takebearing():
 	bearing  = math.atan2(y_out, x_out) 
 	if (bearing < 0):
 		bearing += 2 * math.pi
-	outputbearing = int(maths.degrees(bearing))
+	outputbearing = int(math.degrees(bearing))
 	print "Bearing: ", outputbearing
 	return outputbearing
 
