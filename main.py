@@ -55,7 +55,7 @@ elif batterysaving == 1: extrajuice = 20
 elif batterysaving == 2: extrajuice = 50
 #make sure nothing goes over 255 - highest extrajuice!
 WHEELPOWER     = -(190 + extrajuice) #driving power
-TURNPOWER      =   160 + extrajuice  #pos = forwards (for ease of use but not technically correct)
+TURNPOWER      =   170 + extrajuice  #pos = forwards (for ease of use but not technically correct)
 SHIFTPOWER     =   140 + extrajuice  #'
 BRAKEPOWER     =   -5                #"
 SHOOBYPOWER    = -(100 + extrajuice)
