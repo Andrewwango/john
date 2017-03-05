@@ -250,6 +250,7 @@ try:
 
 	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False):
 		wheel1power,wheel2power = -1,1 #for turning
+		b=0
 		if   formofmovement == "turnback":    b = 1
 		elif formofmovement == "notturnback": b = 0
 		elif formofmovement == "forwards": wheel1power,wheel2power = 1,1 #modify for driving
