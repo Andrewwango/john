@@ -43,7 +43,7 @@ SHIFTENC       = 30
 #Extract FWDB (forward bearing) and BATTERYSAVING data from settings file
 settingsfile = open('/home/pi/mainsettings.dat','r')
 settingsdata = settingsfile.read().split('\n')
-origfwdb = int(settingsdata[2]) #origfwdb may be modified for fwdb if going backwards, for example
+origfwdb = int(float(settingsdata[2])) #origfwdb may be modified for fwdb if going backwards, for example
 batterysaving = int(settingsdata[3])
 settingsfile.close()
 print 'origfwdb ', origfwdb
