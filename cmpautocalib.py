@@ -113,7 +113,7 @@ def maincalibprogram():
 	fwdb = math.atan2(y_out, x_out) 
 	if (fwdb < 0):
 		fwdb += 2 * math.pi
-	fwdb = math.degrees(fwdb)
+	fwdb = int(math.degrees(fwdb))
 	print "fwdb: ", fwdb
 
 	f = open('mainsettings.dat', 'w')
