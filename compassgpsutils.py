@@ -46,9 +46,9 @@ def takebearing():
 	bearing  = math.atan2(y_out, x_out) 
 	if (bearing < 0):
 		bearing += 2 * math.pi
-
-	print "Bearing: ", math.degrees(bearing)
-	return math.degrees(bearing)
+	outputbearing = int(maths.degrees(bearing))
+	print "Bearing: ", outputbearing
+	return outputbearing
 
 def getGPScoords(sesh):
 	try:
