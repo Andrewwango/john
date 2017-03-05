@@ -117,6 +117,6 @@ def maincalibprogram():
 	print "fwdb: ", fwdb
 
 	f = open('mainsettings.dat', 'w')
-	f.write(str(x_offset) + "\n" + str(y_offset) + "\n" + str(fwdb))
+	f.write(str(x_offset) + "\n" + str(y_offset) + "\n" + str(fwdb) + "\n" + "0")
 	print "file written" #saved to pi directory
 	f.close(); buzz(); GPIO.cleanup(); print "cmpautocalib completed"
