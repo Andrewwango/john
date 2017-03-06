@@ -2,7 +2,7 @@
 ###################################################
 #//JOHN (fully automated roadside litter picker)//#
 #                    //main.py//                  #
-#         //Started 29.05.16//v14//21.02.17       #
+#         //Started 29.05.16//v15//06.03.17       #
 #                //ANDREW WANG//                  #
 #            //All Rights Reserved//              #
 # //BrickPi: github.com/DexterInd/BrickPi_Python//#
@@ -29,8 +29,6 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 ''''''             ;    USNEWECHO= 22 #yellow,in - low  US sensor
 ''''''             ;    BUZZOUT  = 7  #brown, out- buzzer
 ''''''             ;    IRRCINT  = 8  #white, in - irrc interrupt pin
-''''''             ;    TOUCHL   = 11 #blue,  in - touch sensor
-''''''             ;    TOUCHR   = 4  #green, in - touch sensor
 
 #Constants
 XDEGREES       = 90   #angle between robot path and path (in degs)(INT)
@@ -83,8 +81,8 @@ except OSError:
 
 GPIO.setup(IRIN     , GPIO.IN)  ; GPIO.setup(BUZZOUT , GPIO.OUT)
 GPIO.setup(USNEWECHO, GPIO.IN)
-GPIO.setup(USNEWTRIG, GPIO.OUT) ; GPIO.setup(TOUCHL  , GPIO.IN , pull_up_down=GPIO.PUD_UP)
-GPIO.setup(US2ECHO  , GPIO.IN)  ; GPIO.setup(TOUCHR  , GPIO.IN , pull_up_down=GPIO.PUD_UP)
+GPIO.setup(USNEWTRIG, GPIO.OUT)
+GPIO.setup(US2ECHO  , GPIO.IN)
 GPIO.setup(US2TRIG  , GPIO.OUT) ; GPIO.setup(IRRCINT , GPIO.IN)
 
 ##PROGRAM VARS##
@@ -138,11 +136,6 @@ try:
 		GPIO.output(trig, False)
 		print "US reading is ", str(usreading), uslist
 		return usreading
-
-	def taketouchreadings(): #check if any touch sensor is pressed
-		stateL = GPIO.input(TOUCHL); stateR= GPIO.input(TOUCHR)
-		if stateL == 0 or stateR == 0: return 1 #look for falling edge
-		else: return 0
 
 	def takeencoderreading(port): #read motor position from built in encoder
 		for i in range(3): #deal with encoder glitches
@@ -282,23 +275,22 @@ try:
 
 	def detectprocedure(alreadyturning): #DETECTION PROCEDURE
 
-		#check LOW US or touch for object
-		tempreading      = takeusreading(USNEWTRIG,USNEWECHO)
-		temptouchreading = taketouchreadings()
-		if tempreading < USSTANDARD or temptouchreading == 1:
+		#check LOW US for object
+		tempreading = takeusreading(USNEWTRIG,USNEWECHO)
+		if tempreading < USSTANDARD:
 			#detected something!
 			drivewheels(0,0) #stop
 			print "object detected"; buzz("long")
 
 			#activate HIGH US(2) pos
-			if alreadyturning == False and temptouchreading==0: #I'm not turning (so I want to activate us2 pos)
+			if alreadyturning == False: #I'm not turning (so I want to activate us2 pos)
 				print "sliding down bit by bit, activate"
 				movelimbENC(ARM, ACTIVATEUS2POWER, 70)
 				movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 				time.sleep(0.7)
 
 			#check HIGH US(2) for big thing	
-			if takeusreading(US2TRIG, US2ECHO) > US2STANDARD and temptouchreading==0:
+			if takeusreading(US2TRIG, US2ECHO) > US2STANDARD:
 				#Nothing detected -> low lying object -> LITTER
 				buzz("short"); print "low-lying object detected"; time.sleep(0.5)
 
@@ -377,7 +369,7 @@ try:
 
 			else:
 				#Something detected -> tall object -> WALL
-				print "WALL"; buzz("long") #WALL(either by US or touch)
+				print "WALL"; buzz("long") #WALL(US)
 
 				if alreadyturning == False: #I'm not turning already so I want to turn and deactivate at wall
 					turnprocedure()
