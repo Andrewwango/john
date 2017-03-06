@@ -251,8 +251,9 @@ try:
 			BrickPi.MotorSpeed[limb2] = 0
 
 	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False, timelimit=False):
+		time.sleep(0.4)
 		wheel1power,wheel2power = -1,1 #for turning
-		b=0
+		b = 0
 		if   formofmovement == "turnback":    b = 1
 		elif formofmovement == "notturnback": b = 0
 		elif formofmovement == "forwards": wheel1power,wheel2power = 1,1 #modify for driving
