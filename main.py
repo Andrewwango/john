@@ -173,7 +173,8 @@ try:
 
 		print "lifting" #bring litter up
 		movelimbLENG(ARM, LIFTPOWER, 0.6, GRABBER, GRABBERPOWER) #grabber grips as well
-
+		time.sleep(0.5)
+		
 		print "opening" #dump litter
 		movelimbLENG(GRABBER, OPENPOWER, 0.5); time.sleep(0.5)	
 
