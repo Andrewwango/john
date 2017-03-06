@@ -56,7 +56,7 @@ elif batterysaving == 2: extrajuice = 50
 #make sure nothing goes over 255 - highest extrajuice!
 WHEELPOWER     = -(190 + extrajuice) #driving power
 TURNPOWER      =   170 + extrajuice  #pos = forwards (for ease of use but not technically correct)
-SHIFTPOWER     =   140 + extrajuice  #'
+SHIFTPOWER     =   160 + extrajuice  #'
 BRAKEPOWER     =   -5                #"
 SHOOBYPOWER    = -(100 + extrajuice)
 GRABBERPOWER   = -(170 + extrajuice)
@@ -289,8 +289,8 @@ try:
 			#activate HIGH US(2) pos
 			if alreadyturning == False and temptouchreading==0: #I'm not turning (so I want to activate us2 pos)
 				print "sliding down bit by bit, activate"
-				movelimbENC(ARM, BRINGDOWNPOWER, 65)
-				movelimbLENG(ARM, ACTIVATEUS2POWER, 0.1) #brake to prevent coast
+				movelimbENC(ARM, ACTIVATEUS2POWER, 65)
+				movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 				time.sleep(0.7)
 
 			#check HIGH US(2) for big thing	
