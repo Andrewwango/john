@@ -293,7 +293,7 @@ try:
 			#activate HIGH US(2) pos
 			if alreadyturning == False and temptouchreading==0: #I'm not turning (so I want to activate us2 pos)
 				print "sliding down bit by bit, activate"
-				movelimbENC(ARM, ACTIVATEUS2POWER, 65)
+				movelimbENC(ARM, ACTIVATEUS2POWER, 70)
 				movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 				time.sleep(0.7)
 
