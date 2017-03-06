@@ -64,6 +64,7 @@ OPENPOWER      =   70  + extrajuice
 LIFTPOWER      = -(200 + extrajuice)
 SLIDEUPPOWER   = -(100 + extrajuice) #deactivating arm
 BRINGDOWNPOWER =   170 + extrajuice
+ACTIVATEUS2POWER=  170
 BRINGDOWNBRAKEPOWER = -5
 
 	
@@ -289,7 +290,7 @@ try:
 			if alreadyturning == False and temptouchreading==0: #I'm not turning (so I want to activate us2 pos)
 				print "sliding down bit by bit, activate"
 				movelimbENC(ARM, BRINGDOWNPOWER, 65)
-				movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
+				movelimbLENG(ARM, ACTIVATEUS2POWER, 0.1) #brake to prevent coast
 				time.sleep(0.7)
 
 			#check HIGH US(2) for big thing	
