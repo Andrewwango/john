@@ -77,7 +77,7 @@ def maincalibprogram():
 			if not result :
 				encr = BrickPi.Encoder[PORT_A]-initialr
 				print encr
-				if abs(encr) > 1767: #a full turn
+				if abs(encr) > 1800: #a full turn
 					break #finshed turning
 			#read compass
 			x_out = read_word_2c(3)
