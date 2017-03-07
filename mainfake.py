@@ -9,11 +9,13 @@
 ###################################################
 #for fake, get rid of restart interrupt handling and make instead an interrupt() which activates changedir
 #create changedir handler in main main loop
-#create new constants (see below) and startchangedir variable
+#create new constants (see below) and startchangedir variable, and put it = False everywhere
+#create fakechangedir = "right"
 
 XDEGREES = 85
 NEWPATHOFFSET =20
 GOFORWARDSTIME = 1
+fakechangedir = "right"
 
 #Import relevant modules
 import time, math, lirc, sys, pygame, os, cmpautocalib, logging
@@ -292,7 +294,7 @@ try:
 			#activate HIGH US(2) pos
 			if alreadyturning == False: #I'm not turning (so I want to activate us2 pos)
 				print "sliding down bit by bit, activate"
-				movelimbENC(ARM, ACTIVATEUS2POWER, 70)
+				movelimbENC(ARM, ACTIVATEUS2POWER, 65)
 				movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 				time.sleep(0.7)
 
@@ -542,11 +544,13 @@ try:
 					else: #right
 						wheel1 = LWHEEL; wheel2 = RWHEEL
 					movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
-					
+					time.sleep(0.5)
 					origfwdb += NEWPATHOFFSET
 					
 					movelimbLENG(LWHEEL, WHEELPOWER, GOFORWARDSTIME, RWHEEL, WHEELPOWER) #force drive forward
-					wheel1 = LWHEEL; wheel2 = RWHEEL #turning right
+					time.sleep(0.5)
+					if fakechangedir = "right": wheel1 = LWHEEL; wheel2 = RWHEEL #turning right
+					else: wheel1 = RWHEEL; wheel2 = LWHEEL #turning left
 					movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
 					time.sleep(1); startchangedir = False
 					break #get out of chow mein loop!
