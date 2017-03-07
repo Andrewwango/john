@@ -498,7 +498,8 @@ try:
 
 
 		if startmain == True:
-
+			startchangedir = False
+			
 			print "main has started"
 			#initial stuff
 			turnbears = createturnbears()
