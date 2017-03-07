@@ -9,7 +9,7 @@
 ###################################################
 #for fake, get rid of restart interrupt handling and make instead an interrupt() which activates changedir
 #create changedir handler in main main loop
-#create new constants (see below)
+#create new constants (see below) and startchangedir variable
 
 XDEGREES = 85
 NEWPATHOFFSET =20
