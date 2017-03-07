@@ -65,6 +65,7 @@ BRINGDOWNPOWER =   150 + extrajuice
 ACTIVATEUS2POWER=  150
 BRINGDOWNBRAKEPOWER = -5
 
+ACTIVATEUS2ENC = 65
 	
 
 ##SETUP## motors, sensors, GPIO Pins
@@ -285,7 +286,7 @@ try:
 			#activate HIGH US(2) pos
 			if alreadyturning == False: #I'm not turning (so I want to activate us2 pos)
 				print "sliding down bit by bit, activate"
-				movelimbENC(ARM, ACTIVATEUS2POWER, 70)
+				movelimbENC(ARM, ACTIVATEUS2POWER, ACTIVATEUS2ENC)
 				movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 				time.sleep(0.7)
 
