@@ -97,6 +97,7 @@ turnbears = []
 targBear = 0
 shoobied = 'no'
 debouncetimestamp = time.time()
+startchangedir = False
 
 #Setup logging
 logging.basicConfig(filename='/home/pi/errorlogs.dat', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
