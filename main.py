@@ -130,8 +130,9 @@ try:
 
 			#find length
 			distance = duration * 340 * 100 #cm from speed of sound
-			if distance > 5000 and disregardhigh == True:
-				pass
+			if int(distance) > 5000:
+				if disregardhigh == True:
+					pass
 			else:	
 				uslist += [int(distance)]
 			time.sleep(0.01)
