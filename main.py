@@ -302,33 +302,33 @@ try:
 				if alreadyturning == True:
 					#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
 					print "turn back until in sight"
-					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True)
+					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 					print "turn not back until out of sight"
-					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER)
+					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, llote=True)
 					#print "turn not back until out of sight"
 					#movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER)
 					print "turn back until in sight"
-					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True)
+					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 
 				#if not turning, turn direction A until out of sight, turn away in dir B until in sight,
 				#then carry on in B until out of sight, then back in A until in sight again (this centres it!)
 				else:
 					#turn in a direction, until it's out of sight
 					print "Turning direction until no longer in sight"
-					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention)
+					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention, llote=True)
 					#turn back in the other direction until it's in sight again
 					print "Turning other direction until in sight again"
-					movewhilecondition("turnback",    USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True)
+					movewhilecondition("turnback",    USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 					#carry on, until it's out of sight
 					print "Turning other direction until no longer in sight"
-					movewhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention=True)
+					movewhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention=True, llote=True)
 					#shift a bit back; this centres John on the litter.
 					#print "shift"
 					#if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, SHIFTENC, RWHEEL, TURNPOWER)
 					#else:                 movelimbENC(RWHEEL, -TURNPOWER, SHIFTENC, LWHEEL, TURNPOWER)
 					#turn in original direction until it's in sight - now it's definitely in sight.
 					print "Turning in orginial direction to centre"
-					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True)
+					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 
 				#shooby closer/further if litter is not in optimum range to pick up
 				shoobied = 'no'
