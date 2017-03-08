@@ -449,9 +449,9 @@ try:
 			
 			#buttons to handle batterysaving changes
 			elif ircode[0] in ["batterysavingoff", "batterysavingon", "batterysavingsuper"]:
-				if   ircode[0] == "batterysavingoff"  : newbatterysaving = 0
-				elif ircode[0] == "batterysavingon"   : newbatterysaving = 1
-				elif ircode[0] == "batterysavingsuper": newbatterysaving = 2
+				if   ircode[0] == "batterysavingoff"  : newbatterysaving = 0 #pressed 3
+				elif ircode[0] == "batterysavingon"   : newbatterysaving = 1 #pressed 6
+				elif ircode[0] == "batterysavingsuper": newbatterysaving = 2 #pressed 9
 				
 				#read and modify current data
 				settingsfile = open('/home/pi/mainsettings.dat','r')
