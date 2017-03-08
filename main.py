@@ -299,16 +299,26 @@ try:
 				#DETECTION CORRECTION PROCEDURES
 				#if while turning, turn back a wee until it's in sight!
 				##(if this is not enough, turn back until it's in sight then not, then turn back)
+				messedup = True
 				if alreadyturning == True:
-					#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
-					print "turn back until in sight"
-					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
-					print "turn not back until out of sight"
-					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, llote=True)
-					#print "turn not back until out of sight"
-					#movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER)
-					print "turn back until in sight"
-					movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
+					for i in range(2):
+						#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
+						print "turn back until in sight"
+						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
+						print "turn not back until out of sight"
+						movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, llote=True)
+						#print "turn not back until out of sight"
+						#movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER)
+						print "turn back until in sight"
+						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
+						messedup = False
+						
+						print "in case it's monumentally messed up, turn back!"
+						if takeusreading(USNEWTRIG,USNEWECHO) > USSTANDARD: #monumentally messed up
+							movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True)
+							messedup = True
+						
+						if messedup == False: break
 
 				#if not turning, turn direction A until out of sight, turn away in dir B until in sight,
 				#then carry on in B until out of sight, then back in A until in sight again (this centres it!)
