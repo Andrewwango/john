@@ -243,7 +243,7 @@ try:
 		if limb2 != None:
 			BrickPi.MotorSpeed[limb2] = 0
 
-	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False, timelimit=False):
+	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False, timelimit=False, llote=False):
 		time.sleep(0.4)
 		wheel1power,wheel2power = -1,1 #for turning
 		b = 0
@@ -257,8 +257,10 @@ try:
 		else:
 			wheel1 = RWHEEL; wheel2 = LWHEEL
 		
+		if llote == True: string = "takeusreading(trig, echo, repeats=1)" #don't repeat readings
+		else: "takeusreading(trig, echo)"
 		ot = time.time()
-		while eval("takeusreading(trig, echo)" + op + "val"):
+		while eval(string + op + "val"):
 			if wallprevention == True:
 				#just stop turning when there's a wall no matter what, if necessary
 				if takeusreading(US2TRIG, US2ECHO) < US2STANDARD:
@@ -313,7 +315,7 @@ try:
 				else:
 					#turn in a direction, until it's out of sight
 					print "Turning direction until no longer in sight"
-					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention=True)
+					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention)
 					#turn back in the other direction until it's in sight again
 					print "Turning other direction until in sight again"
 					movewhilecondition("turnback",    USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True)
