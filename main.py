@@ -315,9 +315,9 @@ try:
 						print "turn back until in sight"
 						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 						messedup = False
-						
-						print "in case it's monumentally messed up, turn back!"
+						#in case it's monumentally messed up, turn back!
 						if takeusreading(USNEWTRIG,USNEWECHO) > USSTANDARD: #monumentally messed up
+							print "turning back, cos monumentally failed"
 							movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True)
 							messedup = True
 						
@@ -344,7 +344,7 @@ try:
 					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 
 				#shooby closer/further if litter is not in optimum range to pick up
-				shoobied = 'no'
+				shoobied = 'no'; print "checking shooby"
 				tempreading = takeusreading(USNEWTRIG, USNEWECHO, repeats=7, disregardhigh=True)
 				startpos = takeencoderreading(LWHEEL)
 				if tempreading <= OPTLITTERRANGE[0]: #too close
