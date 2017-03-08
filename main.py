@@ -2,21 +2,12 @@
 ###################################################
 #//JOHN (fully automated roadside litter picker)//#
 #                    //main.py//                  #
-#         //Started 29.05.16//v16//07.03.17       #
+#         //Started 29.05.16//v15//06.03.17       #
 #                //ANDREW WANG//                  #
 #            //All Rights Reserved//              #
 # //BrickPi: github.com/DexterInd/BrickPi_Python//#
 ###################################################
-###FAKEFAKEFAKEFAKE#################################
-#for fake, get rid of restart interrupt handling and make instead an interrupt() which activates changedir
-#create changedir handler in main main loop
-#create new constants (see below) and startchangedir variable, and put it = False everywhere
-#create fakechangedir = "right"
-
-XDEGREES = 85
-NEWPATHOFFSET =20
-GOFORWARDSTIME = 1
-fakechangedir = "right"
+#v14 makes new detection correction.
 
 #Import relevant modules
 import time, math, lirc, sys, pygame, os, cmpautocalib, logging
@@ -40,7 +31,7 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 ''''''             ;    IRRCINT  = 8  #white, in - irrc interrupt pin
 
 #Constants
-#XDEGREES       = 90   #angle between robot path and path (in degs)(INT)
+XDEGREES       = 90   #angle between robot path and path (in degs)(INT)
 USSTANDARD     = 30   #low us(new) sensor detection threshold
 US2STANDARD    = 50   #high us(2) detection threshold
 OPTLITTERRANGE = [19,28]#the opt us distance range from which it can pick up stuff
@@ -100,7 +91,6 @@ turnbears = []
 targBear = 0
 shoobied = 'no'
 debouncetimestamp = time.time()
-startchangedir = False
 
 #Setup logging
 logging.basicConfig(filename='/home/pi/errorlogs.dat', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
@@ -295,7 +285,7 @@ try:
 			#activate HIGH US(2) pos
 			if alreadyturning == False: #I'm not turning (so I want to activate us2 pos)
 				print "sliding down bit by bit, activate"
-				movelimbENC(ARM, ACTIVATEUS2POWER, 65)
+				movelimbENC(ARM, ACTIVATEUS2POWER, 70)
 				movelimbLENG(ARM, BRINGDOWNBRAKEPOWER, 0.1) #brake to prevent coast
 				time.sleep(0.7)
 
@@ -408,20 +398,8 @@ try:
 				restart()
 		debouncetimestamp = timenow
 
-	#changedir event handlers
-
-	def interrupt(channel=0): #debounce interrupt, initiate changedir procedure
-		global debouncetimestamp; global startchangedir
-		timenow = time.time()
-		
-		#handle button being pressed when main is running - restart (essentially, stop)
-		if timenow - debouncetimestamp >= 0.3: #debounce ir so only 1 interrupt
-			print "taking action on interrupt"
-			startchangedir=True
-		debouncetimestamp = timenow
-
 	#set GPIO interrupts
-	GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=interrupt) #interrupt when button pressed!
+	GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram) #stop program when interrupted!
 
 
 
@@ -501,8 +479,7 @@ try:
 
 
 		if startmain == True:
-			startchangedir = False
-			
+
 			print "main has started"
 			#initial stuff
 			turnbears = createturnbears()
@@ -533,30 +510,6 @@ try:
 					buzz("long")
 					turnprocedure()
 					#loop back and carry on
-				
-				#changedir handler
-				if startchangedir == True:  #pressed a button!
-					drivewheels(0,0) #stop
-					buzz("long long long"); print "CHANGE DIR"
-					#CHANGE DIR PROCEDURE
-					#turn to face forwards
-					if turnycount%2 == 1: #odd=left
-						wheel1 = RWHEEL; wheel2 = LWHEEL
-					else: #right
-						wheel1 = LWHEEL; wheel2 = RWHEEL
-					movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
-					time.sleep(0.5)
-					origfwdb += NEWPATHOFFSET
-					
-					movelimbLENG(LWHEEL, WHEELPOWER, GOFORWARDSTIME, RWHEEL, WHEELPOWER) #force drive forward
-					time.sleep(0.5)
-					if fakechangedir == "right":
-						wheel1 = LWHEEL; wheel2 = RWHEEL #turning right
-					else:
-						wheel1 = RWHEEL; wheel2 = LWHEEL #turning left
-					movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
-					time.sleep(1); startchangedir = False
-					break #get out of chow mein loop!
 
 except (KeyboardInterrupt, SystemExit): #ensure clean exit
 	logging.exception('KeyboardInterrupt or SystemExit'); print "KeyboardInterrupt or SystemExit"
