@@ -7,7 +7,7 @@ GPIO.setup(25, GPIO.IN)
 while True:
 	state=GPIO.input(25)
 	if state==0:
-		print "0"
+		print "DETECT"
 	elif state==1:
-		print "11111111111111111111111111111111111111111111111111111111111111111111111111"
+		print "SPACE"
 	time.sleep(0.4)
