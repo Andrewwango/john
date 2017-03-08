@@ -135,7 +135,6 @@ try:
 					continue #don't add it
 					print "not adding"
 			uslist += [int(distance)]
-			print "added distance", distance
 			time.sleep(0.01)
 		uslist.sort(); usreading = uslist[repeats/2] #median (get rid of anomalies)
 		GPIO.output(trig, False)
