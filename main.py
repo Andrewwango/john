@@ -112,7 +112,7 @@ try:
 			GPIO.output(BUZZOUT, False)
 			if len(patternofbuzz) >= 1 and i != len(patternofbuzz)-1: time.sleep(0.2) #if more than one beep and not at end
 
-	def takeusreading(trig, echo, repeats=3): #take reading from ultrasonic sensor
+	def takeusreading(trig, echo, repeats=3, disregardhigh=False): #take reading from ultrasonic sensor
 		GPIO.output(trig, False) #switch everything off
 		#take 4 readings then find average
 		uslist=[]
@@ -130,7 +130,10 @@ try:
 
 			#find length
 			distance = duration * 340 * 100 #cm from speed of sound
-			uslist += [int(distance)]
+			if distance > 5000 and disregardhigh == True:
+				pass
+			else:	
+				uslist += [int(distance)]
 			time.sleep(0.01)
 		uslist.sort(); usreading = uslist[repeats/2] #median (get rid of anomalies)
 		GPIO.output(trig, False)
@@ -342,7 +345,7 @@ try:
 
 				#shooby closer/further if litter is not in optimum range to pick up
 				shoobied = 'no'
-				tempreading = takeusreading(USNEWTRIG, USNEWECHO)
+				tempreading = takeusreading(USNEWTRIG, USNEWECHO, disregardhigh=True)
 				startpos = takeencoderreading(LWHEEL)
 				if tempreading <= OPTLITTERRANGE[0]: #too close
 					print "too close, shoobying AWAY"
