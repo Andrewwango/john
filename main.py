@@ -112,11 +112,11 @@ try:
 			GPIO.output(BUZZOUT, False)
 			if len(patternofbuzz) >= 1 and i != len(patternofbuzz)-1: time.sleep(0.2) #if more than one beep and not at end
 
-	def takeusreading(trig, echo): #take reading from ultrasonic sensor
+	def takeusreading(trig, echo, repeats=3): #take reading from ultrasonic sensor
 		GPIO.output(trig, False) #switch everything off
 		#take 4 readings then find average
 		uslist=[]
-		for i in range(3):
+		for i in range(repeats):
 			#send out signal
 			GPIO.output(trig, False); time.sleep(0.001)
 			GPIO.output(trig, True);  time.sleep(0.001)
@@ -132,7 +132,7 @@ try:
 			distance = duration * 340 * 100 #cm from speed of sound
 			uslist += [int(distance)]
 			time.sleep(0.01)
-		uslist.sort(); usreading = uslist[1] #median (get rid of anomalies)
+		uslist.sort(); usreading = uslist[repeats/2] #median (get rid of anomalies)
 		GPIO.output(trig, False)
 		print "US reading is ", str(usreading), uslist
 		return usreading
