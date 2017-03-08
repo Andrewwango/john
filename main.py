@@ -550,8 +550,10 @@ try:
 					
 					movelimbLENG(LWHEEL, WHEELPOWER, GOFORWARDSTIME, RWHEEL, WHEELPOWER) #force drive forward
 					time.sleep(0.5)
-					if fakechangedir = "right": wheel1 = LWHEEL; wheel2 = RWHEEL #turning right
-					else: wheel1 = RWHEEL; wheel2 = LWHEEL #turning left
+					if fakechangedir == "right":
+						wheel1 = LWHEEL; wheel2 = RWHEEL #turning right
+					else:
+						wheel1 = RWHEEL; wheel2 = LWHEEL #turning left
 					movelimbENC(wheel1, -TURNPOWER, origfwdb, wheel2, TURNPOWER, compass=True)
 					time.sleep(1); startchangedir = False
 					break #get out of chow mein loop!
