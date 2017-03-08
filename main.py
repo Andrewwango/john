@@ -258,7 +258,7 @@ try:
 			wheel1 = RWHEEL; wheel2 = LWHEEL
 		
 		if llote == True: string = "takeusreading(trig, echo, repeats=1)" #don't repeat readings
-		else: "takeusreading(trig, echo)"
+		else: string = "takeusreading(trig, echo)"
 		ot = time.time()
 		while eval(string + op + "val"):
 			if wallprevention == True:
