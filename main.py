@@ -136,7 +136,8 @@ try:
 					print "not adding"
 			uslist += [int(distance)]
 			time.sleep(0.01)
-		uslist.sort(); usreading = uslist[repeats/2] #median (get rid of anomalies)
+		if uslist == []: uslist.append(20) #juuust in case it completely messed up
+		uslist.sort(); usreading = uslist[len(uslist)/2] #median (get rid of anomalies)
 		GPIO.output(trig, False)
 		print "US reading is ", str(usreading), uslist
 		return usreading
@@ -317,7 +318,7 @@ try:
 						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 						messedup = False
 						#in case it's monumentally messed up, turn back!
-						if takeusreading(USNEWTRIG,USNEWECHO) > USSTANDARD: #monumentally messed up
+						if takeusreading(USNEWTRIG,USNEWECHO,repeats=7,disregardhigh=True) > USSTANDARD: #monumentally messed up
 							print "turning back, cos monumentally failed"
 							movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True)
 							messedup = True
