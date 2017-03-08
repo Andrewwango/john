@@ -325,7 +325,7 @@ try:
 				else:
 					#turn in a direction, until it's out of sight
 					print "Turning direction until no longer in sight"
-					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention, llote=True)
+					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention=True, llote=True)
 					#turn back in the other direction until it's in sight again
 					print "Turning other direction until in sight again"
 					movewhilecondition("turnback",    USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
