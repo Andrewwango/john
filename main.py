@@ -7,6 +7,7 @@
 #            //All Rights Reserved//              #
 # //BrickPi: github.com/DexterInd/BrickPi_Python//#
 ###################################################
+###FAKEFAKEFAKEFAKE#################################
 #for fake, get rid of restart interrupt handling and make instead an interrupt() which activates changedir
 #create changedir handler in main main loop
 #create new constants (see below) and startchangedir variable, and put it = False everywhere
