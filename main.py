@@ -91,6 +91,7 @@ turnbears = []
 targBear = 0
 shoobied = 'no'
 debouncetimestamp = time.time()
+previoususreading = 100
 
 #Setup logging
 logging.basicConfig(filename='/home/pi/errorlogs.dat', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
@@ -113,6 +114,7 @@ try:
 			if len(patternofbuzz) >= 1 and i != len(patternofbuzz)-1: time.sleep(0.2) #if more than one beep and not at end
 
 	def takeusreading(trig, echo, repeats=3, disregardhigh=False): #take reading from ultrasonic sensor
+		global previoususreading
 		GPIO.output(trig, False) #switch everything off
 		#take 4 readings then find average
 		uslist=[]
@@ -132,12 +134,13 @@ try:
 			distance = duration * 340 * 100 #cm from speed of sound
 			if int(distance) > 5000:
 				if disregardhigh == True:
-					continue #don't add it
 					print "not adding"
+					continue #don't add it
 			uslist += [int(distance)]
 			time.sleep(0.01)
-		if uslist == []: uslist.append(20) #juuust in case it completely messed up
+		if uslist == []: uslist.append(previoususreading) #juuust in case everything was disregarded
 		uslist.sort(); usreading = uslist[len(uslist)/2] #median (get rid of anomalies)
+		previoususreading = usreading
 		GPIO.output(trig, False)
 		print "US reading is ", str(usreading), uslist
 		return usreading
