@@ -31,7 +31,7 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 ''''''             ;    IRRCINT  = 8  #white, in - irrc interrupt pin
 
 #Constants
-XDEGREES       = 90   #angle between robot path and path (in degs)(INT)
+XDEGREES       = 85  #angle between robot path and path (in degs)(INT)
 USSTANDARD     = 30   #low us(new) sensor detection threshold
 US2STANDARD    = 50   #high us(2) detection threshold
 OPTLITTERRANGE = [19,28]#the opt us distance range from which it can pick up stuff
