@@ -248,7 +248,7 @@ try:
 		if limb2 != None:
 			BrickPi.MotorSpeed[limb2] = 0
 
-	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False, timelimit=False, llote=False):
+	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False, timelimit=False, llote=False, disregardhigh=False):
 		time.sleep(0.4)
 		wheel1power,wheel2power = -1,1 #for turning
 		b = 0
@@ -261,11 +261,12 @@ try:
 			wheel1 = LWHEEL; wheel2 = RWHEEL
 		else:
 			wheel1 = RWHEEL; wheel2 = LWHEEL
+		extraparameters=""
+		if llote == True: extraparameters += ", repeats=1" #don't repeat readings
+		if disregardhigh == True: extraparameters += ", disregardhigh=True"
 		
-		if llote == True: string = "takeusreading(trig, echo, repeats=1)" #don't repeat readings
-		else: string = "takeusreading(trig, echo)"
 		ot = time.time()
-		while eval(string + op + "val"):
+		while eval("takeusreading(trig, echo" + extraparameters + ")" + op + "val"):
 			if wallprevention == True:
 				#just stop turning when there's a wall no matter what, if necessary
 				if takeusreading(US2TRIG, US2ECHO) < US2STANDARD:
@@ -351,12 +352,12 @@ try:
 				startpos = takeencoderreading(LWHEEL)
 				if tempreading <= OPTLITTERRANGE[0]: #too close
 					print "too close, shoobying AWAY"
-					movewhilecondition("backwards", USNEWTRIG, USNEWECHO, "<", OPTLITTERRANGE[0], WHEELPOWER, timelimit=True)
+					movewhilecondition("backwards", USNEWTRIG, USNEWECHO, "<", OPTLITTERRANGE[0], WHEELPOWER, timelimit=True, disregardhigh=True)
 					shoobiedenc = abs(takeencoderreading(LWHEEL) - startpos) #so we know where we've gone
 					shoobied='away'
 				elif tempreading >= OPTLITTERRANGE[1]: #too far
 					print "too far, shoobying NEAR"
-					movewhilecondition("forwards",  USNEWTRIG, USNEWECHO, ">", OPTLITTERRANGE[1], WHEELPOWER, timelimit=True)
+					movewhilecondition("forwards",  USNEWTRIG, USNEWECHO, ">", OPTLITTERRANGE[1], WHEELPOWER, timelimit=True, disregardhigh=True)
 					shoobiedenc = abs(takeencoderreading(LWHEEL) - startpos)
 					shoobied='near'
 
