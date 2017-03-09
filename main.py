@@ -310,18 +310,18 @@ try:
 					for i in range(2):
 						#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
 						print "turn back until in sight"
-						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
-						print "turn not back until out of sight"
-						movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, llote=True)
+						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True, disregardhigh=True)
+						print "turn not back until in sight"
+						movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True, disregardhigh=True)
 						#print "turn not back until out of sight"
-						#movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER)
-						print "turn back until in sight"
-						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
+						#movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, llote=True)
+						#print "turn back until in sight"
+						#movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 						messedup = False
 						#in case it's monumentally messed up, turn back!
 						if takeusreading(USNEWTRIG,USNEWECHO,repeats=7,disregardhigh=True) > USSTANDARD: #monumentally messed up
 							print "turning back, cos monumentally failed"
-							movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True)
+							movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True, disregardhigh=True)
 							messedup = True
 						
 						if messedup == False: break
@@ -535,3 +535,4 @@ except (KeyboardInterrupt, SystemExit): #ensure clean exit
 except: #any other error, restart!
 	logging.exception('Found error in main!'); print "Found error in main!"
 	GPIO.cleanup(); restart()
+
