@@ -151,7 +151,6 @@ try:
 			if distance == 0: distance = duration * 340 * 100 #cm from speed of sound
 			if disregardhigh == True:
 				if int(distance) >= DISTANCECUTOFF:
-					print "not adding"
 					continue #don't add it
 			uslist += [int(distance)]
 			time.sleep(0.01)
