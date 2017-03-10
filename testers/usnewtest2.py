@@ -3,7 +3,7 @@ import time
 GPIO.setmode(GPIO.BCM)
 
 TRIG = 17; ECHO=22
-DISTANCECUTOFF=200, previoususreading = 100
+DISTANCECUTOFF=200; previoususreading = 100
 
 GPIO.setup(22, GPIO.IN) #yellow, echo
 GPIO.setup(17, GPIO.OUT) #purple, trig
