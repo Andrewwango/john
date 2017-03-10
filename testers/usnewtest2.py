@@ -26,13 +26,8 @@ def takeusreading(trig, echo, repeats=3, disregardhigh=False): #take reading fro
 			start = time.time(); stop = time.time()
 			while GPIO.input(echo) == 0:
 				start = time.time()
-			#	print "start"
-			#	if (start-stop) >= 0.006:
-			#		distance = DISTANCECUTOFF
-			#		break #bail out if waiting too long
 			while GPIO.input(echo) == 1:
 				stop  = time.time()
-			#	print "stop"
 			#	if (stop-start) >= 0.006:
 			#		distance = DISTANCECUTOFF
 			#		break #bail out if waiting too long
