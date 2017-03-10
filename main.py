@@ -133,16 +133,14 @@ try:
 			while GPIO.input(echo) == 0:
 				start = time.time()
 				if (start-stop) >= 0.2:
-					duration = 0.2 #see below
-					break
+					break #bail out if waiting too long
 			while GPIO.input(echo) == 1:
 				stop  = time.time()
 				if (stop-start) >= 0.2:
-					duration = 0.2 #bail out if waiting too long
-					break
-			#0.2 duration is 7000 distance - anything above this might as well be 7000 - this prevents stalling.
+					break #bail out if waiting too long
+			#0.2 duration is 7000 distance - breaks when this is bypassed - this prevents stalling.
 			
-			duration = stop - start
+			duration = abs(stop - start)
 			
 
 			#find length
