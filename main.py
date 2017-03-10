@@ -38,7 +38,7 @@ OPTLITTERRANGE = [19,26]#the opt us distance range from which it can pick up stu
 STOPRANGE      = 15   #the allowable range for turnbear (compass)
 SHIFTENC       = 30
 
-#Extract FWDB (forward bearing) and BATTERYSAVING data from settings file
+#Extract everything from settings file
 settingsfile = open('/home/pi/mainsettings.dat','r')
 settingsdata = settingsfile.read().split('\n')
 x_offset = int(settingsdata[0]); y_offset = int(settingsdata[1]) 
