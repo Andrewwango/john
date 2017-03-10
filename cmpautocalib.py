@@ -8,9 +8,16 @@ IRRCINT  = 8  #irrc interrupt pin
 scale = 0.92
 breaking = False
 
+#setup BrickPi interface
 BrickPiSetup()
 BrickPi.MotorEnable[PORT_A]=1 ; BrickPi.MotorEnable[PORT_D]=1
 BrickPiSetupSensors()
+
+#Extract unmodified data from settings file
+settingsfile = open('/home/pi/mainsettings.dat','r')
+settingsdata = settingsfile.read().split('\n') 
+batterysaving = int(settingsdata[3]); XDEGREES = int(settingsdata[4])
+settingsfile.close()
 
 #setup i2c
 bus = smbus.SMBus(1)
@@ -116,7 +123,9 @@ def maincalibprogram():
 	fwdb = int(math.degrees(fwdb))
 	print "fwdb: ", fwdb
 
-	f = open('mainsettings.dat', 'w')
-	f.write(str(x_offset) + "\n" + str(y_offset) + "\n" + str(fwdb) + "\n" + "0")
+	#write new data
+	f = open('/home/pi/mainsettings.dat','w')
+	for i in [x_offset, y_offset, fwdb, batterysaving, XDEGREES]:
+		f.write(str(i) + "\n")
 	print "file written" #saved to pi directory
 	f.close(); buzz(); GPIO.cleanup(); print "cmpautocalib completed"
