@@ -134,9 +134,6 @@ try:
 			start = time.time(); stop = time.time()
 			while GPIO.input(echo) == 0:
 				start = time.time()
-				if (start-stop) >= 0.006:
-					distance = DISTANCECUTOFF
-					break #bail out if waiting too long
 			while GPIO.input(echo) == 1:
 				stop  = time.time()
 				if (stop-start) >= 0.006:
