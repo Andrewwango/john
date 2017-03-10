@@ -31,7 +31,7 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 ''''''             ;    IRRCINT  = 8  #white, in - irrc interrupt pin
 
 #Constants
-XDEGREES       = 75  #angle between robot path and path (in degs)(INT)
+XDEGREES       = 75  #angle between robot path and path (in degs)(INT) - MODIFIED BY SETTINGS BELOW
 USSTANDARD     = 30   #low us(new) sensor detection threshold
 US2STANDARD    = 50   #high us(2) detection threshold
 OPTLITTERRANGE = [19,26]#the opt us distance range from which it can pick up stuff
@@ -41,11 +41,15 @@ SHIFTENC       = 30
 #Extract FWDB (forward bearing) and BATTERYSAVING data from settings file
 settingsfile = open('/home/pi/mainsettings.dat','r')
 settingsdata = settingsfile.read().split('\n')
-origfwdb = int(float(settingsdata[2])) #origfwdb may be modified for fwdb if going backwards, for example
+x_offset = int(settingsdata[0]); y_offset = int(settingsdata[1]) 
+origfwdb = int(float(settingsdata[2])) #origfwdb may be used for fwdb, modified, if going backwards, for example
 batterysaving = int(settingsdata[3])
+XDEGREES = int(settingsdata[4])
+
 settingsfile.close()
 print 'origfwdb ', origfwdb
 print 'batterysaving ', batterysaving
+print 'XDEGREES ', XDEGREES
 
 #Motor Power Constants
 if batterysaving   == 0: extrajuice = 0
@@ -457,21 +461,23 @@ try:
 				elif ircode[0] == "batterysavingon"   : newbatterysaving = 1 #pressed 6
 				elif ircode[0] == "batterysavingsuper": newbatterysaving = 2 #pressed 9
 				
-				#read and modify current data
-				settingsfile = open('/home/pi/mainsettings.dat','r')
-				currentdata = settingsfile.read().strip('\n').split('\n')
-				currentdata.pop(-1); currentdata.append(newbatterysaving)
-				settingsfile.close()
+				#write new data
+				settingsfile = open('/home/pi/mainsettings.dat','w')
+				for i in [x_offset, y_offset, origfwdb, newbatterysaving, XDEGREES]:
+					settingsfile.write(str(i) + "\n")
+				print "added newbatterysaving ", newbatterysaving
+				settingsfile.close(); buzz("short"); GPIO.cleanup(); restart()
+			
+			elif ircode[0] in ["xdegreesdown", "xdegreesup"]:
+				if   ircode[0] == "xdegreesdown": newxdegrees = XDEGREES - 5 #pressed voldown
+				elif ircode[0] == "xdegreesup"  : newxdegrees = XDEGREES + 5
 				
 				#write new data
 				settingsfile = open('/home/pi/mainsettings.dat','w')
-				datatowrite = ""
-				for piece in currentdata:
-					datatowrite = datatowrite + "\n" + str(piece)
-				datatowrite = datatowrite.strip("\n")
-				settingsfile.write(datatowrite)
-				print "added newbatterysaving", newbatterysaving
-				settingsfile.close(); buzz("short"); GPIO.cleanup(); restart()
+				for i in [x_offset, y_offset, origfwdb, batterysaving, newxdegrees]:
+					settingsfile.write(str(i) + "\n")
+				print "added new xdegrees ", newxdegrees
+				settingsfile.close(); buzz("short"); GPIO.cleanup(); restart()				
 			
 			#buttons to handle other things
 			elif ircode[0] == "startshutdown":     #pressed 0
