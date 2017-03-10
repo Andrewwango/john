@@ -330,9 +330,9 @@ try:
 					for i in range(2):
 						#turn back way it was turning, while it's not in sight (i.e. until it's in sight)
 						print "turn back until in sight" #we can use disregardhigh here as it's turning into sight
-						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True, disregardhigh=True)
+						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 						print "turn not back until in sight"
-						movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True, disregardhigh=True)
+						movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 						#print "turn not back until out of sight"
 						#movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, llote=True)
 						#print "turn back until in sight"
@@ -341,7 +341,7 @@ try:
 						#in case it's monumentally messed up, turn back!
 						if takeusreading(USNEWTRIG,USNEWECHO,repeats=7) > USSTANDARD: #monumentally messed up
 							print "turning back, cos monumentally failed"
-							movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True, disregardhigh=True)
+							movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=Tr)
 							messedup = True
 						
 						if messedup == False: break
