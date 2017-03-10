@@ -1,4 +1,16 @@
-	def takeusreading(trig, echo, repeats=3, disregardhigh=False): #take reading from ultrasonic sensor
+import RPi.GPIO as GPIO
+import time
+GPIO.setmode(GPIO.BCM)
+
+TRIG = 17; ECHO=22
+DISTANCECUTOFF=200, previoususreading = 100
+
+GPIO.setup(22, GPIO.IN) #yellow, echo
+GPIO.setup(17, GPIO.OUT) #purple, trig
+GPIO.setup(24, GPIO.OUT) #usother
+GPIO.output(24, False); GPIO.output(17, False)
+
+def takeusreading(trig, echo, repeats=3, disregardhigh=False): #take reading from ultrasonic sensor
 		global previoususreading
 		GPIO.output(trig, False) #switch everything off
 		#take 4 readings then find average
@@ -41,3 +53,14 @@
 		GPIO.output(trig, False)
 		print "US reading is ", str(usreading), uslist
 		return usreading
+
+
+while True:
+	try:
+		takeusreading(TRIG,ECHO,repeats=3)
+		time.sleep(0.5)
+	except KeyboardInterrupt:
+		GPIO.cleanup()
+
+
+
