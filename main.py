@@ -341,7 +341,7 @@ try:
 						#in case it's monumentally messed up, turn back!
 						if takeusreading(USNEWTRIG,USNEWECHO,repeats=7) > USSTANDARD: #monumentally messed up
 							print "turning back, cos monumentally failed"
-							movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=Tr)
+							movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 							messedup = True
 						
 						if messedup == False: break
