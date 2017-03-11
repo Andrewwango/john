@@ -229,6 +229,8 @@ try:
 		#stop
 		BrickPi.MotorSpeed[limb] = 0
 		if limb2 != None: BrickPi.MotorSpeed[limb2] = 0
+		
+		BrickPiUpdateValues()
 
 
 	def movelimbENC(limb, speed, deg, limb2=None, speed2=None, detection=False, compass=False): #move motor based on encoder OR COMPASS guidance
@@ -266,6 +268,8 @@ try:
 		BrickPi.MotorSpeed[limb] = 0
 		if limb2 != None:
 			BrickPi.MotorSpeed[limb2] = 0
+		
+		BrickPiUpdateValues()
 
 	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False, timelimit=False, llote=False, disregardhigh=False):
 		time.sleep(0.4)
@@ -414,6 +418,7 @@ try:
 					#bring us2 back up (deactivate)
 					print "sliding up, deactivate"
 					movelimbLENG(ARM, SLIDEUPPOWER, 0.6)
+					time.sleep(0.5)
 					#loop back and carry on
 
 				elif alreadyturning == True: #I am already turning so I want to get away from this goddamn wall
