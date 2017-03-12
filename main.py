@@ -533,9 +533,13 @@ try: #catch errors
 			movelimbLENG(ARM, SLIDEUPPOWER, 0.3, GRABBER, OPENPOWER)
 			previousencoderreading = takeencoderreading(ARM)
 			BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER; BrickPiUpdateValues(); time.sleep(0.3)
-			while abs(takeencoderreading(ARM)-previousencoderreading) > 1:
+			while True:
 				BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER
 				BrickPiUpdateValues()
+				tempencoderreading = takeencoderreading(ARM)
+				if abs(tempencoderreading-previousencoderreading) >1:
+					break
+				previousencoderreading = tempencoderreading
 			BrickPi.MotorSpeed[ARM]=0; BrickPiUpdateValues
 			time.sleep(0.2)
 
