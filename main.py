@@ -70,7 +70,7 @@ OPENPOWER      =   70  + extrajuice  #open grabber
 LIFTPOWER      = -(200 + extrajuice) #lift arm from fully down
 SLIDEUPPOWER   = -(100 + extrajuice) #for deactivating arm
 BRINGDOWNPOWER =   150 + extrajuice  #bring arm down
-ACTIVATEUS2POWER=  120               #activate US2 position
+ACTIVATEUS2POWER=  120 + extrajuice/2#activate US2 position
 BRINGDOWNBRAKEPOWER = -5
 
 #Setup motors, sensors, GPIO Pins
