@@ -107,7 +107,7 @@ print "SETUP FINISHED" #print to stdout
 ##FUNCTIONS##
 #############
 
-try:
+try: #catch errors
 	#Activate buzzer
 	def buzz(patternofbuzz):
 		patternofbuzz = patternofbuzz.split()
@@ -274,11 +274,13 @@ try:
 			BrickPi.MotorSpeed[limb2] = 0
 		
 		BrickPiUpdateValues()
-
+	
+	#Drive/turn depending on US sensor
 	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False, timelimit=False, llote=False, disregardhigh=False):
 		time.sleep(0.4)
 		wheel1power,wheel2power = -1,1 #for turning
 		b = 0
+		#determine what the movement is
 		if   formofmovement == "turnback":    b = 1
 		elif formofmovement == "notturnback": b = 0
 		elif formofmovement == "forwards": wheel1power,wheel2power = 1,1 #modify for driving
@@ -288,6 +290,7 @@ try:
 			wheel1 = LWHEEL; wheel2 = RWHEEL
 		else:
 			wheel1 = RWHEEL; wheel2 = LWHEEL
+		
 		extraparameters=""
 		if llote == True: extraparameters += ", repeats=1" #don't repeat readings
 		if disregardhigh == True: extraparameters += ", disregardhigh=True"
@@ -308,8 +311,8 @@ try:
 		drivewheels(0,0) #stop
 		time.sleep(0.4)
 
-	def detectprocedure(alreadyturning): #DETECTION PROCEDURE
-
+	#DETECTION PROCEDURE
+	def detectprocedure(alreadyturning):
 		#check LOW US for object
 		tempreading = takeusreading(USNEWTRIG,USNEWECHO)
 		if tempreading < USSTANDARD:
@@ -331,7 +334,6 @@ try:
 
 				#DETECTION CORRECTION PROCEDURES
 				#if while turning, turn back a wee until it's in sight!
-				##(if this is not enough, turn back until it's in sight then not, then turn back)
 				messedup = True
 				if alreadyturning == True:
 					for i in range(2):
@@ -340,10 +342,7 @@ try:
 						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 						print "turn not back until in sight"
 						movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
-						#print "turn not back until out of sight"
-						#movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, llote=True)
-						#print "turn back until in sight"
-						#movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
+						
 						messedup = False
 						#in case it's monumentally messed up, turn back!
 						if takeusreading(USNEWTRIG,USNEWECHO,repeats=7) > USSTANDARD: #monumentally messed up
@@ -365,11 +364,6 @@ try:
 					#carry on, until it's out of sight
 					print "Turning other direction until no longer in sight"
 					movewhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention=True, llote=True)
-					#shift a bit back; this centres John on the litter.
-					#print "shift"
-					#if turnycount%2 == 0: movelimbENC(LWHEEL, -TURNPOWER, SHIFTENC, RWHEEL, TURNPOWER)
-					#else:                 movelimbENC(RWHEEL, -TURNPOWER, SHIFTENC, LWHEEL, TURNPOWER)
-					#turn in original direction until it's in sight - now it's definitely in sight.
 					print "Turning in orginial direction to centre"
 					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
 
@@ -417,6 +411,7 @@ try:
 				print "WALL"; buzz("long") #WALL(US)
 
 				if alreadyturning == False: #I'm not turning already so I want to turn and deactivate at wall
+					
 					turnprocedure()
 
 					#bring us2 back up (deactivate)
@@ -429,8 +424,9 @@ try:
 					print "turning away from goddamn wall"
 					#turn until wall is no longer in sight (to get rid of stalling problem)(screw detection)
 					movewhilecondition("notturnback", US2TRIG, US2ECHO, "<=", US2STANDARD, TURNPOWER)
-
-	def restartprogram(channel=0): #debounce interrupt, restart program
+ 	
+	#debounce interrupt, restart program
+	def restartprogram(channel=0):
 		global debouncetimestamp
 		timenow = time.time()
 
@@ -444,8 +440,8 @@ try:
 				restart()
 		debouncetimestamp = timenow
 
-	#set GPIO interrupts
-	GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram) #stop program when interrupted!
+	#set GPIO interrupt
+	GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram) #restart program when interrupted!
 
 
 
@@ -489,9 +485,10 @@ try:
 				print "added newbatterysaving ", newbatterysaving
 				settingsfile.close(); buzz("short"); GPIO.cleanup(); restart()
 			
+			#buttons to handle xdegrees changes
 			elif ircode[0] in ["xdegreesdown", "xdegreesup"]:
 				if   ircode[0] == "xdegreesdown": newxdegrees = XDEGREES - 5 #pressed voldown
-				elif ircode[0] == "xdegreesup"  : newxdegrees = XDEGREES + 5
+				elif ircode[0] == "xdegreesup"  : newxdegrees = XDEGREES + 5 #pressed volup
 				
 				#write new data
 				settingsfile = open('/home/pi/mainsettings.dat','w')
@@ -524,25 +521,27 @@ try:
 			if fwdb > 360: fwdb -= 360 #correction
 			print turnycount, fwdb
 
-
-
 		if startmain == True:
-
 			print "main has started"
+			
 			#initial stuff
 			turnbears = createturnbears()
 
 			#bring arm back up and open grabber in case it's not
 			movelimbLENG(ARM, SLIDEUPPOWER, 0.3, GRABBER, OPENPOWER)
+			previousencoderreading = takeencoderreading(ARM)
+			BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER; BrickPiUpdateValues(); time.sleep(0.3)
+			while abs(takeencoderreading(ARM)-previousencoderreading) > 1:
+				BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER
+				BrickPiUpdateValues()
+			BrickPi.MotorSpeed[ARM]=0; BrickPiUpdateValues
+			time.sleep(0.2)
 
 			#initial turn from forwards
 			turnprocedure()
 
 			#MAIN MAIN CHOW MEIN LOOP
 			while True:
-				#stop actions
-				#BrickPi.MotorSpeed[GRABBER] = 0; BrickPi.MotorSpeed[ARM] = 0
-
 				#drive
 				drivewheels(WHEELPOWER, WHEELPOWER)
 
@@ -559,6 +558,7 @@ try:
 					turnprocedure()
 					#loop back and carry on
 
+#ERROR HANDLERS
 except (KeyboardInterrupt, SystemExit): #ensure clean exit
 	logging.exception('KeyboardInterrupt or SystemExit'); print "KeyboardInterrupt or SystemExit"
 	GPIO.cleanup(); raise
