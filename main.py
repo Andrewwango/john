@@ -60,8 +60,8 @@ if batterysaving   == 0: extrajuice = 0
 elif batterysaving == 1: extrajuice = 20
 elif batterysaving == 2: extrajuice = 50
 #make sure nothing goes over 255 - highest extrajuice!
-WHEELPOWER     = -(190 + extrajuice) #driving power
-TURNPOWER      =   170 + extrajuice  #pos = forwards (for ease of use but not technically correct)
+WHEELPOWER     = -(180 + extrajuice) #driving power
+TURNPOWER      =   150 + extrajuice  #pos = forwards (for ease of use but not technically correct)
 SHIFTPOWER     =   160 + extrajuice  #shifting left and right
 BRAKEPOWER     =   -5                #braking turning
 SHOOBYPOWER    = -(100 + extrajuice) #shifting fwd and bwd
@@ -537,7 +537,7 @@ try: #catch errors
 				BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER
 				BrickPiUpdateValues()
 				tempencoderreading = takeencoderreading(ARM)
-				if abs(tempencoderreading-previousencoderreading) >1:
+				if abs(tempencoderreading-previousencoderreading) < 1:
 					break
 				previousencoderreading = tempencoderreading
 			BrickPi.MotorSpeed[ARM]=0; BrickPiUpdateValues
