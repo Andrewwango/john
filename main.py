@@ -316,23 +316,7 @@ try: #catch errors
 	#Reset arm and grabber back to base pos of up and open
 	def resetarmandgrabber():
 		print "sliding up, deactivate, opening grabber"
-		previousencoderreading = takeencoderreading(ARM)
-		#set arm goin
-		BrickPi.MotorSpeed[ARM] = LIFTPOWER; BrickPiUpdateValues(); time.sleep(0.1)
-		iter=0
-		while True:
-			BrickPi.MotorSpeed[ARM] = LIFTPOWER
-			BrickPiUpdateValues()
-			#check if arm has stopped moving
-			tempencoderreading = takeencoderreading(ARM)
-			if abs(tempencoderreading-previousencoderreading) == 0:
-				break
-			if iter%5 == 0:
-				previousencoderreading = tempencoderreading
-			iter+=1
-		#stop
-		BrickPi.MotorSpeed[ARM]=0; BrickPiUpdateValues()
-		movelimbLENG(GRABBER, OPENPOWER, 0.3)
+		movelimbLENG(ARM, SLIDEUPPOWER, 0.3, GRABBER, OPENPOWER)
 		time.sleep(0.2)
 
 	#DETECTION PROCEDURE
