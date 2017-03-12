@@ -7,7 +7,10 @@
 #            //All Rights Reserved//              #
 # //BrickPi: github.com/DexterInd/BrickPi_Python//#
 ###################################################
-#v14 makes new detection correction.
+
+#############
+####SETUP####
+#############
 
 #Import relevant modules
 import time, math, lirc, sys, pygame, os, cmpautocalib, logging
@@ -31,21 +34,20 @@ ARM    = PORT_C    ;    USNEWTRIG= 17 #purple,out- low  US sensor
 ''''''             ;    IRRCINT  = 8  #white, in - irrc interrupt pin
 
 #Constants
-XDEGREES       = 75  #angle between robot path and path (in degs)(INT) - MODIFIED BY SETTINGS BELOW
-USSTANDARD     = 30   #low us(new) sensor detection threshold
-US2STANDARD    = 50   #high us(2) detection threshold
+XDEGREES       = 75     #angle between robot path and path (in degs)(INT) - MODIFIED BY SETTINGS BELOW
+USSTANDARD     = 30     #low us(new) sensor detection threshold
+US2STANDARD    = 50     #high us(2) detection threshold
 OPTLITTERRANGE = [19,26]#the opt us distance range from which it can pick up stuff
-STOPRANGE      = 15   #the allowable range for turnbear (compass)
-SHIFTENC       = 30
-DISTANCECUTOFF = 200
+STOPRANGE      = 15     #the allowable range for turnbear (compass)
+DISTANCECUTOFF = 200    #max US detected distance before cutting off
 
 #Extract everything from settings file
 settingsfile = open('/home/pi/mainsettings.dat','r')
 settingsdata = settingsfile.read().split('\n')
 x_offset = int(settingsdata[0]); y_offset = int(settingsdata[1]) 
-origfwdb = int(float(settingsdata[2])) #origfwdb may be used for fwdb, modified, if going backwards, for example
+origfwdb      = int(float(settingsdata[2])) #origfwdb may be used for fwdb, modified, if going backwards, for example
 batterysaving = int(settingsdata[3])
-XDEGREES = int(settingsdata[4])
+XDEGREES      = int(settingsdata[4])
 
 settingsfile.close()
 print 'origfwdb ', origfwdb
@@ -53,26 +55,25 @@ print 'batterysaving ', batterysaving
 print 'XDEGREES ', XDEGREES
 
 #Motor Power Constants
+#if battery low, add extra juice to motors
 if batterysaving   == 0: extrajuice = 0
 elif batterysaving == 1: extrajuice = 20
 elif batterysaving == 2: extrajuice = 50
 #make sure nothing goes over 255 - highest extrajuice!
 WHEELPOWER     = -(190 + extrajuice) #driving power
 TURNPOWER      =   170 + extrajuice  #pos = forwards (for ease of use but not technically correct)
-SHIFTPOWER     =   160 + extrajuice  #'
-BRAKEPOWER     =   -5                #"
-SHOOBYPOWER    = -(100 + extrajuice)
-GRABBERPOWER   = -(170 + extrajuice)
-OPENPOWER      =   70  + extrajuice
-LIFTPOWER      = -(200 + extrajuice)
-SLIDEUPPOWER   = -(100 + extrajuice) #deactivating arm
-BRINGDOWNPOWER =   150 + extrajuice
-ACTIVATEUS2POWER=  150
+SHIFTPOWER     =   160 + extrajuice  #shifting left and right
+BRAKEPOWER     =   -5                #braking turning
+SHOOBYPOWER    = -(100 + extrajuice) #shifting fwd and bwd
+GRABBERPOWER   = -(170 + extrajuice) #close grabber
+OPENPOWER      =   70  + extrajuice  #open grabber
+LIFTPOWER      = -(200 + extrajuice) #lift arm from fully down
+SLIDEUPPOWER   = -(100 + extrajuice) #for deactivating arm
+BRINGDOWNPOWER =   150 + extrajuice  #bring arm down
+ACTIVATEUS2POWER=  150               #activate US2 position
 BRINGDOWNBRAKEPOWER = -5
 
-	
-
-##SETUP## motors, sensors, GPIO Pins
+#Setup motors, sensors, GPIO Pins
 BrickPi.MotorEnable[GRABBER] = 1 ; BrickPi.MotorEnable[ARM]    = 1
 BrickPi.MotorEnable[LWHEEL]  = 1 ; BrickPi.MotorEnable[RWHEEL] = 1
 
@@ -84,41 +85,41 @@ except OSError:
 	os.system("sudo sh /home/pi/stopev.sh")
 	restart()
 
-GPIO.setup(IRIN     , GPIO.IN)  ; GPIO.setup(BUZZOUT , GPIO.OUT)
-GPIO.setup(USNEWECHO, GPIO.IN)
-GPIO.setup(USNEWTRIG, GPIO.OUT)
-GPIO.setup(US2ECHO  , GPIO.IN)
-GPIO.setup(US2TRIG  , GPIO.OUT) ; GPIO.setup(IRRCINT , GPIO.IN)
+GPIO.setup(IRIN     , GPIO.IN) ; GPIO.setup(BUZZOUT  , GPIO.OUT)
+GPIO.setup(USNEWECHO, GPIO.IN) ; GPIO.setup(USNEWTRIG, GPIO.OUT)
+GPIO.setup(US2ECHO  , GPIO.IN) ; GPIO.setup(US2TRIG  , GPIO.OUT)
+GPIO.setup(IRRCINT  , GPIO.IN)
 
-##PROGRAM VARS##
-turnycount = 0 #first turn is left(1) or right (0) (INCLUDING initial)
-turnbears = []
-targBear = 0
+#Program Runtime Variables
+turnycount = 0 #keep track of which way to turn - inital: left,1 right,0
+turnbears = [] ; targBear = 0
 shoobied = 'no'
 debouncetimestamp = time.time()
 previoususreading = 100
 
-#Setup logging
+#Setup error logging
 logging.basicConfig(filename='/home/pi/errorlogs.dat', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logging.debug('\n \n ---NEW SESSION---')
 
-print "SETUP FINISHED"
+print "SETUP FINISHED" #print to stdout
 
 #############
 ##FUNCTIONS##
 #############
 
 try:
-	def buzz(patternofbuzz): #activate buzzer
+	#Activate buzzer
+	def buzz(patternofbuzz):
 		patternofbuzz = patternofbuzz.split()
 		for i in range(len(patternofbuzz)):
 			GPIO.output(BUZZOUT, True)
 			if   patternofbuzz[i] == "short" : time.sleep(0.1)
 			elif patternofbuzz[i] == "long"  : time.sleep(0.3)
 			GPIO.output(BUZZOUT, False)
-			if len(patternofbuzz) >= 1 and i != len(patternofbuzz)-1: time.sleep(0.2) #if more than one beep and not at end
-
-	def takeusreading(trig, echo, repeats=3, disregardhigh=False): #take reading from ultrasonic sensor
+			if len(patternofbuzz) >= 1 and i != len(patternofbuzz)-1: time.sleep(0.2)
+	
+	#Take ultrasonic reading
+	def takeusreading(trig, echo, repeats=3, disregardhigh=False):
 		global previoususreading
 		GPIO.output(trig, False) #switch everything off
 		#take 4 readings then find average
@@ -145,8 +146,6 @@ try:
 			#breaks when cut off point is bypassed - this prevents stalling.
 			
 			duration = abs(stop - start)
-			
-
 			#find length
 			if distance == 0: distance = duration * 340 * 100 #cm from speed of sound
 			if disregardhigh == True:
@@ -160,28 +159,31 @@ try:
 		GPIO.output(trig, False)
 		print "US reading is ", str(usreading), uslist
 		return usreading
-
-	def takeencoderreading(port): #read motor position from built in encoder
+	
+	#Read motor position from built in encoder
+	def takeencoderreading(port):
 		for i in range(3): #deal with encoder glitches
 			result = BrickPiUpdateValues()
 			if not result: return (BrickPi.Encoder[port])
 		return 0 #better than nonetype
 
-	def drivewheels(lpower, rpower): #set wheels goin'
+	#Set wheels goin'
+	def drivewheels(lpower, rpower):
 		BrickPi.MotorSpeed[LWHEEL] = lpower
 		BrickPi.MotorSpeed[RWHEEL] = rpower
 		BrickPiUpdateValues()
 
+	#Create list of bearings for each turn according to forward direction
 	def createturnbears():
-		#create list of bearings for each turn according to forward direction
 		turnbears = [fwdb-XDEGREES , fwdb+XDEGREES] #l,r
 		#correct to 0<b<360
 		for i in range(len(turnbears)):
 			if turnbears[i] > 360: turnbears[i] -= 360
 			if turnbears[i] < 0  : turnbears[i] += 360
 		print turnbears; return turnbears
-
-	def pickprocedure(): #LITTER PICKING PROCEDURE
+	
+	#LITTER PICKING PROCEDURE
+	def pickprocedure():
 		print "bringing down" #get grabber into correct position
 		movelimbLENG(ARM, BRINGDOWNPOWER, 0.6)
 
@@ -195,7 +197,8 @@ try:
 		print "opening" #dump litter
 		movelimbLENG(GRABBER, OPENPOWER, 0.5); time.sleep(0.5)	
 
-	def turnprocedure(): #TURNING PROCEDURE
+	#TURNING PROCEDURE
+	def turnprocedure():
 		global turnycount; global turnbears; global targBear
 		time.sleep(0.5)
 
@@ -215,8 +218,9 @@ try:
 		turnycount += 1 #next time turns other way
 		time.sleep(0.5)	
 
-
-	def movelimbLENG(limb, speed, length, limb2=None, speed2=None): #move motor based on time length
+	
+	#Move motor based on time length
+	def movelimbLENG(limb, speed, length, limb2=None, speed2=None):
 		#set speed(s)
 		BrickPi.MotorSpeed[limb] = speed
 		if limb2 != None: BrickPi.MotorSpeed[limb2] = speed2 #optional simultaneous second motor movement
@@ -229,14 +233,14 @@ try:
 		#stop
 		BrickPi.MotorSpeed[limb] = 0
 		if limb2 != None: BrickPi.MotorSpeed[limb2] = 0
-		
 		BrickPiUpdateValues()
-
-
-	def movelimbENC(limb, speed, deg, limb2=None, speed2=None, detection=False, compass=False): #move motor based on encoder OR COMPASS guidance
+	
+	#Move motor based on encoder OR COMPASS guidance
+	def movelimbENC(limb, speed, deg, limb2=None, speed2=None, detection=False, compass=False):
 		#this turns a motor until motor reaches certain encoder position OR John faces certain direction
 		#deg is the change in: encoder degrees (scalar) OR compass deg if compass=True
 		#for encoder, positive speed is positive encoder increase
+		#for compass, turning right is positive bearing increase
 		startpos = takeencoderreading(limb)
 		#set directions
 		if   speed > 0: modifier=1
