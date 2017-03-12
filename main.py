@@ -314,7 +314,7 @@ try: #catch errors
 		time.sleep(0.4)
 	
 	#Reset arm and grabber back to base pos of up and open
-	def resetarmandgrabber()
+	def resetarmandgrabber():
 		print "sliding up, deactivate, opening grabber"
 		previousencoderreading = takeencoderreading(ARM)
 		#set arm goin
