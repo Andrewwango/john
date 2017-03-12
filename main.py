@@ -321,13 +321,13 @@ try: #catch errors
 		BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER; BrickPiUpdateValues(); time.sleep(0.3)
 		iter=0
 		while True:
-			BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER
+			BrickPi.MotorSpeed[ARM] = LIFTPOWER
 			BrickPiUpdateValues()
 			#check if arm has stopped moving
 			tempencoderreading = takeencoderreading(ARM)
 			if abs(tempencoderreading-previousencoderreading) == 0:
 				break
-			if iter%4 == 0:
+			if iter%5 == 0:
 				previousencoderreading = tempencoderreading
 			iter+=1
 		#stop
