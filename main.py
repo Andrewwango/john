@@ -318,7 +318,7 @@ try: #catch errors
 		print "sliding up, deactivate, opening grabber"
 		previousencoderreading = takeencoderreading(ARM)
 		#set arm goin
-		BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER; BrickPiUpdateValues(); time.sleep(0.3)
+		BrickPi.MotorSpeed[ARM] = LIFTPOWER; BrickPiUpdateValues(); time.sleep(0.1)
 		iter=0
 		while True:
 			BrickPi.MotorSpeed[ARM] = LIFTPOWER
