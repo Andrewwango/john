@@ -164,7 +164,9 @@ try: #catch errors
 	def takeencoderreading(port):
 		for i in range(3): #deal with encoder glitches
 			result = BrickPiUpdateValues()
-			if not result: return (BrickPi.Encoder[port])
+			if not result:
+				print BrickPi.Encoder[port]
+				return (BrickPi.Encoder[port])
 		return 0 #better than nonetype
 
 	#Set wheels goin'
