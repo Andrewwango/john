@@ -312,6 +312,28 @@ try: #catch errors
 		movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
 		drivewheels(0,0) #stop
 		time.sleep(0.4)
+	
+	#Reset arm and grabber back to base pos of up and open
+	def resetarmandgrabber()
+		print "sliding up, deactivate, opening grabber"
+		previousencoderreading = takeencoderreading(ARM)
+		#set arm goin
+		BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER; BrickPiUpdateValues(); time.sleep(0.3)
+		iter=0
+		while True:
+			BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER
+			BrickPiUpdateValues()
+			#check if arm has stopped moving
+			tempencoderreading = takeencoderreading(ARM)
+			if abs(tempencoderreading-previousencoderreading) == 0:
+				break
+			if iter%4 == 0:
+				previousencoderreading = tempencoderreading
+			iter+=1
+		#stop
+		BrickPi.MotorSpeed[ARM]=0; BrickPiUpdateValues()
+		movelimbLENG(GRABBER, OPENPOWER, 0.3)
+		time.sleep(0.2)
 
 	#DETECTION PROCEDURE
 	def detectprocedure(alreadyturning):
@@ -415,10 +437,7 @@ try: #catch errors
 				if alreadyturning == False: #I'm not turning already so I want to turn and deactivate at wall
 					
 					turnprocedure()
-
-					#bring us2 back up (deactivate)
-					print "sliding up, deactivate"
-					movelimbLENG(ARM, SLIDEUPPOWER, 0.6)
+					resetarmandgrabber()
 					time.sleep(0.5)
 					#loop back and carry on
 
@@ -530,21 +549,7 @@ try: #catch errors
 			turnbears = createturnbears()
 
 			#bring arm back up and open grabber in case it's not
-			movelimbLENG(ARM, SLIDEUPPOWER, 0.3, GRABBER, OPENPOWER)
-			previousencoderreading = takeencoderreading(ARM)
-			BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER; BrickPiUpdateValues(); time.sleep(0.3)
-			iter=0
-			while True:
-				BrickPi.MotorSpeed[ARM] = SLIDEUPPOWER
-				BrickPiUpdateValues()
-				tempencoderreading = takeencoderreading(ARM)
-				if abs(tempencoderreading-previousencoderreading) == 0:
-					break
-				if iter%4 == 0:
-					previousencoderreading = tempencoderreading
-				iter+=1
-			BrickPi.MotorSpeed[ARM]=0; BrickPiUpdateValues
-			time.sleep(0.2)
+			resetarmandgrabber()
 
 			#initial turn from forwards
 			turnprocedure()
