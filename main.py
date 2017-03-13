@@ -3,14 +3,10 @@
 #//JOHN (fully automated roadside litter picker)//#
 #                    //main.py//                  #
 #         //Started 29.05.16//v15//13.03.17       #
-#                //ANDREW WANG//                  #
-#            //All Rights Reserved//              #
+#     //ANDREW WANG//  //All Rights Reserved//    #
 # //BrickPi: github.com/DexterInd/BrickPi_Python//#
-###################################################
 
-#############
-####SETUP####
-#############
+##########################################    SETUP    ##########################################
 
 #Import relevant modules
 import time, math, lirc, sys, pygame, os, cmpautocalib, logging
@@ -70,7 +66,7 @@ OPENPOWER      =   70  + extrajuice  #open grabber
 LIFTPOWER      = -(200 + extrajuice) #lift arm from fully down
 SLIDEUPPOWER   = -(100 + extrajuice) #for deactivating arm
 BRINGDOWNPOWER =   150 + extrajuice  #bring arm down
-ACTIVATEUS2POWER=  140 + extrajuice/2#activate US2 position
+ACTIVATEUS2POWER=  120 + extrajuice/2#activate US2 position
 BRINGDOWNBRAKEPOWER = -5
 
 #Setup motors, sensors (encoder), GPIO Pins
@@ -96,6 +92,7 @@ turnbears = [] ; targBear = 0 #bearing of lturn and rturn
 shoobied = 'no'
 debouncetimestamp = time.time()
 previoususreading = 100
+abandonship = False
 
 #Setup error logging
 logging.basicConfig(filename='/home/pi/errorlogs.dat', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
@@ -103,9 +100,7 @@ logging.debug('\n \n ---NEW SESSION---')
 
 print "SETUP FINISHED" #print to stdout
 
-#############
-##FUNCTIONS##
-#############
+###################################       FUNCTIONS       ########################################
 
 try: #catch errors in case
 
@@ -260,7 +255,7 @@ try: #catch errors in case
 				if modifiedreading >= deg: break #at final position
 
 				BrickPi.MotorSpeed[limb] = speed
-				if limb2 != None: BrickPi.MotorSpeed[limb2] = speed2 #optional simultaneous second motor movement
+				if limb2 != None: BrickPi.MotorSpeed[limb2]=speed2 #opt. simultan. 2nd motor mvmt
 
 		elif compass == True: #in this instance turn based on COMPASS
 			while True:
@@ -269,10 +264,10 @@ try: #catch errors in case
 				if abs(takebearing()-deg) <= STOPRANGE: break #at final bearing
 
 				BrickPi.MotorSpeed[limb] = speed
-				if limb2 != None: BrickPi.MotorSpeed[limb2] = speed2 #optional simultaneous second motor movement
+				if limb2 != None: BrickPi.MotorSpeed[limb2]=speed2 #opt. simultan. 2nd motor mvmt
 
 				if detection==True: #litter detection while turning
-					if modifiedreading >= 120: #turned enough so safe to start measuring for litter
+					if modifiedreading >= 120: #turned enough so safe to start measuring 4 litter
 						detectprocedure(True)
 
 		#stop
@@ -282,7 +277,8 @@ try: #catch errors in case
 		BrickPiUpdateValues()
 	
 	#Drive/turn depending on US sensor
-	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False, timelimit=False, llote=False, disregardhigh=False):
+	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False, llote=False, disregardhigh=False):
+		global abandonship
 		time.sleep(0.4)
 		wheel1pwr,wheel2pwr = -1,1 #for turning
 		b = 0
@@ -306,10 +302,19 @@ try: #catch errors in case
 		while eval("takeusreading(trig, echo" + extraparameters + ")" + op + "val"):
 			if wallprevention == True:
 				#just stop turning when there's a wall no matter what, if necessary
-				if takeusreading(US2TRIG, US2ECHO) < US2STANDARD:
-					break
-			if time.time()-ot >= 1:
+				if takeusreading(US2TRIG, US2ECHO) < US2STANDARD: break
+			
+			if time.time()-ot >= 1: break #time limit so it doesn't turn forever
+			
+			if GPIO.input(IRIN) == 1: #cliff!
+				drivewheels(0,0) #stop
+				movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER) #reverse
+				buzz("long")
+				abandonship = True
+			
+			if abandonship == True:
 				break
+				
 			#turn until condition is met
 			BrickPi.MotorSpeed[wheel1]=wheel1pwr*power; BrickPi.MotorSpeed[wheel2]=wheel2pwr*power
 			BrickPiUpdateValues()
@@ -326,6 +331,7 @@ try: #catch errors in case
 
 	#DETECTION PROCEDURE
 	def detectprocedure(alreadyturning):
+		global abandonship
 		#check LOW US for object
 		tempreading = takeusreading(USNEWTRIG,USNEWECHO)
 		
@@ -348,6 +354,7 @@ try: #catch errors in case
 
 				#DETECTION CORRECTION PROCEDURES
 				#these procedures centre John on litter.
+				abandonship = False
 				
 				#if while turning, turn back a wee until it's in sight, then make verify
 				messedup = True
@@ -356,15 +363,15 @@ try: #catch errors in case
 					for i in range(2):
 						
 						print "turn back until in sight"
-						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
+						movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, llote=True)
 						print "turn not back until in sight"
-						movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
+						movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, llote=True)
 						
 						messedup = False
 						#in case it's monumentally messed up, turn back!
 						if takeusreading(USNEWTRIG,USNEWECHO,repeats=7) > USSTANDARD: #messed up
 							print "turning back, cos monumentally failed"
-							movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
+							movewhilecondition("turnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, llote=True)
 							messedup = True
 						
 						if messedup == False: break
@@ -376,11 +383,11 @@ try: #catch errors in case
 					print "Turning direction until no longer in sight"
 					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention=True, llote=True)
 					print "Turning other direction until in sight again"
-					movewhilecondition("turnback",    USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
+					movewhilecondition("turnback",    USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, llote=True)
 					print "Turning other direction until no longer in sight"
 					movewhilecondition("turnback",    USNEWTRIG, USNEWECHO, "<", USSTANDARD, SHIFTPOWER, wallprevention=True, llote=True)
 					print "Turning in orginial direction to centre"
-					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, timelimit=True, llote=True)
+					movewhilecondition("notturnback", USNEWTRIG, USNEWECHO, ">", USSTANDARD, SHIFTPOWER, llote=True)
 
 				#shooby closer/further if litter is not in optimum range to pick up
 				shoobied = 'no'; print "checking shooby"
@@ -389,26 +396,27 @@ try: #catch errors in case
 				
 				if tempreading <= OPTLITTERRANGE[0]: #too close
 					print "too close, shoobying AWAY"
-					movewhilecondition("backwards", USNEWTRIG, USNEWECHO, "<", OPTLITTERRANGE[0], WHEELPOWER, timelimit=True, disregardhigh=True)
+					movewhilecondition("backwards", USNEWTRIG, USNEWECHO, "<", OPTLITTERRANGE[0], WHEELPOWER, disregardhigh=True)
 					shoobiedenc = abs(takeencoderreading(LWHEEL) - startpos) #so we know where we've gone
 					shoobied='away'
 				
 				elif tempreading >= OPTLITTERRANGE[1]: #too far
 					print "too far, shoobying NEAR"
-					movewhilecondition("forwards",  USNEWTRIG, USNEWECHO, ">", OPTLITTERRANGE[1], WHEELPOWER, timelimit=True, disregardhigh=True)
+					movewhilecondition("forwards",  USNEWTRIG, USNEWECHO, ">", OPTLITTERRANGE[1], WHEELPOWER, disregardhigh=True)
 					shoobiedenc = abs(takeencoderreading(LWHEEL) - startpos)
 					shoobied='near'
 
 				#PICK UP THE BLOODY LITTER
-				pickprocedure()
+				if abandonship == False: pickprocedure()
 
 				#move back if shoobied before
-				if shoobied=='away':
-					print "shoobying NEAR back to original pos"
-					movelimbENC(LWHEEL, WHEELPOWER, shoobiedenc, RWHEEL, WHEELPOWER)
-				elif shoobied=='near':
-					print "shoobying AWAY back to original pos"
-					movelimbENC(LWHEEL, -WHEELPOWER, shoobiedenc, RWHEEL, -WHEELPOWER)
+				if abandonship == False:
+					if shoobied=='away':
+						print "shoobying NEAR back to original pos"
+						movelimbENC(LWHEEL, WHEELPOWER, shoobiedenc, RWHEEL, WHEELPOWER)
+					elif shoobied=='near':
+						print "shoobying AWAY back to original pos"
+						movelimbENC(LWHEEL, -WHEELPOWER, shoobiedenc, RWHEEL, -WHEELPOWER)
 
 				#turn back to original turnbear
 				if alreadyturning == False:
@@ -421,8 +429,9 @@ try: #catch errors in case
 					print "turning back to original bear"
 					movelimbENC(wheel1, -TURNPOWER, targBear, wheel2, TURNPOWER, compass=True)
 					movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
-
-
+				
+				abandonship = False
+				#loop back and carry on
 
 			else:
 				#Something detected -> tall object -> WALL
@@ -430,7 +439,6 @@ try: #catch errors in case
 
 				if alreadyturning == False:
 					#I'm not turning already so I want to turn and deactivate at wall
-					
 					turnprocedure()
 					resetarmandgrabber()
 					time.sleep(0.5)
@@ -438,7 +446,6 @@ try: #catch errors in case
 
 				elif alreadyturning == True:
 					#I am already turning so I want to get away from this goddamn wall
-					
 					print "turning away from goddamn wall"
 					#turn until wall is not in sight (to get rid of stalling)(screw detection)
 					movewhilecondition("notturnback",US2TRIG,US2ECHO, "<=", US2STANDARD,TURNPOWER)
@@ -462,10 +469,7 @@ try: #catch errors in case
 	GPIO.add_event_detect(IRRCINT, GPIO.RISING, callback=restartprogram)
 
 
-
-	################
-	##MAIN PROGRAM##
-	################
+######################################     MAIN PROGRAM     #####################################
 	buzz("short"); print "I'm ready to go!"
 
 	startmain = False
@@ -564,13 +568,13 @@ try: #catch errors in case
 				#check IR sensor for cliff
 				if GPIO.input(IRIN) == 1: #nothing close (underneath sensor)
 					print "CLIFF"
+					drivewheels(0,0) #stop
 					#reverse!
 					movelimbENC(LWHEEL, -WHEELPOWER, 130, RWHEEL, -WHEELPOWER)
 
 					buzz("long")
 					turnprocedure()
 					#loop back and carry on
-
 
 
 #ERROR HANDLERS
@@ -580,4 +584,3 @@ except (KeyboardInterrupt, SystemExit): #ensure clean exit
 except: #any other error, restart!
 	logging.exception('Found error in main!'); print "Found error in main!"
 	GPIO.cleanup(); restart()
-
