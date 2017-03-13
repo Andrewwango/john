@@ -93,6 +93,7 @@ shoobied = 'no'
 debouncetimestamp = time.time()
 previoususreading = 100
 abandonship = False
+timelimitreached = False
 
 #Setup error logging
 logging.basicConfig(filename='/home/pi/errorlogs.dat', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(message)s')
@@ -278,7 +279,7 @@ try: #catch errors in case
 	
 	#Drive/turn depending on US sensor
 	def movewhilecondition(formofmovement, trig, echo, op, val, power, wallprevention=False, llote=False, disregardhigh=False):
-		global abandonship
+		global abandonship; global timelimitreached
 		time.sleep(0.4)
 		wheel1pwr,wheel2pwr = -1,1 #for turning
 		b = 0
@@ -304,7 +305,9 @@ try: #catch errors in case
 				#just stop turning when there's a wall no matter what, if necessary
 				if takeusreading(US2TRIG, US2ECHO) < US2STANDARD: break
 			
-			if time.time()-ot >= 1: break #time limit so it doesn't turn forever
+			if time.time()-ot >= 1:
+				timelimitreached = True
+				break #time limit so it doesn't turn forever
 			
 			if GPIO.input(IRIN) == 1: #cliff!
 				drivewheels(0,0) #stop
@@ -338,7 +341,7 @@ try: #catch errors in case
 		if tempreading < USSTANDARD:
 			#detected something!
 			drivewheels(0,0) #stop
-			print "object detected"; buzz("long")
+			print "object detected"; buzz("short")
 
 			#activate HIGH US(2) pos
 			if alreadyturning == False: #I'm not turning (so I want to activate us2 pos)
@@ -354,7 +357,7 @@ try: #catch errors in case
 
 				#DETECTION CORRECTION PROCEDURES
 				#these procedures centre John on litter.
-				abandonship = False
+				abandonship = False; timelimitreached = False
 				
 				#if while turning, turn back a wee until it's in sight, then make verify
 				messedup = True
@@ -407,7 +410,9 @@ try: #catch errors in case
 					shoobied='near'
 
 				#PICK UP THE BLOODY LITTER
-				if abandonship == False: pickprocedure()
+				if abandonship == False:
+					if timelimitreached == False:
+						pickprocedure()
 
 				#move back if shoobied before
 				if abandonship == False:
@@ -430,12 +435,12 @@ try: #catch errors in case
 					movelimbENC(wheel1, -TURNPOWER, targBear, wheel2, TURNPOWER, compass=True)
 					movelimbLENG(wheel1, BRAKEPOWER, 0.1, wheel2, -BRAKEPOWER) #brake
 				
-				abandonship = False
+				abandonship = False; timelimitreached = False
 				#loop back and carry on
 
 			else:
 				#Something detected -> tall object -> WALL
-				print "WALL"; buzz("long") #WALL(US)
+				print "WALL"; buzz("short") #WALL(US)
 
 				if alreadyturning == False:
 					#I'm not turning already so I want to turn and deactivate at wall
