@@ -334,7 +334,7 @@ try: #catch errors in case
 
 	#DETECTION PROCEDURE
 	def detectprocedure(alreadyturning):
-		global abandonship
+		global abandonship; global timelimitreached
 		#check LOW US for object
 		tempreading = takeusreading(USNEWTRIG,USNEWECHO)
 		
