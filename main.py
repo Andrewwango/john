@@ -84,7 +84,7 @@ except OSError:
 GPIO.setup(IRIN     , GPIO.IN) ; GPIO.setup(BUZZOUT  , GPIO.OUT)
 GPIO.setup(USNEWECHO, GPIO.IN) ; GPIO.setup(USNEWTRIG, GPIO.OUT)
 GPIO.setup(US2ECHO  , GPIO.IN) ; GPIO.setup(US2TRIG  , GPIO.OUT)
-GPIO.setup(IRRCINT  , GPIO.IN)
+GPIO.setup(IRRCINT  , GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 #Program Runtime Variables
 turnycount = 0 #keep track of which way to turn - initial: left=1 right=0
