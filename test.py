@@ -1,3 +1,0 @@
-import cmpautocalib
-
-cmpautocalib.maincalibprogram()
