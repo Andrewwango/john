@@ -4,10 +4,16 @@ John is a fully automated pavement litter-picking robot, to be used in urban set
 
 This project was submitted to the 2017 National Young Scientists and Engineers Competition. The project was selected as a finalist to be exhibited at the Big Bang Fair and came runner up in the Intermediate age category out of ~300 finalists. View the video submission [here](https://youtu.be/SZ_vZ9dfDFE).
 
-Read below for the project report (taken from my competition submission). [Here](images) are some images taken from the 2017 Big Bang Fair exhibition at the NEC, Birmingham. 
+Read below for the project report (taken from my competition submission). [Here](images) are some images taken from the 2017 Big Bang Fair exhibition at the NEC, Birmingham.
 
 All rights reserved
 Andrew Wang 2016
+
+![](images/Andrew_Wang_John_Exhibition_1.JPG)
+
+![](images/Andrew_Wang_John_1.jpg)
+
+More images below.
 
 ## Project Report
 ### Introduction
@@ -28,3 +34,8 @@ One of the biggest challenges I faced was that of detecting litter. How was I go
 Real-life function of the robot was considered, and thus cliff detection came into play, to make sure that John doesn’t fall off pavements. To do this, I chose an infrared sensor (to minimise the amount of ultrasound interfering with one another), building it myself and again utilising the Pi’s GPIO ports. A similar tuning process was undergone to find the distance at which ground would be detected underneath the robot. I think that this build was reliable and cost efficient.
 
 Finally, the method using which John picks up litter was a big challenge at first. How would it, after having detected litter, put it into some kind of bin? The solution was to design a grabber and arm, which I built after many prototypes, to grab litter and bring it over into a bin. The arm was designed to use minimum energy by placing the grabber motor close to the pivot of the arm, to reduce its turning force. The final design (shown in the video) utilises elastic bands (as opposed to my initial idea, a ratchet, which would’ve been too cumbersome to install) to reduce the energy input needed to bring the arm upwards, and to keep the arm in position when the ultrasonic sensor takes readings. Overall, by solving these problems step by step, an almost fool-proof arm was constructed.
+
+![](images/Andrew_Wang_John_2.jpg)
+![](images/Andrew_Wang_John_3.jpg)
+![](images/Andrew_Wang_John_4.jpg)
+![](images/Andrew_Wang_John_5.jpg)
